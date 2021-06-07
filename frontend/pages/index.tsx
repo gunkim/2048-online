@@ -3,6 +3,13 @@ import "antd/dist/antd.css"
 import { Row, Col } from "antd"
 import { Level } from "../style/Level"
 import { useEffect, useState } from "react"
+import {
+  combineLeft,
+  combineRight,
+  rotateArr,
+  slideLeft,
+  slideRight
+} from "../util/game-util"
 
 const Frame = styled(Row)`
   width: 40%;
@@ -45,7 +52,7 @@ const Home = () => {
   const [game, setGame] = useState([
     [0, 0, 0, 0],
     [0, 0, 0, 0],
-    [0, 0, 0, 0],
+    [1, 1, 0, 0],
     [0, 0, 0, 0]
   ])
   useEffect(() => {
@@ -58,6 +65,34 @@ const Home = () => {
     }
     setGame(temp)
   }, [setGame])
+
+  const onLeftMove = () => {
+    let temp = slideLeft(game)
+    combineLeft(temp)
+    temp = slideLeft(temp)
+    setGame(temp)
+  }
+  const onRightMove = () => {
+    let temp = slideRight(game)
+    temp = slideRight(game)
+    setGame(temp)
+  }
+
+  const onTopMove = () => {
+    let temp = rotateArr(game, 1)
+
+    temp = slideRight(temp)
+    temp = rotateArr(temp, 3)
+    setGame(temp)
+  }
+  const onBottomMove = () => {
+    let temp = rotateArr(game, 1)
+
+    temp = slideLeft(temp)
+
+    temp = rotateArr(temp, 3)
+    setGame(temp)
+  }
   return (
     <>
       <Title>Playing!</Title>
@@ -71,6 +106,10 @@ const Home = () => {
             ))
           )}
         </Board>
+        <button onClick={onLeftMove}>왼쪽 이동</button>
+        <button onClick={onRightMove}>오른쪽 이동</button>
+        <button onClick={onTopMove}>위쪽 이동</button>
+        <button onClick={onBottomMove}>아래쪽 이동</button>
       </Frame>
     </>
   )
