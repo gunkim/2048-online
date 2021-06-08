@@ -5,10 +5,13 @@ import { Level } from "../style/Level"
 import { useEffect, useState } from "react"
 import {
   combineLeft,
-  combineRight,
-  rotateArr,
+  generateRandom,
+  isSameBoard,
+  pipe,
   slideLeft,
-  slideRight
+  slideRight,
+  transposeCCW,
+  transposeCW
 } from "../util/game-util"
 
 const Frame = styled(Row)`
@@ -52,7 +55,7 @@ const Home = () => {
   const [game, setGame] = useState([
     [0, 0, 0, 0],
     [0, 0, 0, 0],
-    [1, 1, 0, 0],
+    [0, 0, 0, 0],
     [0, 0, 0, 0]
   ])
   useEffect(() => {
@@ -66,33 +69,53 @@ const Home = () => {
     setGame(temp)
   }, [setGame])
 
-  const onLeftMove = () => {
-    let temp = slideLeft(game)
-    combineLeft(temp)
-    temp = slideLeft(temp)
-    setGame(temp)
+  // 오른쪽 버튼을 눌렀을 때
+  const moveRight = () => {
+    const board = [...game]
+    const nextBoard = pipe(slideRight, combineLeft, slideRight)(board)
+    if (isSameBoard(board, nextBoard)) return board
+    // 변화 없으면 그대로
+    setGame(generateRandom(nextBoard))
+    // 변화 있으면 숫자 생성
   }
-  const onRightMove = () => {
-    let temp = slideRight(game)
-    temp = slideRight(game)
-    setGame(temp)
+  // 왼쪽 버튼 눌렀을 때
+  const moveLeft = () => {
+    const board = [...game]
+    const nextBoard = pipe(slideLeft, combineLeft, slideLeft)(board)
+    if (isSameBoard(board, nextBoard)) return board
+    // 변화 없으면 그대로
+    setGame(generateRandom(nextBoard))
+    // 변화 있으면 숫자 생성
+  }
+  // 위쪽 버튼을 눌렀을 때
+  const moveTop = () => {
+    const board = [...game]
+    const nextBoard = pipe(
+      transposeCCW,
+      slideLeft,
+      combineLeft,
+      slideLeft,
+      transposeCW
+    )(board)
+    if (isSameBoard(board, nextBoard)) return board
+    // 못움직이면 그대로
+    setGame(generateRandom(nextBoard))
+  }
+  // 아래쪽 버튼 눌렀을 때
+  const moveBottom = () => {
+    const board = [...game]
+    const nextBoard = pipe(
+      transposeCCW,
+      slideRight,
+      combineLeft,
+      slideRight,
+      transposeCW
+    )(board)
+    if (isSameBoard(board, nextBoard)) return board
+    // 못움직이면 그대로
+    setGame(generateRandom(nextBoard))
   }
 
-  const onTopMove = () => {
-    let temp = rotateArr(game, 1)
-
-    temp = slideRight(temp)
-    temp = rotateArr(temp, 3)
-    setGame(temp)
-  }
-  const onBottomMove = () => {
-    let temp = rotateArr(game, 1)
-
-    temp = slideLeft(temp)
-
-    temp = rotateArr(temp, 3)
-    setGame(temp)
-  }
   return (
     <>
       <Title>Playing!</Title>
@@ -106,10 +129,10 @@ const Home = () => {
             ))
           )}
         </Board>
-        <button onClick={onLeftMove}>왼쪽 이동</button>
-        <button onClick={onRightMove}>오른쪽 이동</button>
-        <button onClick={onTopMove}>위쪽 이동</button>
-        <button onClick={onBottomMove}>아래쪽 이동</button>
+        <button onClick={moveLeft}>왼쪽 이동</button>
+        <button onClick={moveRight}>오른쪽 이동</button>
+        <button onClick={moveTop}>위쪽 이동</button>
+        <button onClick={moveBottom}>아래쪽 이동</button>
       </Frame>
     </>
   )
