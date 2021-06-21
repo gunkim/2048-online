@@ -3,16 +3,8 @@ import "antd/dist/antd.css"
 import { Row, Col } from "antd"
 import { Level } from "../style/Level"
 import { useEffect, useState } from "react"
-import {
-  combineLeft,
-  generateRandom,
-  isSameBoard,
-  pipe,
-  slideLeft,
-  slideRight,
-  transposeCCW,
-  transposeCW
-} from "../util/game-util"
+import SockJS from "sockjs-client"
+import Stomp from "stompjs"
 
 const Frame = styled(Row)`
   width: 40%;
@@ -50,78 +42,56 @@ const Tile = styled.div`
   font-size: 3rem;
   line-height: 130px;
 `
+const StartButton = styled.span`
+  margin: 5px;
+  float: right;
+  border-radius: 5px;
+  padding: 5px;
+  background: #ff3939;
+  color: white;
+  cursor: pointer;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+`
+
+type Game = {
+  board: number[][]
+  score: number
+}
+
+let sockJS = new SockJS("http://localhost:8080/webSocket")
+let stompClient: Stomp.Client = Stomp.over(sockJS)
+stompClient.debug = () => {}
 
 const Home = () => {
-  const [game, setGame] = useState([
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0]
-  ])
+  const [game, setGame] = useState<Game>({
+    board: [
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0]
+    ],
+    score: 0
+  })
   useEffect(() => {
-    const temp = [...game]
-
-    for (let i = 0; i < 2; i++) {
-      const posX = Math.floor(Math.random() * 3) + 1
-      const posY = Math.floor(Math.random() * 3) + 1
-      temp[posX][posY] = Math.floor(Math.random() * 2) + 1
-    }
-    setGame(temp)
+    stompClient.connect({}, () => {
+      stompClient.subscribe("/play/start", response => {
+        const payload = JSON.parse(response.body)
+        setGame(payload)
+      })
+    })
   }, [setGame])
-
-  // 오른쪽 버튼을 눌렀을 때
-  const moveRight = () => {
-    const board = [...game]
-    const nextBoard = pipe(slideRight, combineLeft, slideRight)(board)
-    if (isSameBoard(board, nextBoard)) return board
-    // 변화 없으면 그대로
-    setGame(generateRandom(nextBoard))
-    // 변화 있으면 숫자 생성
+  const test = () => {
+    stompClient.send("/game/start", {}, "hello, gunkim!")
   }
-  // 왼쪽 버튼 눌렀을 때
-  const moveLeft = () => {
-    const board = [...game]
-    const nextBoard = pipe(slideLeft, combineLeft, slideLeft)(board)
-    if (isSameBoard(board, nextBoard)) return board
-    // 변화 없으면 그대로
-    setGame(generateRandom(nextBoard))
-    // 변화 있으면 숫자 생성
-  }
-  // 위쪽 버튼을 눌렀을 때
-  const moveTop = () => {
-    const board = [...game]
-    const nextBoard = pipe(
-      transposeCCW,
-      slideLeft,
-      combineLeft,
-      slideLeft,
-      transposeCW
-    )(board)
-    if (isSameBoard(board, nextBoard)) return board
-    // 못움직이면 그대로
-    setGame(generateRandom(nextBoard))
-  }
-  // 아래쪽 버튼 눌렀을 때
-  const moveBottom = () => {
-    const board = [...game]
-    const nextBoard = pipe(
-      transposeCCW,
-      slideRight,
-      combineLeft,
-      slideRight,
-      transposeCW
-    )(board)
-    if (isSameBoard(board, nextBoard)) return board
-    // 못움직이면 그대로
-    setGame(generateRandom(nextBoard))
-  }
-
   return (
     <>
+      <h1>{game.score}</h1>
       <Title>Playing!</Title>
       <Frame>
+        <StartButton onClick={test}>게임 시작</StartButton>
         <Board>
-          {game.map(row =>
+          {game.board.map(row =>
             row.map((col, index) => (
               <Col key={index} span={6}>
                 <Tile lv={col}>{col != 0 ? Math.pow(2, col) : ""}</Tile>
@@ -129,10 +99,6 @@ const Home = () => {
             ))
           )}
         </Board>
-        <button onClick={moveLeft}>왼쪽 이동</button>
-        <button onClick={moveRight}>오른쪽 이동</button>
-        <button onClick={moveTop}>위쪽 이동</button>
-        <button onClick={moveBottom}>아래쪽 이동</button>
       </Frame>
     </>
   )
