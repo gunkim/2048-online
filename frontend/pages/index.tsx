@@ -5,24 +5,12 @@ import { Level } from "../style/Level"
 import { useEffect, useState } from "react"
 import SockJS from "sockjs-client"
 import Stomp from "stompjs"
+import hotkeys from "hotkeys-js"
 
 const Frame = styled(Row)`
   width: 40%;
   text-align: center;
   margin: 0 auto;
-`
-const Title = styled.h1`
-  width: 50%;
-  text-align: center;
-  margin: 0 auto;
-  margin-top: 30px;
-  margin-bottom: 30px;
-  font-size: 4em;
-  padding: 10px;
-  color: #00b7c2;
-  font-weight: bold;
-  border: 5px solid #00b7c2;
-  border-radius: 10px;
 `
 const Board = styled(Row)`
   width: 100%;
@@ -42,9 +30,8 @@ const Tile = styled.div`
   font-size: 3rem;
   line-height: 130px;
 `
-const StartButton = styled.span`
+const StartButton = styled.div`
   margin: 5px;
-  float: right;
   border-radius: 5px;
   padding: 5px;
   background: #ff3939;
@@ -52,6 +39,29 @@ const StartButton = styled.span`
   cursor: pointer;
   font-size: 1.5rem;
   margin-bottom: 20px;
+  -ms-user-select: none;
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+`
+const ScoreBox = styled.div`
+  background: #ff9595;
+  color: white;
+  border-radius: 5px;
+  padding: 5px;
+  margin-bottom: 100px;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 1rem;
+  h3 {
+    color: white;
+  }
+  -ms-user-select: none;
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 `
 
 type Game = {
@@ -73,34 +83,52 @@ const Home = () => {
     ],
     score: 0
   })
+  const test = () => {
+    stompClient.send("/game/start", {}, "hello, gunkim!")
+  }
+  const leftMove = () => {
+    stompClient.send("/game/left", {})
+  }
+  const rightMove = () => {
+    stompClient.send("/game/right", {})
+  }
   useEffect(() => {
+    hotkeys("left", () => leftMove())
+    hotkeys("right", () => rightMove())
     stompClient.connect({}, () => {
       stompClient.subscribe("/play/start", response => {
         const payload = JSON.parse(response.body)
         setGame(payload)
       })
+      stompClient.subscribe("/play/left", response => {
+        const payload = JSON.parse(response.body)
+        setGame(payload)
+      })
+      stompClient.subscribe("/play/right", response => {
+        const payload = JSON.parse(response.body)
+        setGame(payload)
+      })
     })
-  }, [setGame])
-  const test = () => {
-    stompClient.send("/game/start", {}, "hello, gunkim!")
-  }
+  }, [setGame, leftMove, rightMove])
   return (
-    <>
-      <h1>{game.score}</h1>
-      <Title>Playing!</Title>
-      <Frame>
+    <Frame>
+      <div>
+        <ScoreBox>
+          <h3>SCORE</h3>
+          <p>{game.score}</p>
+        </ScoreBox>
         <StartButton onClick={test}>게임 시작</StartButton>
-        <Board>
-          {game.board.map(row =>
-            row.map((col, index) => (
-              <Col key={index} span={6}>
-                <Tile lv={col}>{col != 0 ? Math.pow(2, col) : ""}</Tile>
-              </Col>
-            ))
-          )}
-        </Board>
-      </Frame>
-    </>
+      </div>
+      <Board>
+        {game.board.map(row =>
+          row.map((col, index) => (
+            <Col key={index} span={6}>
+              <Tile lv={col}>{col != 0 ? Math.pow(2, col) : ""}</Tile>
+            </Col>
+          ))
+        )}
+      </Board>
+    </Frame>
   )
 }
 
