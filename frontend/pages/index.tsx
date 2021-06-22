@@ -84,7 +84,7 @@ const Home = () => {
     score: 0
   })
   const test = () => {
-    stompClient.send("/game/start", {}, "hello, gunkim!")
+    stompClient.send("/game/start", {})
   }
   const leftMove = () => {
     stompClient.send("/game/left", {})
@@ -92,24 +92,41 @@ const Home = () => {
   const rightMove = () => {
     stompClient.send("/game/right", {})
   }
+  const topMove = () => {
+    stompClient.send("/game/top", {})
+  }
+  const bottomMove = () => {
+    stompClient.send("/game/bottom", {})
+  }
   useEffect(() => {
-    hotkeys("left", () => leftMove())
-    hotkeys("right", () => rightMove())
-    stompClient.connect({}, () => {
-      stompClient.subscribe("/play/start", response => {
-        const payload = JSON.parse(response.body)
-        setGame(payload)
-      })
-      stompClient.subscribe("/play/left", response => {
-        const payload = JSON.parse(response.body)
-        setGame(payload)
-      })
-      stompClient.subscribe("/play/right", response => {
-        const payload = JSON.parse(response.body)
-        setGame(payload)
-      })
+    console.log("DOM LOAD")
+    hotkeys("left", leftMove)
+    hotkeys("right", rightMove)
+    hotkeys("up", topMove)
+    hotkeys("down", bottomMove)
+  }, [])
+  stompClient.connect({}, () => {
+    stompClient.subscribe("/play/start", response => {
+      const payload = JSON.parse(response.body)
+      setGame(payload)
     })
-  }, [setGame, leftMove, rightMove])
+    stompClient.subscribe("/play/left", response => {
+      const payload = JSON.parse(response.body)
+      setGame(payload)
+    })
+    stompClient.subscribe("/play/right", response => {
+      const payload = JSON.parse(response.body)
+      setGame(payload)
+    })
+    stompClient.subscribe("/play/top", response => {
+      const payload = JSON.parse(response.body)
+      setGame(payload)
+    })
+    stompClient.subscribe("/play/bottom", response => {
+      const payload = JSON.parse(response.body)
+      setGame(payload)
+    })
+  })
   return (
     <Frame>
       <div>
