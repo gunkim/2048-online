@@ -60,13 +60,11 @@ public class Player implements Serializable {
         rotateClockwise();
         rightMove();
         rotateCounterClockwise();
-        randomNum();
     }
     public void bottomMove() {
         rotateClockwise();
         leftMove();
         rotateCounterClockwise();
-        randomNum();
     }
 
     private void combine() {
