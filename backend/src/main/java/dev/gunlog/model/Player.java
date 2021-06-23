@@ -76,8 +76,9 @@ public class Player implements Serializable {
     private void combine() {
         for (int i = 0; i < MAX_ROWS; i++) {
             for (int j = 0; j < MAX_COLS - 1; j++) {
-                if (board[i][j] == board[i][j + 1]) {
-                    board[i][j] = board[i][j] + board[i][j + 1];
+                if (board[i][j] != 0 && board[i][j] == board[i][j + 1]) {
+                    board[i][j] = board[i][j] + 1;
+                    score += (int) Math.pow(2, (board[i][j] + 1));
                     board[i][j + 1] = 0;
                 }
             }
