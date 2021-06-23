@@ -13,11 +13,12 @@ import java.util.stream.IntStream;
 public class Player implements Serializable {
     private int[][] board;
     private int score;
+    private static Random random;
     private static int MAX_ROWS = 4;
     private static int MAX_COLS = 4;
 
     public Player() {
-        Random random = new Random();
+        this.random = new Random();
 
         this.board = new int[][]{
                 {0, 0, 0, 0},
@@ -26,10 +27,13 @@ public class Player implements Serializable {
                 {0, 0, 0, 0},
         };
         IntStream.rangeClosed(1, 2).forEach(i -> {
-            int posX = random.nextInt(MAX_ROWS);
-            int posY = random.nextInt(MAX_COLS);
-            int value = random.nextInt(2)+1;
-            board[posX][posY] = value;
+            int posX;
+            int posY;
+            do {
+                posX = random.nextInt(MAX_ROWS);
+                posY = random.nextInt(MAX_COLS);
+            } while(board[posX][posY] != 0);
+            this.board[posX][posY] = random.nextInt(2)+1;
         });
         this.score = 0;
     }
@@ -38,11 +42,13 @@ public class Player implements Serializable {
         this.score = 0;
     }
     private void randomNum() {
-        Random random = new Random();
-        int posX = random.nextInt(MAX_ROWS);
-        int posY = random.nextInt(MAX_COLS);
+        int posX;
+        int posY;
+        do {
+            posX = random.nextInt(MAX_ROWS);
+            posY = random.nextInt(MAX_COLS);
+        } while(board[posX][posY] != 0);
         this.board[posX][posY] = 1;
-
     }
     public void leftMove() {
         slideLeft();
