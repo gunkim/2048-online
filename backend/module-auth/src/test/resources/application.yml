@@ -1,0 +1,5 @@
+jwt:
+  token:
+    secret-key: "clone-market-kuly"
+    expTime: 1800000
+    issuer: "clone-market"
