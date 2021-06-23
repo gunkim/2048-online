@@ -1,4 +1,5 @@
 dependencies {
+    implementation project(':module-auth')
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket'
