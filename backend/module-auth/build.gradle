@@ -2,6 +2,7 @@ bootJar { enabled = false }
 jar { enabled = true }
 
 dependencies {
+    implementation project(':module-common')
     implementation project(':module-core')
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security'
