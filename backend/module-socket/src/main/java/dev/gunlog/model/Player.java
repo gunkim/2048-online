@@ -6,6 +6,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.IntStream;
 
 @Setter
@@ -51,16 +52,20 @@ public class Player implements Serializable {
         this.board[posX][posY] = 1;
     }
     public void leftMove() {
-        slideLeft();
+        boolean isMove = slideLeft();
         combine();
         slideLeft();
-        randomNum();
+        if(isMove) {
+            randomNum();
+        }
     }
     public void rightMove() {
-        slideRight();
+        boolean isMove = slideRight();
         combine();
         slideRight();
-        randomNum();
+        if(isMove) {
+            randomNum();
+        }
     }
     public void topMove() {
         rotateClockwise();
@@ -84,24 +89,40 @@ public class Player implements Serializable {
             }
         }
     }
-    private void slideRight() {
+    private boolean slideRight() {
+        AtomicBoolean isMove = new AtomicBoolean(false);
         this.board = Arrays.stream(board).map(row -> {
             int[] remain = Arrays.stream(row).filter(n -> n != 0).toArray();
             int zeroCnt = board.length - remain.length;
             int[] newArr = new int[zeroCnt];
             Arrays.fill(newArr,0);
-            return IntStream.concat(Arrays.stream(newArr), Arrays.stream(remain));
-        }).map(i -> i.toArray()).toArray(int[][]::new);
+            int[] result = IntStream.concat(Arrays.stream(newArr), Arrays.stream(remain)).toArray();
+
+            if(!isMove.get()) {
+                isMove.set(!Arrays.equals(row, result));
+            }
+            return result;
+        }).toArray(int[][]::new);
+
+        return isMove.get();
     }
 
-    private void slideLeft() {
+    private boolean slideLeft() {
+        AtomicBoolean isMove = new AtomicBoolean(false);
         this.board = Arrays.stream(board).map(row -> {
             int[] remain = Arrays.stream(row).filter(n -> n != 0).toArray();
             int zeroCnt = board.length - remain.length;
             int[] newArr = new int[zeroCnt];
             Arrays.fill(newArr,0);
-            return IntStream.concat(Arrays.stream(remain), Arrays.stream(newArr));
-        }).map(i -> i.toArray()).toArray(int[][]::new);
+            int[] result = IntStream.concat(Arrays.stream(remain), Arrays.stream(newArr)).toArray();
+
+            if(!isMove.get()) {
+                isMove.set(!Arrays.equals(row, result));
+            }
+            return result;
+        }).toArray(int[][]::new);
+
+        return isMove.get();
     }
     private void rotateClockwise() {
         int[][] newBoard = new int[MAX_ROWS][MAX_COLS];
