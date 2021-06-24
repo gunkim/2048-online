@@ -1,7 +1,6 @@
 rootProject.name = 'backend'
-include 'auth-api'
-include 'module-auth'
 include 'module-socket'
+include 'module-auth'
 include 'module-core'
 include 'module-common'
 
