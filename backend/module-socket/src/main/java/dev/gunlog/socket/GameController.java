@@ -1,4 +1,4 @@
-package dev.gunlog.web;
+package dev.gunlog.socket;
 
 import dev.gunlog.model.Player;
 import lombok.RequiredArgsConstructor;
