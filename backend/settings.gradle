@@ -3,4 +3,5 @@ include 'module-socket'
 include 'module-auth'
 include 'module-core'
 include 'module-common'
+include 'module-api'
 
