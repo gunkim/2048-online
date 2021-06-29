@@ -2,4 +2,5 @@ bootJar { enabled = false }
 jar { enabled = true }
 
 dependencies {
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security'
 }

@@ -7,6 +7,8 @@ spring:
         max-active: 10
         max-idle: 10
         min-idle: 2
+  jpa:
+    show-sql: true
 jwt:
   token:
     secret-key: "clone-market-kuly"
