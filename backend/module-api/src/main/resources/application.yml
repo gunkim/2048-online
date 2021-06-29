@@ -11,6 +11,6 @@ spring:
     show-sql: true
 jwt:
   token:
-    secret-key: "clone-market-kuly"
+    secret-key: "2048-game-key"
     expTime: 1800000
-    issuer: "clone-market"
+    issuer: "2048 game"
