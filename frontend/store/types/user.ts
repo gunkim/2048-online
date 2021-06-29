@@ -4,7 +4,7 @@ import * as actions from "../actions"
 export type UserAction = ActionType<typeof actions>
 
 export type UserState = {
-  checkUser: {
+  signIn: {
     loading: boolean
     error: Error | null
     data: string | null

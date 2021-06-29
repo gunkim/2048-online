@@ -1,5 +1,5 @@
-import { checkUserAsync } from "./user"
+import { signInUserAsync } from "./user"
 
 export default {
-  checkUserAsync
+  signInUserAsync
 }

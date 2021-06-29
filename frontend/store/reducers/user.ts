@@ -1,9 +1,9 @@
 import { createReducer } from "typesafe-actions"
-import { checkUserAsync } from "../actions/user"
+import { signInUserAsync } from "../actions/user"
 import { UserAction, UserState } from "../types/user"
 
 const initialState: UserState = {
-  checkUser: {
+  signIn: {
     loading: false,
     error: null,
     data: null
@@ -11,7 +11,7 @@ const initialState: UserState = {
 }
 
 const user = createReducer<UserState, UserAction>(initialState)
-  .handleAction(checkUserAsync.request, state => {
+  .handleAction(signInUserAsync.request, state => {
     return {
       ...state,
       loading: true,
@@ -19,7 +19,7 @@ const user = createReducer<UserState, UserAction>(initialState)
       data: null
     }
   })
-  .handleAction(checkUserAsync.success, (state, action) => {
+  .handleAction(signInUserAsync.success, (state, action) => {
     return {
       ...state,
       loading: false,
@@ -27,7 +27,7 @@ const user = createReducer<UserState, UserAction>(initialState)
       data: action.payload
     }
   })
-  .handleAction(checkUserAsync.failure, (state, action) => {
+  .handleAction(signInUserAsync.failure, (state, action) => {
     return {
       ...state,
       loading: false,

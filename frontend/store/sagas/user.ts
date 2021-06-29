@@ -1,16 +1,17 @@
-import { checkUser } from "../../apis/user"
-import { checkUserAsync, CHECK_USER_REQUEST } from "../actions/user"
+import { checkUser, signIn } from "../../apis/user"
+import { signInUserAsync, SIGN_IN_USER_REQUEST } from "../actions/user"
 import { call, put, takeEvery } from "redux-saga/effects"
 
-function* checkUserSaga(action: ReturnType<typeof checkUserAsync.request>) {
+function* signInUserSaga(action: ReturnType<typeof signInUserAsync.request>) {
   try {
-    const userProfile: boolean = yield call(checkUser, action.payload)
-    yield put(checkUserAsync.success(userProfile))
+    const jwtToken: string = yield call(signIn, action.payload)
+    localStorage.setItem('token', jwtToken)
+    yield put(signInUserAsync.success(jwtToken))
   } catch (e) {
-    yield put(checkUserAsync.failure(e))
+    yield put(signInUserAsync.failure(e))
   }
 }
 
 export function* userSaga() {
-  yield takeEvery(CHECK_USER_REQUEST, checkUserSaga)
+  yield takeEvery(SIGN_IN_USER_REQUEST, signInUserSaga)
 }

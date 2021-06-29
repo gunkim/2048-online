@@ -1,12 +1,13 @@
 import { AxiosError } from "axios"
 import { createAsyncAction } from "typesafe-actions"
+import { User } from "../../apis/user"
 
-export const CHECK_USER_REQUEST = "user/CHECK_USER_REQUEST" as const
-export const CHECK_USER_SUCCESS = "user/CHECK_USER_SUCCESS" as const
-export const CHECK_USER_FAILURE = "user/CHECK_USER_FAILURE" as const
+export const SIGN_IN_USER_REQUEST = 'user/SIGN_IN_USER_REQUEST' as const
+export const SIGN_IN_USER_SUCCESS = 'user/SIGN_IN_USER_SUCCESS' as const
+export const SIGN_IN_USER_FAILURE = 'user/SIGN_IN_USER_FAILURE' as const
 
-export const checkUserAsync = createAsyncAction(
-  CHECK_USER_REQUEST,
-  CHECK_USER_SUCCESS,
-  CHECK_USER_FAILURE
-)<string, boolean, AxiosError>()
+export const signInUserAsync = createAsyncAction(
+  SIGN_IN_USER_REQUEST,
+  SIGN_IN_USER_SUCCESS,
+  SIGN_IN_USER_FAILURE
+)<User, string, AxiosError>()
