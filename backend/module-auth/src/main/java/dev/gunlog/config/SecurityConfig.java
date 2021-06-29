@@ -74,8 +74,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 AUTHENTICATION_URL,
                 "/webSocket/**",
                 "/play/**",
-                "/game/**"
-
+                "/game/**",
+                "/api/v2/member/check/**"
         );
     }
     @Bean
