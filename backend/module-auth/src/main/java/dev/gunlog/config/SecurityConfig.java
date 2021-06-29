@@ -29,7 +29,7 @@ import java.util.List;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public static final String AUTHENTICATION_HEADER_NAME = "Authorization";
     public static final String API_ROOT_URL = "/**";
-    public static final String AUTHENTICATION_URL = "/api/v2/user/signIn";
+    public static final String AUTHENTICATION_URL = "/api/v2/member/signIn";
 
     private final AuthenticationSuccessHandler successHandler;
     private final AuthenticationFailureHandler failureHandler;
