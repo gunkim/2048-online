@@ -1,5 +1,4 @@
 import { Input } from "antd"
-import "antd/dist/antd.css"
 import React, { useRef, useState } from "react"
 import { UserOutlined } from "@ant-design/icons"
 import styled from "styled-components"
