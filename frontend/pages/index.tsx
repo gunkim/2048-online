@@ -4,7 +4,9 @@ import React, { useRef, useState } from "react"
 import { UserOutlined } from "@ant-design/icons"
 import styled from "styled-components"
 import { Typography } from "antd"
-import { checkUser } from "../apis/user"
+import { checkUser, User } from "../apis/user"
+import { useDispatch } from "react-redux"
+import { signInUserAsync } from "../store/actions/user"
 const { Title } = Typography
 
 const MyInput = styled(Input)`
@@ -33,13 +35,13 @@ const Samp = styled.span`
 `
 
 const Home = () => {
-  const [user, setUser] = useState({
+  const [user, setUser] = useState<User>({
     username: "",
     password: ""
   })
   const [check, setCheck] = useState()
   const inputRef = useRef(null)
-
+  const dispatch = useDispatch()
 
   const onChange = (e) => {
     const name = e.target.name
@@ -52,9 +54,14 @@ const Home = () => {
   }
   const onKeyPress = async (e) => {
     if(e.key == 'Enter') {
-      const response = await checkUser(user.username);
-      setCheck(response)
-      inputRef.current.focus()
+      const name = e.target.name
+      if(name == 'username') {
+        const response = await checkUser(user.username);
+        setCheck(response)
+        inputRef.current.focus()
+      } else {
+        dispatch(signInUserAsync.request(user))
+      }
     }
   }
   return (
@@ -93,6 +100,7 @@ const Home = () => {
           name="password"
           value={user.password}
           onChange={onChange}
+          onKeyPress={onKeyPress}
           id="employee-id"
           aria-describedby="employee-id-hint"
           ref={inputRef}
