@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    url: jdbc:log4jdbc:mysql://localhost:3306/game
+    username: scott
+    password: tiger
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+jwt:
+  token:
+    secret-key: "my-secret-key~"
+    expTime: 1800000
+    issuer: "2048 game"
+logging:
+  config: classpath:logback-prod.xml

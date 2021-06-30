@@ -7,10 +7,5 @@ spring:
         max-active: 10
         max-idle: 10
         min-idle: 2
-  jpa:
-    show-sql: true
-jwt:
-  token:
-    secret-key: "2048-game-key"
-    expTime: 1800000
-    issuer: "2048 game"
+  profiles:
+    active: dev
