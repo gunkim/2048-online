@@ -37,8 +37,7 @@ type Game = {
 
 let sockJS = new SockJS("http://localhost:8080/webSocket")
 let stompClient: Stomp.Client = Stomp.over(sockJS)
-stompClient.debug = () => {
-}
+stompClient.debug = () => {}
 
 const Single = () => {
   const [game, setGame] = useState<Game>({
@@ -71,34 +70,34 @@ const Single = () => {
     hotkeys("right", rightMove)
     hotkeys("up", topMove)
     hotkeys("down", bottomMove)
-  }, [])
-  const headers = {
-    Authorization:
-      "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0TWFuIiwicm9sZXMiOlsiVVNFUiJdLCJpc3MiOiJjbG9uZS1tYXJrZXQiLCJpYXQiOjE2MjQ0OTQxNzAsImV4cCI6MTczMjQ5NDE3MH0.bZaPxge4bXDmfcBR5YHflU2Rt9p9u-h9zMZbSP4NjAN3RfPOU01MInIS80I7dS8g6zSqxAhC7JA4xoNGFdAxZw"
-  }
 
-  stompClient.connect(headers, () => {
-    stompClient.subscribe("/play/start", response => {
-      const payload = JSON.parse(response.body)
-      setGame(payload)
+    const headers = {
+      Authorization: localStorage.getItem("token")
+    }
+    stompClient.connect(headers, () => {
+      stompClient.subscribe("/play/start", response => {
+        const payload = JSON.parse(response.body)
+        setGame(payload)
+      })
+      stompClient.subscribe("/play/left", response => {
+        const payload = JSON.parse(response.body)
+        setGame(payload)
+      })
+      stompClient.subscribe("/play/right", response => {
+        const payload = JSON.parse(response.body)
+        setGame(payload)
+      })
+      stompClient.subscribe("/play/top", response => {
+        const payload = JSON.parse(response.body)
+        setGame(payload)
+      })
+      stompClient.subscribe("/play/bottom", response => {
+        const payload = JSON.parse(response.body)
+        setGame(payload)
+      })
     })
-    stompClient.subscribe("/play/left", response => {
-      const payload = JSON.parse(response.body)
-      setGame(payload)
-    })
-    stompClient.subscribe("/play/right", response => {
-      const payload = JSON.parse(response.body)
-      setGame(payload)
-    })
-    stompClient.subscribe("/play/top", response => {
-      const payload = JSON.parse(response.body)
-      setGame(payload)
-    })
-    stompClient.subscribe("/play/bottom", response => {
-      const payload = JSON.parse(response.body)
-      setGame(payload)
-    })
-  })
+  }, [])
+
   return (
     <Frame>
       <Row style={{ width: "100%" }}>
