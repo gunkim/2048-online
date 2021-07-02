@@ -25,9 +25,4 @@ public class RoomController {
                 .build());
         return roomManager;
     }
-    @MessageMapping("/rooms")
-    @SendTo("/play/rooms")
-    public void addRooms() {
-
-    }
 }
