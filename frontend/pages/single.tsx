@@ -1,43 +1,27 @@
-import styled from "styled-components"
 import "antd/dist/antd.css"
 import { Row, Col } from "antd"
-import { Level } from "../style/Level"
 import { useEffect, useState } from "react"
-import SockJS from "sockjs-client"
-import Stomp from "stompjs"
 import hotkeys from "hotkeys-js"
 import GameBoard from "../components/GameBoard"
-
-const Frame = styled(Row)`
-  width: 20%;
-  text-align: center;
-  margin: 0 auto;
-
-  -ms-user-select: none;
-  -moz-user-select: -moz-none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  user-select: none;
-`
-
-const Title = styled(Col)`
-  font-size: 4rem;
-  font-weight: bold;
-`
+import stompClient from "../util/socket-util"
+import Layout from "../components/Layout"
+import styled from "styled-components"
 
 const ScoreBox = styled(Col)`
-  font-weight: bold;
-  font-size: 1rem;
+  background: #97cdff;
+  padding: 50px;
+  border-radius: 15px;
+`
+const GameName = styled(Col)`
+  padding: 50px;
+  border-radius: 15px;
+  font-size: 3rem;
 `
 
 type Game = {
   board: number[][]
   score: number
 }
-
-let sockJS = new SockJS("http://localhost:8080/webSocket")
-let stompClient: Stomp.Client = Stomp.over(sockJS)
-stompClient.debug = () => {}
 
 const Single = () => {
   const [game, setGame] = useState<Game>({
@@ -49,9 +33,6 @@ const Single = () => {
     ],
     score: 0
   })
-  const test = () => {
-    stompClient.send("/game/start", {})
-  }
   const leftMove = () => {
     stompClient.send("/game/left", {})
   }
@@ -75,6 +56,7 @@ const Single = () => {
       Authorization: localStorage.getItem("token")
     }
     stompClient.connect(headers, () => {
+      stompClient.send("/game/start", {})
       stompClient.subscribe("/play/start", response => {
         const payload = JSON.parse(response.body)
         setGame(payload)
@@ -99,17 +81,18 @@ const Single = () => {
   }, [])
 
   return (
-    <Frame>
-      <Row style={{ width: "100%" }}>
-        <Title span={12}>2048</Title>
+    <Layout>
+      <Row>
+        <GameName span={12}>Single</GameName>
         <ScoreBox span={12}>
           <h3>SCORE</h3>
           <p>{game.score}</p>
         </ScoreBox>
+        <Col span={24}>
+          <GameBoard board={game.board} />
+        </Col>
       </Row>
-      <GameBoard board={game.board} />
-      <button onClick={test}>테스트</button>
-    </Frame>
+    </Layout>
   )
 }
 
