@@ -11,14 +11,14 @@ import java.util.stream.IntStream;
 
 @Setter
 @Getter
-public class Player implements Serializable {
+public class Player1 implements Serializable {
     private int[][] board;
     private int score;
     private static Random random;
     private static int MAX_ROWS = 4;
     private static int MAX_COLS = 4;
 
-    public Player() {
+    public Player1() {
         this.random = new Random();
 
         this.board = new int[][]{
@@ -38,7 +38,7 @@ public class Player implements Serializable {
         });
         this.score = 0;
     }
-    public Player(int[][] board) {
+    public Player1(int[][] board) {
         this.board = board;
         this.score = 0;
     }

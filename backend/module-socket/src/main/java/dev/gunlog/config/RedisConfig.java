@@ -1,6 +1,6 @@
 package dev.gunlog.config;
 
-import dev.gunlog.model.Player;
+import dev.gunlog.model.Player1;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -16,8 +16,8 @@ public class RedisConfig {
         return lettuceConnectionFactory;
     }
     @Bean
-    public RedisTemplate<String, Player> redisTemplate() {
-        RedisTemplate<String, Player> redisTemplate = new RedisTemplate<>();
+    public RedisTemplate<String, Player1> redisTemplate() {
+        RedisTemplate<String, Player1> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         return redisTemplate;
