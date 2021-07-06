@@ -12,7 +12,6 @@ const Rooms = () => {
   const handleOk = () => {
     setIsModalVisible(false)
   }
-
   const handleCancel = () => {
     setIsModalVisible(false)
   }
