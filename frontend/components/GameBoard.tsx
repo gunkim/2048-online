@@ -12,12 +12,13 @@ const Tile = styled.div`
     props.lv != undefined ? Level[`LV${props.lv}`] : Level["LV0"]};
   padding: 5px;
   color: black;
-  height: 80px;
+  height: 120px;
+  text-align: center;
   border-radius: 15px;
   margin: 7px;
   font-weight: bold;
   font-size: 2rem;
-  line-height: 60px;
+  line-height: 110px;
 `
 
 type GameBoardProps = {

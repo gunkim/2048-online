@@ -6,7 +6,7 @@ import { Typography } from "antd"
 import { checkUser, User } from "../apis/user"
 import { useDispatch } from "react-redux"
 import { signInUserAsync } from "../store/actions/user"
-const { Title } = Typography
+import Layout from "../components/Layout"
 
 const MyInput = styled(Input)`
   background: none;
@@ -42,7 +42,7 @@ const Home = () => {
   const inputRef = useRef(null)
   const dispatch = useDispatch()
 
-  const onChange = (e) => {
+  const onChange = e => {
     const name = e.target.name
     const value = e.target.value
 
@@ -51,11 +51,11 @@ const Home = () => {
       [name]: value
     })
   }
-  const onKeyPress = async (e) => {
-    if(e.key == 'Enter') {
+  const onKeyPress = async e => {
+    if (e.key == "Enter") {
       const name = e.target.name
-      if(name == 'username') {
-        const response = await checkUser(user.username);
+      if (name == "username") {
+        const response = await checkUser(user.username)
         setCheck(response)
         inputRef.current.focus()
       } else {
@@ -64,8 +64,7 @@ const Home = () => {
     }
   }
   return (
-    <Frame>
-      <Title underline>2048</Title>
+    <Layout>
       <div className="input-wrapper">
         <label htmlFor="employee-id">
           <h1>nickname</h1>
@@ -85,27 +84,34 @@ const Home = () => {
           id="employee-id"
           aria-describedby="employee-id-hint"
         />
-        {check != undefined && (<>
-        <label htmlFor="employee-id">
-          <h1>password</h1>
-        </label>
-          <p id="employee-id-hint" className="input-hint">
-            {check ? <div>이미 등록된 사용자입니다. 비밀번호를 입력해주세요.</div>:<div>등록되지 않은 사용자입니다. 비밀번호를 설정해주세요.</div>}
-        </p>
-        <MyPassword
-          size="large"
-          placeholder="password"
-          prefix={<UserOutlined />}
-          name="password"
-          value={user.password}
-          onChange={onChange}
-          onKeyPress={onKeyPress}
-          id="employee-id"
-          aria-describedby="employee-id-hint"
-          ref={inputRef}
-        /></>)}
+        {check != undefined && (
+          <>
+            <label htmlFor="employee-id">
+              <h1>password</h1>
+            </label>
+            <p id="employee-id-hint" className="input-hint">
+              {check ? (
+                <div>이미 등록된 사용자입니다. 비밀번호를 입력해주세요.</div>
+              ) : (
+                <div>등록되지 않은 사용자입니다. 비밀번호를 설정해주세요.</div>
+              )}
+            </p>
+            <MyPassword
+              size="large"
+              placeholder="password"
+              prefix={<UserOutlined />}
+              name="password"
+              value={user.password}
+              onChange={onChange}
+              onKeyPress={onKeyPress}
+              id="employee-id"
+              aria-describedby="employee-id-hint"
+              ref={inputRef}
+            />
+          </>
+        )}
       </div>
-    </Frame>
+    </Layout>
   )
 }
 
