@@ -10,11 +10,7 @@ import java.util.List;
 public class RoomManager {
     private List<Room> roomList;
 
-    public static RoomManager getInstance() {
-        return new RoomManager();
-    }
-
-    private RoomManager() {
+    public RoomManager() {
         this.roomList = new LinkedList<>();
     }
     public void addRoom(Room room) {
