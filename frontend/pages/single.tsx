@@ -1,5 +1,4 @@
 import "antd/dist/antd.css"
-import { Row, Col } from "antd"
 import { useEffect, useState } from "react"
 import hotkeys from "hotkeys-js"
 import GameBoard from "../components/GameBoard"
@@ -7,15 +6,17 @@ import stompClient from "../util/socket-util"
 import Layout from "../components/Layout"
 import styled from "styled-components"
 
-const ScoreBox = styled(Col)`
+const ScoreBox = styled.div`
   background: #97cdff;
   padding: 50px;
   border-radius: 15px;
-`
-const GameName = styled(Col)`
-  padding: 50px;
-  border-radius: 15px;
-  font-size: 3rem;
+  position: fixed;
+  left: 15%;
+  top: 30%;
+  text-align: center;
+  h2 {
+    font-weight: bold;
+  }
 `
 
 type Game = {
@@ -81,17 +82,12 @@ const Single = () => {
   }, [])
 
   return (
-    <Layout>
-      <Row>
-        <GameName span={12}>Single</GameName>
-        <ScoreBox span={12}>
-          <h3>SCORE</h3>
-          <p>{game.score}</p>
-        </ScoreBox>
-        <Col span={24}>
-          <GameBoard board={game.board} />
-        </Col>
-      </Row>
+    <Layout width={518}>
+      <ScoreBox>
+        <h2>SCORE</h2>
+        <h3>{game.score}</h3>
+      </ScoreBox>
+      <GameBoard board={game.board} />
     </Layout>
   )
 }
