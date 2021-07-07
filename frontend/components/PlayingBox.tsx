@@ -10,6 +10,11 @@ const MyCard = styled(Card)`
   cursor: pointer;
   text-align: center;
   font-weight: bold;
+  -ms-user-select: none;
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 `
 const MyText = styled(Text)`
   word-break: keep-all;

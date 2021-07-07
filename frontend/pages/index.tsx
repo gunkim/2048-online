@@ -1,12 +1,14 @@
-import { Input } from "antd"
+import { Input, message } from "antd"
 import React, { useRef, useState } from "react"
 import { UserOutlined } from "@ant-design/icons"
 import styled from "styled-components"
-import { Typography } from "antd"
 import { checkUser, User } from "../apis/user"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { signInUserAsync } from "../store/actions/user"
 import Layout from "../components/Layout"
+import { RootState } from "../store"
+import Router from "next/router"
+import Title from "antd/lib/typography/Title"
 
 const MyInput = styled(Input)`
   background: none;
@@ -20,18 +22,12 @@ const MyPassword = styled(Input.Password)`
   border-radius: 15px;
   background: white;
 `
-const Frame = styled.div`
-  width: 30%;
-  margin: 0 auto;
-  position: absolute;
-  top: 30%;
-  left: 35%;
-`
 const Samp = styled.span`
   background: #1f204e;
   color: white;
   padding: 1px 4px;
 `
+const key = "updatable"
 
 const Home = () => {
   const [user, setUser] = useState<User>({
@@ -41,7 +37,22 @@ const Home = () => {
   const [check, setCheck] = useState()
   const inputRef = useRef(null)
   const dispatch = useDispatch()
-
+  const { loading, error, data } = useSelector(
+    (state: RootState) => state.user.signIn
+  )
+  if (data) {
+    message.success({ content: "로그인 완료!", key, duration: 2 })
+    Router.push("/branch")
+  }
+  if (loading) {
+    message.loading({ content: "로그인 중...", key })
+  }
+  if (error) {
+    message.error({
+      content: "로그인에 실패했습니다!",
+      key
+    })
+  }
   const onChange = e => {
     const name = e.target.name
     const value = e.target.value
@@ -67,7 +78,7 @@ const Home = () => {
     <Layout>
       <div className="input-wrapper">
         <label htmlFor="employee-id">
-          <h1>nickname</h1>
+          <Title level={2}>Nickname</Title>
         </label>
         <p id="employee-id-hint" className="input-hint">
           게임에서 사용할 닉네임을 입력해주세요
@@ -87,7 +98,7 @@ const Home = () => {
         {check != undefined && (
           <>
             <label htmlFor="employee-id">
-              <h1>password</h1>
+              <Title level={2}>Password</Title>
             </label>
             <p id="employee-id-hint" className="input-hint">
               {check ? (
