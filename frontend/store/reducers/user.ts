@@ -14,24 +14,31 @@ const user = createReducer<UserState, UserAction>(initialState)
   .handleAction(signInUserAsync.request, state => {
     return {
       ...state,
-      loading: true,
-      error: null,
-      data: null
+      signIn: {
+        loading: true,
+        error: null,
+        data: null
+      }
     }
   })
   .handleAction(signInUserAsync.success, (state, action) => {
     return {
       ...state,
-      loading: false,
-      error: null,
-      data: action.payload
+      signIn: {
+        loading: false,
+        error: null,
+        data: action.payload
+      }
     }
   })
   .handleAction(signInUserAsync.failure, (state, action) => {
     return {
       ...state,
-      loading: false,
-      error: action.payload
+      signIn: {
+        loading: false,
+        error: action.payload,
+        data: null
+      }
     }
   })
 
