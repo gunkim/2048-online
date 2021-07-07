@@ -8,7 +8,7 @@ type LayoutProps = {
   children: ReactNode
   width?: number
 }
-const Layout = ({ children, width = 700 }: LayoutProps) => {
+const Layout = ({ children, width = 500 }: LayoutProps) => {
   return (
     <AntLayout>
       <Header />
@@ -17,7 +17,7 @@ const Layout = ({ children, width = 700 }: LayoutProps) => {
           <Content
             style={{
               padding: "0 24px",
-              minHeight: 280,
+              minHeight: 600,
               width: width,
               margin: "0 auto"
             }}
