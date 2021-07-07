@@ -1,10 +1,14 @@
-import React from "react"
+import React, { ReactNode } from "react"
 import { Layout as AntLayout } from "antd"
 import Header from "./Header"
 import Footer from "./Footer"
 const { Content } = AntLayout
 
-const Layout = ({ children }) => {
+type LayoutProps = {
+  children: ReactNode
+  width?: number
+}
+const Layout = ({ children, width = 700 }: LayoutProps) => {
   return (
     <AntLayout>
       <Header />
@@ -14,7 +18,7 @@ const Layout = ({ children }) => {
             style={{
               padding: "0 24px",
               minHeight: 280,
-              minWidth: 700,
+              width: width,
               margin: "0 auto"
             }}
           >
