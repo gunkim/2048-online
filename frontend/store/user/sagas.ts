@@ -1,5 +1,5 @@
 import { signIn } from "../../apis/user"
-import { signInUserAsync, SIGN_IN_USER_REQUEST } from "../actions/user"
+import { signInUserAsync, SIGN_IN_USER_REQUEST } from "../user/actions"
 import { call, put, takeEvery } from "redux-saga/effects"
 
 function* signInUserSaga(action: ReturnType<typeof signInUserAsync.request>) {

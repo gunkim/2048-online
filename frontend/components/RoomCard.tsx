@@ -9,10 +9,11 @@ const RoomFrame = styled(Col)`
 `
 type RoomCardType = {
   title: string
-  gameMode: string
-  peopleCnt: number
+  mode: string
+  people: number
+  personnel: number
 }
-const RoomCard = ({ title, gameMode, peopleCnt }: RoomCardType) => {
+const RoomCard = ({ title, mode, people, personnel }: RoomCardType) => {
   return (
     <RoomFrame span={12}>
       <Card
@@ -21,10 +22,10 @@ const RoomCard = ({ title, gameMode, peopleCnt }: RoomCardType) => {
         extra={<a href="#">입장하기</a>}
       >
         <p>
-          <SettingOutlined /> {gameMode}
+          <SettingOutlined /> {mode}
         </p>
         <p>
-          <UserOutlined /> {peopleCnt}/4
+          <UserOutlined /> {people}/{personnel}
         </p>
       </Card>
     </RoomFrame>

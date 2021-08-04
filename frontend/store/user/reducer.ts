@@ -1,6 +1,6 @@
 import { createReducer } from "typesafe-actions"
-import { signInUserAsync } from "../actions/user"
-import { UserAction, UserState } from "../types/user"
+import { signInUserAsync } from "../user/actions"
+import { UserAction, UserState } from "../user/types"
 
 const initialState: UserState = {
   signIn: {

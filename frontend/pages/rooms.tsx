@@ -1,12 +1,23 @@
 import React, { useEffect, useState } from "react"
-import { Button, Form, Input, Modal, Radio, Row, Select } from "antd"
+import { Button, Progress, Row } from "antd"
 import Layout from "../components/Layout"
 import RoomCard from "../components/RoomCard"
-import stompClient from "../util/socket-util"
 import RoomModal from "../components/RoomModal"
+import { useDispatch, useSelector } from "react-redux"
+import { RootState } from "../store"
+import { getRoomsAsync } from "../store/rooms/actions"
 
 const Rooms = () => {
-  const [rooms, setRooms] = useState()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getRoomsAsync.request())
+  }, [dispatch])
+
+  const { loading, data, error } = useSelector(
+    (state: RootState) => state.rooms.rooms
+  )
+
   const [isModalVisible, setIsModalVisible] = useState(false)
 
   const handleOk = () => {
@@ -18,18 +29,6 @@ const Rooms = () => {
   const showModal = () => {
     setIsModalVisible(true)
   }
-  useEffect(() => {
-    const headers = {
-      Authorization: localStorage.getItem("token")
-    }
-    stompClient.connect(headers, () => {
-      stompClient.send("/game/rooms", {})
-      stompClient.subscribe("/play/rooms", response => {
-        const result = JSON.parse(response.body)
-        setRooms(result.roomList)
-      })
-    })
-  })
   return (
     <Layout>
       <Button type="primary" onClick={showModal}>
@@ -37,13 +36,15 @@ const Rooms = () => {
       </Button>
       <hr />
       <Row>
-        {rooms &&
-          rooms.map((room, index) => (
+        {loading && <div>로딩중...</div>}
+        {data &&
+          data.map((room, index) => (
             <RoomCard
               key={index}
-              title={room.name}
-              peopleCnt={room.players.length}
-              gameMode={room.gameMode}
+              title={room.title}
+              people={1}
+              mode={room.mode}
+              personnel={room.personnel}
             />
           ))}
       </Row>
