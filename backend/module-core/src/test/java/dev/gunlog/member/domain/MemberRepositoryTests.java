@@ -1,13 +1,16 @@
 package dev.gunlog.member.domain;
 
 import dev.gunlog.SpringBootTestSupport;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManagerFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Transactional
 public class MemberRepositoryTests extends SpringBootTestSupport {
     @Autowired
     private MemberRepository memberRepository;

@@ -13,6 +13,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManagerFactory;
 import java.util.List;
@@ -22,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
+@Transactional
 public class RoomServiceTests extends SpringBootTestSupport {
     @InjectMocks
     private RoomService roomService;
