@@ -1,10 +1,13 @@
 import { combineReducers } from "redux"
-import { userSaga } from "./sagas/user"
+import { userSaga } from "./user/sagas"
 import { all } from "redux-saga/effects"
-import user from "./reducers/user"
+import user from "./user/reducer"
+import rooms from './rooms/reducer'
+import {roomSaga} from "./rooms/sagas";
 
 const rootReducer = combineReducers({
-  user
+  user,
+  rooms
 })
 
 export default rootReducer
@@ -12,5 +15,5 @@ export default rootReducer
 export type RootState = ReturnType<typeof rootReducer>
 
 export function* rootSaga() {
-  yield all([userSaga()])
+  yield all([userSaga(), roomSaga()])
 }

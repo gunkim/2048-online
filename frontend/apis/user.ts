@@ -8,7 +8,7 @@ export type User = {
 }
 
 export const checkUser = async (username: string) => {
-  const response = await axios.post(`${BASE_URL}/check/${username}`)
+  const response = await axios.get(`${BASE_URL}/check/${username}`)
   return response.data
 }
 export const signIn = async (user: User) => {

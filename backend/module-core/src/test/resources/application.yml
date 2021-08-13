@@ -1,0 +1,14 @@
+spring:
+  profiles:
+    active: dev
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+  main:
+    allow-bean-definition-overriding: true
+jwt:
+  token:
+    secret-key: "2048-game-key"
+    expTime: 1800000
+    issuer: "2048 game"
