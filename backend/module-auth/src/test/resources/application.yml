@@ -1,5 +1,5 @@
 jwt:
   token:
-    secret-key: "clone-market-kuly"
+    secret-key: "game"
     expTime: 1800000
-    issuer: "clone-market"
+    issuer: "my-game-platform"

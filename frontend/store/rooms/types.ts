@@ -1,5 +1,5 @@
 import { ActionType } from "typesafe-actions"
-import * as actions from "../actions/room"
+import * as actions from "../rooms/actions"
 import {Room} from "../../apis/room";
 
 export type RoomAction = ActionType<typeof actions>
