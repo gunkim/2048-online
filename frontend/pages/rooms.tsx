@@ -11,7 +11,7 @@ const Rooms = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getRoomsAsync.request())
+    dispatch(getRoomsAsync.request(null, null))
   }, [dispatch])
 
   const { loading, data, error } = useSelector(
