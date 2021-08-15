@@ -1,25 +1,16 @@
 package dev.gunlog.model;
 
-import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
-
-import java.io.Serializable;
 
 @Getter
 @ToString
-public class Player implements Serializable {
+public class Player {
     private String nickname;
-    private Room room;
+    private Game gameInfo;
 
-    @Builder
-    public Player(String nickname, Room room) {
+    public Player(String nickname) {
         this.nickname = nickname;
-        this.room = room;
-    }
-
-    public void enterRoom(Room room) {
-        this.room = room;
+        this.gameInfo = new Game();
     }
 }
