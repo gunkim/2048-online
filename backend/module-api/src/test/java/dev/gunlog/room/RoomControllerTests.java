@@ -2,15 +2,13 @@ package dev.gunlog.room;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.gunlog.config.SecurityConfig;
+import dev.gunlog.enums.Mode;
+import dev.gunlog.enums.Personnel;
 import dev.gunlog.member.domain.Role;
 import dev.gunlog.model.LoginRequest;
-import dev.gunlog.room.domain.Mode;
-import dev.gunlog.room.domain.Personnel;
-import dev.gunlog.room.dto.RoomCreateRequestDto;
 import dev.gunlog.room.dto.RoomListResponseDto;
 import dev.gunlog.room.service.RoomService;
 import dev.gunlog.service.CustomUserDetailsService;
-import jdk.jfr.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -95,15 +93,12 @@ public class RoomControllerTests {
     @Test
     @DisplayName("방 생성 테스트")
     public void createRoomTest() throws Exception {
-        RoomCreateRequestDto requestDto = RoomCreateRequestDto.builder()
-                .title("테스트 방1")
-                .mode(Mode.SURVIVAL)
-                .personnel(Personnel.FOUR)
-                .build();
-        String content = objectMapper.writeValueAsString(requestDto).replaceAll("서바이벌", "SURVIVAL").replaceAll("4", "\"FOUR\"");
+        when(roomService.createRoom(any(), any())).thenReturn(1L);
 
+        String content = "{\"mode\":\"SPEED_ATTACK\",\"personnel\":\"FOUR\",\"title\":\"test\"}";
         mockMvc.perform(post("/api/v2/room")
                 .header(SecurityConfig.AUTHENTICATION_HEADER_NAME, this.token)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(content))
                 .andDo(print())
                 .andExpect(status().isOk());
