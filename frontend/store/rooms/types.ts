@@ -10,4 +10,9 @@ export type RoomState = {
         error: Error | null
         data: Room[] | null
     }
+    room: {
+        loading: boolean
+        error: Error | null
+        data: number | null
+    }
 }
