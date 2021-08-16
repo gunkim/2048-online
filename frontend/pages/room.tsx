@@ -1,86 +1,94 @@
 import Layout from "../components/Layout"
-import { Col, Row } from "antd"
 import GameBoard from "../components/GameBoard"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
+import styled from "styled-components"
+import { Typography } from "antd"
 import stompClient from "../util/socket-util"
-import hotkeys from "hotkeys-js"
+import { useRouter } from "next/router"
 
-type Game = {
-  board: number[][]
-  score: number
-}
+const { Title } = Typography
+
+const MainFrame = styled.div`
+  background-color: yellow;
+  float: left;
+  border-radius: 10px;
+  border: 2px solid black;
+`
+const Frame = styled.div`
+  float: left;
+  background-color: #ceefff;
+  border-radius: 10px;
+  margin: 4px;
+`
+const Head = styled.div`
+  background-color: #ff8585;
+  color: white;
+`
+const Info = styled.div`
+  text-align: center;
+  padding-top: 10px;
+
+  h3 {
+    color: white;
+    text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+  }
+`
+const ScoreBox = styled.div`
+  text-align: center;
+  color: white;
+  h2 {
+    font-weight: bold;
+    color: white;
+  }
+  h3 {
+    color: white;
+  }
+`
 const Room = () => {
-  const [game, setGame] = useState<Game>({
-    board: [
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0]
+  const router = useRouter()
+  const [gameInfo, setGameInfo] = useState({
+    gameMode: "SPEED_ATTACK",
+    maxNumberOfPeople: "FOUR",
+    name: "새로운 방입니당~",
+    players: [
+      {
+        gameInfo: { board: new Array(), score: 0 },
+        nickname: ""
+      }
     ],
-    score: 0
+    start: false,
+    timer: 0
   })
-  const leftMove = () => {
-    stompClient.send("/game/left", {})
-  }
-  const rightMove = () => {
-    stompClient.send("/game/right", {})
-  }
-  const topMove = () => {
-    stompClient.send("/game/top", {})
-  }
-  const bottomMove = () => {
-    stompClient.send("/game/bottom", {})
-  }
   useEffect(() => {
-    console.log("DOM LOAD")
-    hotkeys("left", leftMove)
-    hotkeys("right", rightMove)
-    hotkeys("up", topMove)
-    hotkeys("down", bottomMove)
-
+    const { roomId } = router.query
     const headers = {
       Authorization: localStorage.getItem("token")
     }
     stompClient.connect(headers, () => {
-      stompClient.send("/game/start", {})
-      stompClient.subscribe("/play/start", response => {
+      stompClient.send("/game/room", {}, roomId)
+      stompClient.subscribe("/play/room", response => {
         const payload = JSON.parse(response.body)
-        setGame(payload)
-      })
-      stompClient.subscribe("/play/left", response => {
-        const payload = JSON.parse(response.body)
-        setGame(payload)
-      })
-      stompClient.subscribe("/play/right", response => {
-        const payload = JSON.parse(response.body)
-        setGame(payload)
-      })
-      stompClient.subscribe("/play/top", response => {
-        const payload = JSON.parse(response.body)
-        setGame(payload)
-      })
-      stompClient.subscribe("/play/bottom", response => {
-        const payload = JSON.parse(response.body)
-        setGame(payload)
+        setGameInfo(payload)
       })
     })
-  }, [])
+  }, [router])
   return (
-    <Layout>
-      <Row>
-        <Col span={12}>
-          <GameBoard board={game.board} />
-        </Col>{" "}
-        <Col span={12}>
-          <GameBoard board={game.board} />
-        </Col>{" "}
-        <Col span={12}>
-          <GameBoard board={game.board} />
-        </Col>{" "}
-        <Col span={12}>
-          <GameBoard board={game.board} />
-        </Col>
-      </Row>
+    <Layout width={610}>
+      <MainFrame>
+        {gameInfo.players.map((player, index) => (
+          <Frame key={index}>
+            <Head>
+              <Info>
+                <Title level={3}>{player.nickname}</Title>
+              </Info>
+              <ScoreBox>
+                <h3>SCORE {player.gameInfo.score}</h3>
+              </ScoreBox>
+            </Head>
+            <GameBoard board={player.gameInfo.board} width={50} height={50} />
+          </Frame>
+        ))}
+      </MainFrame>
     </Layout>
   )
 }
