@@ -1,6 +1,8 @@
 package dev.gunlog.room.domain;
 
 import dev.gunlog.SpringBootTestSupport;
+import dev.gunlog.enums.Mode;
+import dev.gunlog.enums.Personnel;
 import dev.gunlog.member.domain.Member;
 import dev.gunlog.member.domain.Role;
 import org.junit.jupiter.api.DisplayName;

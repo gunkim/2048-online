@@ -1,10 +1,10 @@
 package dev.gunlog.room.service;
 
 import dev.gunlog.SpringBootTestSupport;
+import dev.gunlog.enums.Mode;
+import dev.gunlog.enums.Personnel;
 import dev.gunlog.member.domain.Member;
 import dev.gunlog.member.domain.MemberRepository;
-import dev.gunlog.room.domain.Mode;
-import dev.gunlog.room.domain.Personnel;
 import dev.gunlog.room.domain.Room;
 import dev.gunlog.room.domain.RoomRepository;
 import dev.gunlog.room.dto.RoomCreateRequestDto;

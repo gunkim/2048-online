@@ -8,18 +8,27 @@ const RoomFrame = styled(Col)`
   padding: 10px;
 `
 type RoomCardType = {
+  id: number
   title: string
   mode: string
   people: number
   personnel: number
+  handleJoin: (roomId: number) => void
 }
-const RoomCard = ({ title, mode, people, personnel }: RoomCardType) => {
+const RoomCard = ({
+  id,
+  title,
+  mode,
+  people,
+  personnel,
+  handleJoin
+}: RoomCardType) => {
   return (
     <RoomFrame span={12}>
       <Card
         style={{ boxShadow: "0px 0px 5px 0px" }}
         title={title}
-        extra={<a href="#">입장하기</a>}
+        extra={<a onClick={() => handleJoin(id)}>입장하기</a>}
       >
         <p>
           <SettingOutlined /> {mode}

@@ -5,10 +5,14 @@ import RoomCard from "../components/RoomCard"
 import RoomModal from "../components/RoomModal"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../store"
-import { getRoomsAsync } from "../store/rooms/actions"
+import { createRoomAsync, getRoomsAsync } from "../store/rooms/actions"
+import { useRouter } from "next/router"
+import { Room } from "../apis/room"
 
 const Rooms = () => {
   const dispatch = useDispatch()
+  const router = useRouter()
+  const [isModalVisible, setIsModalVisible] = useState(false)
 
   useEffect(() => {
     dispatch(getRoomsAsync.request(null, null))
@@ -17,10 +21,16 @@ const Rooms = () => {
   const { loading, data, error } = useSelector(
     (state: RootState) => state.rooms.rooms
   )
+  const roomId = useSelector((state: RootState) => state.rooms.room.data)
+  if (roomId) {
+    router.push({
+      pathname: "/room",
+      query: { roomId: roomId }
+    })
+  }
 
-  const [isModalVisible, setIsModalVisible] = useState(false)
-
-  const handleOk = () => {
+  const handleOk = (room: Room) => {
+    dispatch(createRoomAsync.request(room))
     setIsModalVisible(false)
   }
   const handleCancel = () => {
@@ -28,6 +38,12 @@ const Rooms = () => {
   }
   const showModal = () => {
     setIsModalVisible(true)
+  }
+  const handleJoin = (roomId: number) => {
+    router.push({
+      pathname: "/room",
+      query: { roomId: roomId }
+    })
   }
   return (
     <Layout>
@@ -41,10 +57,12 @@ const Rooms = () => {
           data.map((room, index) => (
             <RoomCard
               key={index}
+              id={room.id}
               title={room.title}
               people={1}
               mode={room.mode}
               personnel={room.personnel}
+              handleJoin={handleJoin}
             />
           ))}
       </Row>

@@ -8,8 +8,8 @@ const layout = {
 const RoomModal = ({ isModalVisible, handleOk, handleCancel }) => {
   const [form, setForm] = useState({
     title: "",
-    peoples: "four",
-    gameMode: "speed"
+    mode: "TIME_ATTACK",
+    personnel: "FOUR"
   })
 
   const handleChange = e => {
@@ -27,7 +27,7 @@ const RoomModal = ({ isModalVisible, handleOk, handleCancel }) => {
       <Modal
         title="방 만들기"
         visible={isModalVisible}
-        onOk={handleOk}
+        onOk={() => handleOk(form)}
         onCancel={handleCancel}
         cancelText="취소"
         okText="완료"
@@ -38,27 +38,23 @@ const RoomModal = ({ isModalVisible, handleOk, handleCancel }) => {
           </Form.Item>
           <Form.Item name="radio-group" label="인원수">
             <Radio.Group
-              name="peoples"
-              value={form.peoples}
+              name="personnel"
+              value={form.personnel}
               onChange={handleChange}
             >
-              <Radio value="four">4명</Radio>
-              <Radio value="two">2명</Radio>
+              <Radio value="FOUR">4명</Radio>
+              <Radio value="TWO">2명</Radio>
             </Radio.Group>
           </Form.Item>
           <Form.Item name="radio-group" label="게임 모드">
-            <Radio.Group
-              name="gameMode"
-              value={form.gameMode}
-              onChange={handleChange}
-            >
-              <Radio value="speed">스피드</Radio>
-              <Radio value="survival">서바이벌</Radio>
-              <Radio value="time">타임어택</Radio>
+            <Radio.Group name="mode" value={form.mode} onChange={handleChange}>
+              <Radio value="SPEED_ATTACK">스피드</Radio>
+              <Radio value="SURVIVAL">서바이벌</Radio>
+              <Radio value="TIME_ATTACK">타임어택</Radio>
             </Radio.Group>
             <div>
               <b>모드 설명 : </b>
-              {form.gameMode == "speed" ? (
+              {form.mode == "SPEED_ATTACK" ? (
                 <p>
                   빠르게 가장 먼저{" "}
                   <span style={{ color: "blue", fontWeight: "bold" }}>
@@ -69,7 +65,7 @@ const RoomModal = ({ isModalVisible, handleOk, handleCancel }) => {
               ) : (
                 ""
               )}
-              {form.gameMode == "survival" ? (
+              {form.mode == "SURVIVAL" ? (
                 <p>
                   <span style={{ color: "blue", fontWeight: "bold" }}>
                     마지막
@@ -79,7 +75,7 @@ const RoomModal = ({ isModalVisible, handleOk, handleCancel }) => {
               ) : (
                 ""
               )}
-              {form.gameMode == "time" ? (
+              {form.mode == "TIME_ATTACK" ? (
                 <p>
                   지정된 시간 안에{" "}
                   <span style={{ color: "blue", fontWeight: "bold" }}>

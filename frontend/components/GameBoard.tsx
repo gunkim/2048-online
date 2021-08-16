@@ -11,29 +11,33 @@ const Tile = styled.div`
     props.lv != undefined ? Level[`LV${props.lv}`] : Level["LV0"]};
   padding: 5px;
   color: black;
-  height: 100px;
-  width: 100px;
+  width: ${props => `${props.width}px`};
+  height: ${props => `${props.height}px`};
   text-align: center;
-  border-radius: 15px;
+  border-radius: 10px;
   margin: 7px;
   font-weight: bold;
   font-size: 2rem;
-  line-height: 80px;
+  line-height: ${props => `${props.height - 10}px`};
 `
 
 type GameBoardProps = {
   board: number[][]
+  width: number
+  height: number
 }
-const GameBoard = ({ board }: GameBoardProps) => {
+const GameBoard = ({ board, width, height }: GameBoardProps) => {
   return (
     <Board>
-      {board.map((row: number[]) =>
-        row.map((col: number, index: number) => (
-          <Col>
-            <Tile lv={col}>{col != 0 ? Math.pow(2, col) : ""}</Tile>
-          </Col>
-        ))
-      )}
+      {board.map((row: number[]) => (
+        <Col>
+          {row.map((col: number) => (
+            <Tile width={width} height={height} lv={col}>
+              {col != 0 ? Math.pow(2, col) : ""}
+            </Tile>
+          ))}
+        </Col>
+      ))}
     </Board>
   )
 }

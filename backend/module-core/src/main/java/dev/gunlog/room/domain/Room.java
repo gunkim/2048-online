@@ -1,8 +1,9 @@
 package dev.gunlog.room.domain;
 
+import dev.gunlog.enums.Mode;
+import dev.gunlog.enums.Personnel;
 import dev.gunlog.member.domain.Member;
 import lombok.*;
-import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;

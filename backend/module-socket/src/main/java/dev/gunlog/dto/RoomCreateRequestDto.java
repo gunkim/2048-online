@@ -1,7 +1,7 @@
 package dev.gunlog.dto;
 
-import dev.gunlog.model.GameMode;
-import dev.gunlog.model.MaxNumberOfPeople;
+import dev.gunlog.enums.Mode;
+import dev.gunlog.enums.Personnel;
 import dev.gunlog.model.Room;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,8 +20,8 @@ public class RoomCreateRequestDto implements Serializable {
     public Room toRoom() {
         return Room.builder()
                 .name(title)
-                .maxNumberOfPeople(MaxNumberOfPeople.FOUR)
-                .gameMode(GameMode.SPEED_ATTACK)
+                .maxNumberOfPeople(Personnel.FOUR)
+                .gameMode(Mode.SPEED_ATTACK)
                 .build();
     }
 }

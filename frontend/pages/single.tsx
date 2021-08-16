@@ -87,7 +87,7 @@ const Single = () => {
         <h2>SCORE</h2>
         <h3>{game.score}</h3>
       </ScoreBox>
-      <GameBoard board={game.board} />
+      <GameBoard board={game.board} width={100} height={100} />
     </Layout>
   )
 }
