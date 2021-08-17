@@ -47,4 +47,11 @@ public class RoomController {
 
         return ResponseEntity.ok(roomId);
     }
+    @PutMapping(path = "join/{roomId}")
+    public void joinRoom(@PathVariable Integer roomId, Principal principal) {
+        String username = principal.getName();
+        RoomHandler.userRoomMap.put(username, roomId);
+        Room room = RoomHandler.roomManagerMap.get(roomId);
+        room.getPlayers().add(new Player(username));
+    }
 }

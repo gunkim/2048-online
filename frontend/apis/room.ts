@@ -25,3 +25,11 @@ export const createRoom = async (room: Room) => {
     })
     return response.data
 }
+export const joinRoom = async (roomId: number) => {
+    const token: string = localStorage.getItem("token")
+    await axios({
+        method: 'put',
+        url: `${BASE_URL}/join/${roomId}`,
+        headers: {'Authorization': token},
+    })
+}
