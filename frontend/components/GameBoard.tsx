@@ -5,6 +5,7 @@ import styled from "styled-components"
 const Board = styled(Row)`
   padding: 7px;
   border-radius: 5px;
+  width: ${props => `${props.mainWidth}px`};
 `
 const Tile = styled.div`
   background-color: ${props =>
@@ -23,21 +24,24 @@ const Tile = styled.div`
 
 type GameBoardProps = {
   board: number[][]
+  mainWidth: number
   width: number
   height: number
 }
-const GameBoard = ({ board, width, height }: GameBoardProps) => {
+const GameBoard = ({ board, mainWidth, width, height }: GameBoardProps) => {
   return (
-    <Board>
-      {board.map((row: number[]) => (
-        <Col>
-          {row.map((col: number) => (
-            <Tile width={width} height={height} lv={col}>
-              {col != 0 ? Math.pow(2, col) : ""}
-            </Tile>
-          ))}
-        </Col>
-      ))}
+    <Board mainWidth={`${mainWidth}`}>
+      {board.map((row: number[]) => {
+        return (
+          <>
+            {row.map((col: number) => (
+              <Tile width={width} height={height} lv={col}>
+                {col != 0 ? Math.pow(2, col) : ""}
+              </Tile>
+            ))}
+          </>
+        )
+      })}
     </Board>
   )
 }

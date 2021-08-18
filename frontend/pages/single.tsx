@@ -34,16 +34,20 @@ const Single = () => {
     ],
     score: 0
   })
-  const leftMove = () => {
+  const leftMove = e => {
+    e.preventDefault()
     stompClient.send("/game/left", {})
   }
-  const rightMove = () => {
+  const rightMove = e => {
+    e.preventDefault()
     stompClient.send("/game/right", {})
   }
-  const topMove = () => {
+  const topMove = e => {
+    e.preventDefault()
     stompClient.send("/game/top", {})
   }
-  const bottomMove = () => {
+  const bottomMove = e => {
+    e.preventDefault()
     stompClient.send("/game/bottom", {})
   }
   useEffect(() => {
@@ -87,7 +91,7 @@ const Single = () => {
         <h2>SCORE</h2>
         <h3>{game.score}</h3>
       </ScoreBox>
-      <GameBoard board={game.board} width={100} height={100} />
+      <GameBoard mainWidth={500} board={game.board} width={100} height={100} />
     </Layout>
   )
 }
