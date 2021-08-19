@@ -22,6 +22,7 @@ const ScoreBox = styled.div`
 type Game = {
   board: number[][]
   score: number
+  gameOver: boolean
 }
 
 const Single = () => {
@@ -32,23 +33,34 @@ const Single = () => {
       [0, 0, 0, 0],
       [0, 0, 0, 0]
     ],
-    score: 0
+    score: 0,
+    gameOver: false
   })
   const leftMove = e => {
     e.preventDefault()
-    stompClient.send("/game/left", {})
+    if (!game.gameOver) {
+      stompClient.send("/game/left", {})
+    }
   }
   const rightMove = e => {
     e.preventDefault()
-    stompClient.send("/game/right", {})
+    if (!game.gameOver) {
+      stompClient.send("/game/right", {})
+    }
   }
   const topMove = e => {
     e.preventDefault()
-    stompClient.send("/game/top", {})
+
+    if (!game.gameOver) {
+      stompClient.send("/game/top", {})
+    }
   }
   const bottomMove = e => {
     e.preventDefault()
-    stompClient.send("/game/bottom", {})
+
+    if (!game.gameOver) {
+      stompClient.send("/game/bottom", {})
+    }
   }
   useEffect(() => {
     console.log("DOM LOAD")
@@ -91,7 +103,13 @@ const Single = () => {
         <h2>SCORE</h2>
         <h3>{game.score}</h3>
       </ScoreBox>
-      <GameBoard mainWidth={500} board={game.board} width={100} height={100} />
+      <GameBoard
+        mainWidth={470}
+        board={game.board}
+        width={100}
+        height={100}
+        over={game.gameOver}
+      />
     </Layout>
   )
 }

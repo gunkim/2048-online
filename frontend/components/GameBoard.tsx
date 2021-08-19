@@ -21,28 +21,54 @@ const Tile = styled.div`
   font-size: 2rem;
   line-height: ${props => `${props.height - 10}px`};
 `
+const Blind = styled.div`
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.65);
+  z-index: 10;
+  height: ${props => `${props.mainWidth}px`};
+  width: ${props => `${props.mainWidth}px`};
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  font-size: 2vw;
+  line-height: ${props => `${props.height * 4 + 50}px`};
+`
 
 type GameBoardProps = {
   board: number[][]
   mainWidth: number
   width: number
   height: number
+  over: boolean
 }
-const GameBoard = ({ board, mainWidth, width, height }: GameBoardProps) => {
+const GameBoard = ({
+  board,
+  mainWidth,
+  width,
+  height,
+  over
+}: GameBoardProps) => {
   return (
-    <Board mainWidth={`${mainWidth}`}>
-      {board.map((row: number[]) => {
-        return (
-          <>
-            {row.map((col: number) => (
-              <Tile width={width} height={height} lv={col}>
-                {col != 0 ? Math.pow(2, col) : ""}
-              </Tile>
-            ))}
-          </>
-        )
-      })}
-    </Board>
+    <>
+      {over && (
+        <Blind mainWidth={mainWidth} height={height}>
+          GAME OVER!!
+        </Blind>
+      )}
+      <Board mainWidth={`${mainWidth}`}>
+        {board.map((row: number[]) => {
+          return (
+            <>
+              {row.map((col: number) => (
+                <Tile width={width} height={height} lv={col}>
+                  {col != 0 ? Math.pow(2, col) : ""}
+                </Tile>
+              ))}
+            </>
+          )
+        })}
+      </Board>
+    </>
   )
 }
 
