@@ -5,6 +5,7 @@ import dev.gunlog.common.domain.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @EqualsAndHashCode(of = "id", callSuper = false)
@@ -14,23 +15,37 @@ import javax.persistence.*;
 public class Member extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "MEMBER_NO")
     private Long id;
-    @NotNull
-    private String username;
-    @NotNull
+
+    @NotBlank
+    @Column(name = "MEMBER_ID", updatable = false)
+    private String memberId;
+
+    @NotBlank
+    @Column(name = "MEMBER_PWD")
     private String password;
+
+    @NotBlank
+    @Column(name = "MEMBER_NAME")
+    private String name;
+
     @NotNull
     @Enumerated(EnumType.STRING)
+    @Column(name = "MEMBER_ROLE")
     private Role role;
+
     @NotNull
-    private String userIp;
+    @Column(name = "MEMBER_REG_IP")
+    private String regIp;
 
     @Builder
-    public Member(@NotNull Long id, @NotNull String username, @NotNull String password, @NotNull Role role, @NotNull String userIp) {
+    public Member(Long id, String memberId, String password, String name, Role role, String regIp) {
         this.id = id;
-        this.username = username;
+        this.memberId = memberId;
         this.password = password;
+        this.name = name;
         this.role = role;
-        this.userIp = userIp;
+        this.regIp = regIp;
     }
 }
