@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
 public class Game {
     private int[][] board;
     private int score;
-    private boolean gameOver;
+    private boolean isGameOver;
     private static final Random random = new Random();
     private static int MAX_ROWS = 4;
     private static int MAX_COLS = 4;
@@ -37,12 +37,12 @@ public class Game {
             board[posX][posY] = randomTile;
         });
         this.board = board;
-        this.gameOver = false;
+        this.isGameOver = false;
     }
     public Game(int[][] board, int score) {
         this.board = board;
         this.score = score;
-        this.gameOver = false;
+        this.isGameOver = false;
     }
     private void randomNum() {
         int posX;
@@ -54,18 +54,30 @@ public class Game {
         this.board[posX][posY] = 1;
     }
     public void leftMove() {
+        if(this.isGameOver) {
+            return;
+        }
         this.left();
         this.overCheck();
     }
     public void rightMove() {
+        if(this.isGameOver) {
+            return;
+        }
         this.right();
         this.overCheck();
     }
     public void topMove() {
+        if(this.isGameOver) {
+            return;
+        }
         this.top();
         this.overCheck();
     }
     public void bottomMove() {
+        if(this.isGameOver) {
+            return;
+        }
         this.bottom();
         this.overCheck();
     }
@@ -172,7 +184,7 @@ public class Game {
 
         if(!this.left() && !this.right() &&
                 !this.top() && !this.bottom()) {
-            this.gameOver = true;
+            this.isGameOver = true;
         }
         this.board = tempBoard;
         this.score = tempScore;
