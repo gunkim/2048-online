@@ -17,7 +17,7 @@ public class RoomCreateRequestDto implements Serializable {
     private String peoples;
     private String gameMode;
 
-    public Room toRoom() {
+    public Room toModel() {
         return Room.builder()
                 .name(title)
                 .maxNumberOfPeople(Personnel.FOUR)

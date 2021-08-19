@@ -1,5 +1,6 @@
 package dev.gunlog.model;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -10,7 +11,11 @@ public class Player {
     private Game gameInfo;
 
     public Player(String nickname) {
+        this(nickname, new Game());
+    }
+    @Builder
+    public Player(String nickname, Game gameInfo) {
         this.nickname = nickname;
-        this.gameInfo = new Game();
+        this.gameInfo = gameInfo;
     }
 }

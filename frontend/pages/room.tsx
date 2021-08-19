@@ -5,6 +5,7 @@ import styled from "styled-components"
 import { Typography } from "antd"
 import stompClient from "../util/socket-util"
 import { useRouter } from "next/router"
+import hotkeys from "hotkeys-js"
 
 const { Title } = Typography
 
@@ -52,14 +53,36 @@ const Room = () => {
     name: "새로운 방입니당~",
     players: [
       {
-        gameInfo: { board: new Array(), score: 0 },
+        gameInfo: { board: new Array(), score: 0, gameOver: false },
         nickname: ""
       }
     ],
     start: false,
     timer: 0
   })
+  const leftMove = e => {
+    e.preventDefault()
+    stompClient.send("/game/multi/left", {})
+  }
+  const rightMove = e => {
+    e.preventDefault()
+    stompClient.send("/game/multi/right", {})
+  }
+  const topMove = e => {
+    e.preventDefault()
+    stompClient.send("/game/multi/top", {})
+  }
+  const bottomMove = e => {
+    e.preventDefault()
+    stompClient.send("/game/multi/bottom", {})
+  }
   useEffect(() => {
+    console.log("DOM LOAD")
+    hotkeys("left", leftMove)
+    hotkeys("right", rightMove)
+    hotkeys("up", topMove)
+    hotkeys("down", bottomMove)
+
     const { roomId } = router.query
     const headers = {
       Authorization: localStorage.getItem("token")
@@ -68,6 +91,29 @@ const Room = () => {
       stompClient.send("/game/room", {}, roomId)
       stompClient.subscribe("/play/room", response => {
         const payload = JSON.parse(response.body)
+        setGameInfo(payload)
+      })
+      stompClient.subscribe("/play/multi/left", response => {
+        const payload = JSON.parse(response.body)
+        console.log(payload)
+        setGameInfo(payload)
+      })
+
+      stompClient.subscribe("/play/multi/top", response => {
+        const payload = JSON.parse(response.body)
+        console.log(payload)
+        setGameInfo(payload)
+      })
+
+      stompClient.subscribe("/play/multi/right", response => {
+        const payload = JSON.parse(response.body)
+        console.log(payload)
+        setGameInfo(payload)
+      })
+
+      stompClient.subscribe("/play/multi/bottom", response => {
+        const payload = JSON.parse(response.body)
+        console.log(payload)
         setGameInfo(payload)
       })
     })
@@ -85,7 +131,13 @@ const Room = () => {
                 <h3>SCORE {player.gameInfo.score}</h3>
               </ScoreBox>
             </Head>
-            <GameBoard board={player.gameInfo.board} width={50} height={50} />
+            <GameBoard
+              board={player.gameInfo.board}
+              mainWidth={270}
+              width={50}
+              height={50}
+              over={player.gameInfo.gameOver}
+            />
           </Frame>
         ))}
       </MainFrame>
