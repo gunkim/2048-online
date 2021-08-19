@@ -3,7 +3,6 @@ package dev.gunlog.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -11,17 +10,16 @@ import java.util.stream.IntStream;
 
 @Setter
 @Getter
-public class Game implements Serializable {
+public class Game {
     private int[][] board;
     private int score;
-    private static Random random;
+    private boolean gameOver;
+    private static final Random random = new Random();
     private static int MAX_ROWS = 4;
     private static int MAX_COLS = 4;
 
     public Game() {
-        this.random = new Random();
-
-        this.board = new int[][]{
+        int[][] board = new int[][]{
                 {0, 0, 0, 0},
                 {0, 0, 0, 0},
                 {0, 0, 0, 0},
@@ -34,13 +32,17 @@ public class Game implements Serializable {
                 posX = random.nextInt(MAX_ROWS);
                 posY = random.nextInt(MAX_COLS);
             } while(board[posX][posY] != 0);
-            this.board[posX][posY] = random.nextInt(2)+1;
+            int randomTile = random.nextInt(2)+1;
+            score += (int) Math.pow(2, (randomTile));
+            board[posX][posY] = randomTile;
         });
-        this.score = 0;
-    }
-    public Game(int[][] board) {
         this.board = board;
-        this.score = 0;
+        this.gameOver = false;
+    }
+    public Game(int[][] board, int score) {
+        this.board = board;
+        this.score = score;
+        this.gameOver = false;
     }
     private void randomNum() {
         int posX;
@@ -52,30 +54,50 @@ public class Game implements Serializable {
         this.board[posX][posY] = 1;
     }
     public void leftMove() {
+        this.left();
+        this.overCheck();
+    }
+    public void rightMove() {
+        this.right();
+        this.overCheck();
+    }
+    public void topMove() {
+        this.top();
+        this.overCheck();
+    }
+    public void bottomMove() {
+        this.bottom();
+        this.overCheck();
+    }
+    private boolean left() {
         boolean isMove = slideLeft();
         combine();
         slideLeft();
         if(isMove) {
             randomNum();
         }
+        return isMove;
     }
-    public void rightMove() {
+    private boolean right() {
         boolean isMove = slideRight();
         combine();
         slideRight();
         if(isMove) {
             randomNum();
         }
+        return isMove;
     }
-    public void topMove() {
+    private boolean top() {
         rotateClockwise();
-        rightMove();
+        boolean isMove = right();
         rotateCounterClockwise();
+        return isMove;
     }
-    public void bottomMove() {
+    private boolean bottom() {
         rotateClockwise();
-        leftMove();
+        boolean isMove = left();
         rotateCounterClockwise();
+        return isMove;
     }
 
     private void combine() {
@@ -84,7 +106,6 @@ public class Game implements Serializable {
                 if (board[i][j] != 0 && board[i][j] == board[i][j + 1]) {
                     board[i][j] = board[i][j] + 1;
                     score += (int) Math.pow(2, (board[i][j]));
-                    System.out.println("점수 : "+(int) Math.pow(2, (board[i][j])));
                     board[i][j + 1] = 0;
                 }
             }
@@ -127,22 +148,33 @@ public class Game implements Serializable {
     }
     private void rotateClockwise() {
         int[][] newBoard = new int[MAX_ROWS][MAX_COLS];
-        for(int i = 0; i < MAX_ROWS; i++) {
-            newBoard[i] = new int[MAX_COLS];
-            for(int j = 0; j < MAX_COLS; j++) {
-                newBoard[i][MAX_ROWS - j - 1] = board[j][i];
+
+        for(int i=0; i<MAX_ROWS; i++){
+            for(int j=0; j<MAX_COLS; j++){
+                newBoard[i][j] = this.board[MAX_ROWS-j-1][i];
             }
         }
         this.board = newBoard;
     }
     private void rotateCounterClockwise() {
         int[][] newBoard = new int[MAX_ROWS][MAX_COLS];
-        for(int i = 0; i < MAX_ROWS; i++) {
-            newBoard[i] = new int[MAX_COLS];
-            for(int j = 0; j < MAX_COLS; j++) {
-                newBoard[i][j] = board[j][MAX_ROWS - i - 1];
+
+        for(int i=0; i<MAX_ROWS; i++){
+            for(int j=0; j<MAX_COLS; j++){
+                newBoard[i][j] = this.board[j][MAX_ROWS-i-1];
             }
         }
         this.board = newBoard;
+    }
+    private void overCheck() {
+        int[][] tempBoard = this.board;
+        int tempScore = this.score;
+
+        if(!this.left() && !this.right() &&
+                !this.top() && !this.bottom()) {
+            this.gameOver = true;
+        }
+        this.board = tempBoard;
+        this.score = tempScore;
     }
 }
