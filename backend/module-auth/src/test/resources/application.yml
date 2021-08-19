@@ -1,5 +1,0 @@
-jwt:
-  token:
-    secret-key: "game"
-    expTime: 1800000
-    issuer: "my-game-platform"

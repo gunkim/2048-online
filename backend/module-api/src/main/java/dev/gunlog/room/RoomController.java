@@ -1,9 +1,9 @@
 package dev.gunlog.room;
 
-import dev.gunlog.model.Player;
-import dev.gunlog.model.Room;
-import dev.gunlog.repository.GameRoomRepository;
-import dev.gunlog.repository.UserRoomRepository;
+import dev.gunlog.multi.model.Player;
+import dev.gunlog.multi.model.GameRoom;
+import dev.gunlog.multi.domain.GameRoomRepository;
+import dev.gunlog.multi.domain.UserRoomRepository;
 import dev.gunlog.room.dto.RoomCreateRequestDto;
 import dev.gunlog.room.dto.RoomListResponseDto;
 import dev.gunlog.room.service.RoomService;
@@ -35,15 +35,15 @@ public class RoomController {
         String username = principal.getName();
         Integer roomId = Math.toIntExact(roomService.createRoom(requestDto, username));
 
-        Room room = Room.builder()
+        GameRoom gameRoom = GameRoom.builder()
                 .name(requestDto.getTitle())
                 .isStart(false)
                 .maxNumberOfPeople(requestDto.getPersonnel())
                 .gameMode(requestDto.getMode())
                 .timer(0)
                 .build();
-        room.addPlayer(new Player(username));
-        gameRoomRepository.save(roomId, room);
+        gameRoom.addPlayer(new Player(username));
+        gameRoomRepository.save(roomId, gameRoom);
         userRoomRepository.save(username, roomId);
 
         return ResponseEntity.ok(roomId);
@@ -58,8 +58,8 @@ public class RoomController {
         }
         userRoomRepository.save(username, roomId);
 
-        Room room = gameRoomRepository.findRoomByRoomId(roomId)
+        GameRoom gameRoom = gameRoomRepository.findRoomByRoomId(roomId)
                 .orElseThrow(() -> new IllegalArgumentException("게임 방을 찾을 수 없습니다. ROOM_ID : "+roomId));
-        room.getPlayers().add(new Player(username));
+        gameRoom.getPlayers().add(new Player(username));
     }
 }
