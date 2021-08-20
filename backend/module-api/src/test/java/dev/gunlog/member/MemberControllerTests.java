@@ -21,7 +21,6 @@ import java.util.Optional;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
@@ -40,11 +39,11 @@ public class MemberControllerTests {
     @DisplayName("회원가입 여부 체크 테스트")
     public void checkUserTest() throws Exception {
         //given
-        final String username = "test";
-        given(memberRepository.findByUsername(username)).willReturn(Optional.of(Member.builder().build()));
+        final String memberId = "test";
+        given(memberRepository.findByMemberId(memberId)).willReturn(Optional.of(Member.builder().build()));
 
         //when
-        final ResultActions resultActions = this.requestCheckMember(username);
+        final ResultActions resultActions = this.requestCheckMember(memberId);
 
         //then
         resultActions.andExpect(status().isOk());

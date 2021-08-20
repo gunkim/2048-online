@@ -50,16 +50,12 @@ public class RoomController {
     }
     @PutMapping(path = "join/{roomId}")
     public void joinRoom(@PathVariable Integer roomId, Principal principal) {
-        String username = principal.getName();
-        boolean isUserJoin = userRoomRepository.findRoomIdByUsername(username) != null;
+        String memberId = principal.getName();
 
-        if(isUserJoin) {
-            return;
-        }
-        userRoomRepository.save(username, roomId);
+        userRoomRepository.save(memberId, roomId);
 
         GameRoom gameRoom = gameRoomRepository.findRoomByRoomId(roomId)
                 .orElseThrow(() -> new IllegalArgumentException("게임 방을 찾을 수 없습니다. ROOM_ID : "+roomId));
-        gameRoom.getPlayers().add(new Player(username));
+        gameRoom.getPlayers().add(new Player(memberId));
     }
 }
