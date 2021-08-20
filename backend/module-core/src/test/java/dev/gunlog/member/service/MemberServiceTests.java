@@ -29,9 +29,10 @@ public class MemberServiceTests extends SpringBootTestSupport {
     @Test
     @DisplayName("회원 가입 여부 체크 테스트")
     public void checkUserTest() {
-        given(memberRepository.findByUsername("gunkim")).willReturn(Optional.of(Member.builder().build()));
+        final String memberId = "gunkim";
+        given(memberRepository.findByMemberId(memberId)).willReturn(Optional.of(Member.builder().build()));
 
-        final boolean isUser = memberService.checkUser("gunkim");
+        final boolean isUser = memberService.checkUser(memberId);
 
         assertThat(isUser).isTrue();
     }

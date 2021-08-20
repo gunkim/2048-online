@@ -21,7 +21,7 @@ public class RoomListResponseDto {
     public RoomListResponseDto(Room room) {
         this.id = room.getId();
         this.title = room.getTitle();
-        this.username = room.getMember().getUsername();
+        this.username = room.getMember().getName();
         this.mode = room.getMode();
         this.personnel = room.getPersonnel();
     }

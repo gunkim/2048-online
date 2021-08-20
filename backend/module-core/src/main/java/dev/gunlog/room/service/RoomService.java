@@ -19,9 +19,9 @@ public class RoomService {
     private final RoomRepository roomRepository;
     private final MemberRepository memberRepository;
 
-    public Long createRoom(RoomCreateRequestDto requestDto, String username) {
-        Member member = memberRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("해당 회원을 찾을 수 없습니다. username : "+username));
+    public Long createRoom(RoomCreateRequestDto requestDto, String memberId) {
+        Member member = memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 회원을 찾을 수 없습니다. username : "+memberId));
 
         Room room = roomRepository.save(requestDto.toEntity(member));
         return room.getId();
