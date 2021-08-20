@@ -31,10 +31,11 @@ public class GameRoomRepositoryTests extends SpringBootTestSupport {
                 .mode(Mode.SPEED_ATTACK)
                 .personnel(Personnel.FOUR)
                 .member(Member.builder()
-                        .username("gunkim")
+                        .memberId("gunkim")
+                        .name("TEST USER")
                         .password("gunkim")
                         .role(Role.USER)
-                        .userIp("0.0.0.0")
+                        .regIp("0.0.0.0")
                         .build())
                 .build());
 
@@ -44,6 +45,7 @@ public class GameRoomRepositoryTests extends SpringBootTestSupport {
         assertThat(room.getMode()).isEqualTo(Mode.SPEED_ATTACK);
         assertThat(room.getPersonnel()).isEqualTo(Personnel.FOUR);
         assertThat(room.getMember()).isNotNull();
-        assertThat(room.getMember().getUsername()).isEqualTo("gunkim");
+        assertThat(room.getMember().getMemberId()).isEqualTo("gunkim");
+        assertThat(room.getMember().getName()).isEqualTo("TEST USER");
     }
 }

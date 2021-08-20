@@ -1,7 +1,6 @@
 package dev.gunlog.member.domain;
 
 import dev.gunlog.SpringBootTestSupport;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,17 +21,19 @@ public class MemberRepositoryTests extends SpringBootTestSupport {
     @Test
     public void saveTest() {
         memberRepository.save(Member.builder()
-                .username("gunkim")
+                .memberId("gunkim")
+                .name("TEST USER")
                 .password("test")
                 .role(Role.USER)
-                .userIp("0.0.0.0")
+                .regIp("0.0.0.0")
                 .build());
 
         Member member = memberRepository.findAll().get(0);
         assertThat(member).isNotNull();
-        assertThat(member.getUsername()).isEqualTo("gunkim");
+        assertThat(member.getName()).isEqualTo("TEST USER");
+        assertThat(member.getMemberId()).isEqualTo("gunkim");
         assertThat(member.getPassword()).isEqualTo("test");
         assertThat(member.getRole()).isEqualTo(Role.USER);
-        assertThat(member.getUserIp()).isEqualTo("0.0.0.0");
+        assertThat(member.getRegIp()).isEqualTo("0.0.0.0");
     }
 }
