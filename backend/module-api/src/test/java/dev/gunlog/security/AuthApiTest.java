@@ -41,7 +41,7 @@ public class AuthApiTest {
     @Autowired
     private JwtUtil jwtUtil;
 
-    public static final String USERNAME = "testMan";
+    public static final String MEMBER_ID = "testMan";
     public static final String PASSWORD = "test";
 
     @Value("${jwt.token.issuer}")
@@ -50,7 +50,8 @@ public class AuthApiTest {
     @BeforeEach
     void createMember() {
         memberRepository.save(Member.builder()
-                .username(USERNAME)
+                .memberId(MEMBER_ID)
+                .name("TEST USER")
                 .password(passwordEncoder.encode(PASSWORD))
                 .role(Role.USER)
                 .build());
@@ -67,13 +68,13 @@ public class AuthApiTest {
         final String jwtToken = result.getResponse().getContentAsString().replaceAll("\"", "");
 
         final Claims body = jwtUtil.parserToken(jwtToken).getBody();
-        assertThat(body.getSubject()).isEqualTo(USERNAME);
+        assertThat(body.getSubject()).isEqualTo(MEMBER_ID);
         assertThat(body.getIssuer()).isEqualTo(issuer);
     }
     private String getLoginInfo() throws JsonProcessingException {
         final ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(LoginRequest.builder()
-                .username(USERNAME)
+                .username(MEMBER_ID)
                 .password(PASSWORD)
                 .build());
     }

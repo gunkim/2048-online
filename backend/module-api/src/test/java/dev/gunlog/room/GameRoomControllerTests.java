@@ -52,11 +52,12 @@ public class GameRoomControllerTests {
 
     @BeforeEach
     public void setUp() throws Exception {
-        given(customUserDetailsService.loadUserByUsername("gunkim"))
-                .willReturn(new User("gunkim", "$2a$10$jHc8ndvWho7p/a2/kVvfJOVgYiC1rLy9nT2ddRjUfzulh4/6vYXyC",
+        final String memberId = "gunkim";
+        given(customUserDetailsService.loadUserByUsername(memberId))
+                .willReturn(new User(memberId, "$2a$10$jHc8ndvWho7p/a2/kVvfJOVgYiC1rLy9nT2ddRjUfzulh4/6vYXyC",
                         List.of(new SimpleGrantedAuthority(Role.USER.name()))));
 
-        final LoginRequest loginRequest = new LoginRequest("gunkim", "gunkim");
+        final LoginRequest loginRequest = new LoginRequest(memberId, "gunkim");
         final String content = objectMapper.writeValueAsString(loginRequest);
         MvcResult result = mockMvc.perform(post("/api/v2/member/signIn")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)

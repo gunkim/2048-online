@@ -7,6 +7,8 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @ToString
 @EqualsAndHashCode(of = "id")
@@ -17,18 +19,26 @@ import javax.persistence.*;
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ROOM_ID")
     private Long id;
 
+    @NotBlank
+    @Column(name = "ROOM_TITLE")
     private String title;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
+    @Column(name = "ROOM_PERSONNEL")
     private Personnel personnel;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
+    @Column(name = "ROOM_MODE")
     private Mode mode;
 
+    @NotNull
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "MEMBER_NO")
     private Member member;
 
     @Builder

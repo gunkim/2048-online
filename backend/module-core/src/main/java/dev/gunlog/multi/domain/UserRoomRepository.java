@@ -10,14 +10,14 @@ import java.util.Optional;
 public class UserRoomRepository {
     private static final Map<String, Integer> userRoomInfoMap = new HashMap<>();
 
-    public Optional<Integer> findRoomIdByUsername(String username) {
-        return Optional.ofNullable(userRoomInfoMap.get(username));
+    public Optional<Integer> findRoomIdByMemberId(String memberId) {
+        return Optional.ofNullable(userRoomInfoMap.get(memberId));
     }
-    public void save(String username, Integer roomId) {
-        userRoomInfoMap.put(username, roomId);
+    public void save(String memberId, Integer roomId) {
+        userRoomInfoMap.put(memberId, roomId);
     }
 
-    public void deleteByUsername(String username) {
-        userRoomInfoMap.remove(username);
+    public void deleteByMemberId(String memberId) {
+        userRoomInfoMap.remove(memberId);
     }
 }

@@ -39,6 +39,7 @@ public class GameRoomServiceTests extends SpringBootTestSupport {
     @Test
     @DisplayName("방 만들기 테스트")
     public void createRoomTest() {
+        final String memberId = "gunkim";
         //given
         RoomCreateRequestDto requestDto = RoomCreateRequestDto.builder()
                 .title("새로운 방입니다.")
@@ -46,10 +47,10 @@ public class GameRoomServiceTests extends SpringBootTestSupport {
                 .personnel(Personnel.FOUR)
                 .build();
         given(roomRepository.save(any())).willReturn(Room.builder().id(1L).build());
-        given(memberRepository.findByUsername("gunkim")).willReturn(Optional.of(Member.builder().build()));
+        given(memberRepository.findByMemberId(memberId)).willReturn(Optional.of(Member.builder().build()));
 
         //when
-        Long id = roomService.createRoom(requestDto, "gunkim");
+        Long id = roomService.createRoom(requestDto, memberId);
 
         //then
         assertThat(id).isNotNull();
@@ -65,7 +66,7 @@ public class GameRoomServiceTests extends SpringBootTestSupport {
                 .title("테스트 방1")
                 .mode(Mode.SPEED_ATTACK)
                 .personnel(Personnel.FOUR)
-                .member(Member.builder().username("test-user1").build())
+                .member(Member.builder().name("test-user1").build())
                 .build()
         ));
 
