@@ -25,8 +25,8 @@ public class SocketConfig implements WebSocketMessageBrokerConfigurer {
     }
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker("/play");
-        registry.setApplicationDestinationPrefixes("/game");
+        registry.enableSimpleBroker("/sub");
+        registry.setApplicationDestinationPrefixes("/pub");
     }
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) throws BadCredentialsException {

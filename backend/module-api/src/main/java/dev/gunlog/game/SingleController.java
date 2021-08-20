@@ -1,10 +1,9 @@
 package dev.gunlog.game;
 
-import dev.gunlog.multi.model.Game;
 import dev.gunlog.single.service.SingleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
@@ -13,34 +12,35 @@ import java.security.Principal;
 @RestController
 public class SingleController {
     private final SingleService singleService;
+    private final SimpMessageSendingOperations messageTemplate;
 
-    @MessageMapping("/start")
-    @SendTo("/play/start")
-    public Game boradCast(Principal principal) {
-        return singleService.initGame(principal.getName());
+    @MessageMapping("/single/init")
+    public void initGame(Principal principal) {
+        String memberId = principal.getName();
+        messageTemplate.convertAndSend(String.format("/sub/%s/single/init", memberId), singleService.initGame(memberId));
     }
 
-    @MessageMapping("/left")
-    @SendTo("/play/left")
-    public Game leftMove(Principal principal) {
-        return singleService.leftMove(principal.getName());
+    @MessageMapping("/single/left")
+    public void leftMove(Principal principal) {
+        String memberId = principal.getName();
+        messageTemplate.convertAndSend(String.format("/sub/%s/single/move/left", memberId), singleService.leftMove(memberId));
     }
 
-    @MessageMapping("/right")
-    @SendTo("/play/right")
-    public Game rightMove(Principal principal) {
-        return singleService.rightMove(principal.getName());
+    @MessageMapping("/single/right")
+    public void rightMove(Principal principal) {
+        String memberId = principal.getName();
+        messageTemplate.convertAndSend(String.format("/sub/%s/single/move/right", memberId), singleService.rightMove(memberId));
     }
 
-    @MessageMapping("/top")
-    @SendTo("/play/top")
-    public Game topMove(Principal principal) {
-        return singleService.topMove(principal.getName());
+    @MessageMapping("/single/top")
+    public void topMove(Principal principal) {
+        String memberId = principal.getName();
+        messageTemplate.convertAndSend(String.format("/sub/%s/single/move/top", memberId), singleService.topMove(memberId));
     }
 
-    @MessageMapping("/bottom")
-    @SendTo("/play/bottom")
-    public Game bottomMove(Principal principal) {
-        return singleService.bottomMove(principal.getName());
+    @MessageMapping("/single/bottom")
+    public void bottomMove(Principal principal) {
+        String memberId = principal.getName();
+        messageTemplate.convertAndSend(String.format("/sub/%s/single/move/bottom", memberId), singleService.bottomMove(memberId));
     }
 }
