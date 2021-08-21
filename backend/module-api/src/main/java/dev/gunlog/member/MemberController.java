@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
     private final MemberService memberService;
 
-    @GetMapping(path = "check/{username}")
-    public ResponseEntity<Boolean> checkUser(@PathVariable String username) {
-        boolean isUser = memberService.checkUser(username);
+    @GetMapping(path = "check/{memberId}")
+    public ResponseEntity<Boolean> checkUser(@PathVariable String memberId) {
+        boolean isUser = memberService.checkMember(memberId);
         return ResponseEntity.ok(isUser);
     }
 }
