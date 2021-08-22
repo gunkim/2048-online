@@ -33,6 +33,9 @@ public class MultiService {
         return gameRoomRepository.findRoomByRoomId(roomId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게임 방을 찾을 수 없습니다. ROOM_ID : "+roomId));
     }
+    public Integer findRoomId(String memberId) {
+        return userRoomRepository.findRoomIdByMemberId(memberId).orElseThrow(() -> new IllegalArgumentException("참가한 게임 방을 찾을 수 없습니다."));
+    }
     private GameRoom commonMove(String username, Consumer<Game> gameConsumer) {
         Integer roomId = userRoomRepository.findRoomIdByMemberId(username)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 들어가 있는 방을 찾을 수 없습니다. USERNAME : "+username));

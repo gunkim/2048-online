@@ -17,30 +17,30 @@ public class SingleController {
     @MessageMapping("/single/init")
     public void initGame(Principal principal) {
         String memberId = principal.getName();
-        messageTemplate.convertAndSend(String.format("/sub/%s/single/init", memberId), singleService.initGame(memberId));
+        messageTemplate.convertAndSend("/sub/single/"+memberId, singleService.initGame(memberId));
     }
 
     @MessageMapping("/single/left")
     public void leftMove(Principal principal) {
         String memberId = principal.getName();
-        messageTemplate.convertAndSend(String.format("/sub/%s/single/move/left", memberId), singleService.leftMove(memberId));
+        messageTemplate.convertAndSend("/sub/single/"+memberId, singleService.leftMove(memberId));
     }
 
     @MessageMapping("/single/right")
     public void rightMove(Principal principal) {
         String memberId = principal.getName();
-        messageTemplate.convertAndSend(String.format("/sub/%s/single/move/right", memberId), singleService.rightMove(memberId));
+        messageTemplate.convertAndSend("/sub/single/"+memberId, singleService.rightMove(memberId));
     }
 
     @MessageMapping("/single/top")
     public void topMove(Principal principal) {
         String memberId = principal.getName();
-        messageTemplate.convertAndSend(String.format("/sub/%s/single/move/top", memberId), singleService.topMove(memberId));
+        messageTemplate.convertAndSend("/sub/single/"+memberId, singleService.topMove(memberId));
     }
 
     @MessageMapping("/single/bottom")
     public void bottomMove(Principal principal) {
         String memberId = principal.getName();
-        messageTemplate.convertAndSend(String.format("/sub/%s/single/move/bottom", memberId), singleService.bottomMove(memberId));
+        messageTemplate.convertAndSend("/sub/single/"+memberId, singleService.bottomMove(memberId));
     }
 }
