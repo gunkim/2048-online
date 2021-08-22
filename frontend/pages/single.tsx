@@ -5,6 +5,7 @@ import GameBoard from "../components/GameBoard"
 import stompClient from "../util/socket-util"
 import Layout from "../components/Layout"
 import styled from "styled-components"
+import { getUsername } from "../util/jwt-util"
 
 const ScoreBox = styled.div`
   background: #97cdff;
@@ -39,31 +40,33 @@ const Single = () => {
   const leftMove = e => {
     e.preventDefault()
     if (!game.gameOver) {
-      stompClient.send("/game/left", {})
+      stompClient.send("/pub/single/left", {})
     }
   }
   const rightMove = e => {
     e.preventDefault()
     if (!game.gameOver) {
-      stompClient.send("/game/right", {})
+      stompClient.send("/pub/single/right", {})
     }
   }
   const topMove = e => {
     e.preventDefault()
 
     if (!game.gameOver) {
-      stompClient.send("/game/top", {})
+      stompClient.send("/pub/single/top", {})
     }
   }
   const bottomMove = e => {
     e.preventDefault()
 
     if (!game.gameOver) {
-      stompClient.send("/game/bottom", {})
+      stompClient.send("/pub/single/bottom", {})
     }
   }
+  let memberId: string
   useEffect(() => {
     console.log("DOM LOAD")
+    memberId = getUsername()
     hotkeys("left", leftMove)
     hotkeys("right", rightMove)
     hotkeys("up", topMove)
@@ -73,27 +76,10 @@ const Single = () => {
       Authorization: localStorage.getItem("token")
     }
     stompClient.connect(headers, () => {
-      stompClient.send("/game/start", {})
-      stompClient.subscribe("/play/start", response => {
-        const payload = JSON.parse(response.body)
-        setGame(payload)
-      })
-      stompClient.subscribe("/play/left", response => {
-        const payload = JSON.parse(response.body)
-        setGame(payload)
-      })
-      stompClient.subscribe("/play/right", response => {
-        const payload = JSON.parse(response.body)
-        setGame(payload)
-      })
-      stompClient.subscribe("/play/top", response => {
-        const payload = JSON.parse(response.body)
-        setGame(payload)
-      })
-      stompClient.subscribe("/play/bottom", response => {
-        const payload = JSON.parse(response.body)
-        setGame(payload)
-      })
+      stompClient.send("/pub/single/init", {})
+      stompClient.subscribe(`/sub/single/${memberId}`, response =>
+        setGame(JSON.parse(response.body))
+      )
     })
   }, [])
 
