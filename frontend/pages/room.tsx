@@ -62,19 +62,19 @@ const Room = () => {
   })
   const leftMove = e => {
     e.preventDefault()
-    stompClient.send("/game/multi/left", {})
+    stompClient.send("/pub/multi/left", {})
   }
   const rightMove = e => {
     e.preventDefault()
-    stompClient.send("/game/multi/right", {})
+    stompClient.send("/pub/multi/right", {})
   }
   const topMove = e => {
     e.preventDefault()
-    stompClient.send("/game/multi/top", {})
+    stompClient.send("/pub/multi/top", {})
   }
   const bottomMove = e => {
     e.preventDefault()
-    stompClient.send("/game/multi/bottom", {})
+    stompClient.send("/pub/multi/bottom", {})
   }
   useEffect(() => {
     console.log("DOM LOAD")
@@ -87,33 +87,11 @@ const Room = () => {
     const headers = {
       Authorization: localStorage.getItem("token")
     }
+    console.log(`/sub/room/${roomId}`)
     stompClient.connect(headers, () => {
-      stompClient.send("/game/room", {}, roomId)
-      stompClient.subscribe("/play/room", response => {
+      stompClient.send("/pub/multi/init", {}, roomId)
+      stompClient.subscribe(`/sub/room/${roomId}`, response => {
         const payload = JSON.parse(response.body)
-        setGameInfo(payload)
-      })
-      stompClient.subscribe("/play/multi/left", response => {
-        const payload = JSON.parse(response.body)
-        console.log(payload)
-        setGameInfo(payload)
-      })
-
-      stompClient.subscribe("/play/multi/top", response => {
-        const payload = JSON.parse(response.body)
-        console.log(payload)
-        setGameInfo(payload)
-      })
-
-      stompClient.subscribe("/play/multi/right", response => {
-        const payload = JSON.parse(response.body)
-        console.log(payload)
-        setGameInfo(payload)
-      })
-
-      stompClient.subscribe("/play/multi/bottom", response => {
-        const payload = JSON.parse(response.body)
-        console.log(payload)
         setGameInfo(payload)
       })
     })

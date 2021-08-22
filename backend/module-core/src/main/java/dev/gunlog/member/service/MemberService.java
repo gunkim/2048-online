@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class MemberService {
     private final MemberRepository memberRepository;
 
-    public boolean checkUser(String memberId) {
+    public boolean checkMember(String memberId) {
         return memberRepository.findByMemberId(memberId).isPresent();
     }
 }
