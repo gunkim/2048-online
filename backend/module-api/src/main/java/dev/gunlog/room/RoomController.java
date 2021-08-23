@@ -1,15 +1,17 @@
 package dev.gunlog.room;
 
-import dev.gunlog.multi.model.Player;
-import dev.gunlog.multi.model.GameRoom;
 import dev.gunlog.multi.domain.GameRoomRepository;
 import dev.gunlog.multi.domain.UserRoomRepository;
+import dev.gunlog.multi.model.GameRoom;
+import dev.gunlog.multi.model.Player;
+import dev.gunlog.multi.service.MultiService;
 import dev.gunlog.room.dto.RoomCreateRequestDto;
 import dev.gunlog.room.dto.RoomListResponseDto;
 import dev.gunlog.room.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -21,8 +23,10 @@ import java.util.List;
 @RequestMapping("/api/v2/room")
 public class RoomController {
     private final RoomService roomService;
+    private final MultiService multiService;
     private final GameRoomRepository gameRoomRepository;
     private final UserRoomRepository userRoomRepository;
+    private final SimpMessageSendingOperations messageTemplate;
 
     @GetMapping(path = "list")
     public ResponseEntity<List<RoomListResponseDto>> rooms() {
@@ -57,5 +61,17 @@ public class RoomController {
         GameRoom gameRoom = gameRoomRepository.findRoomByRoomId(roomId)
                 .orElseThrow(() -> new IllegalArgumentException("게임 방을 찾을 수 없습니다. ROOM_ID : "+roomId));
         gameRoom.getPlayers().add(new Player(memberId));
+    }
+    @PutMapping(path = "exit")
+    public void exitRoom(Principal principal) {
+        String memberId = principal.getName();
+        Integer roomId = multiService.findRoomId(memberId);
+        multiService.exitRoom(memberId);
+        try {
+            GameRoom gameRoom = multiService.findRoomByRoomId(roomId);
+            messageTemplate.convertAndSend("/sub/room/"+roomId, gameRoom);
+        } catch(IllegalArgumentException e) {
+            log.info("삭제된 게임 방");
+        }
     }
 }

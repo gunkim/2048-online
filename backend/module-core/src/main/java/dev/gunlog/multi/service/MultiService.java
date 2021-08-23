@@ -5,10 +5,13 @@ import dev.gunlog.multi.domain.UserRoomRepository;
 import dev.gunlog.multi.model.Game;
 import dev.gunlog.multi.model.GameRoom;
 import dev.gunlog.multi.model.Player;
+import dev.gunlog.room.domain.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RequiredArgsConstructor
@@ -16,6 +19,7 @@ import java.util.stream.Stream;
 public class MultiService {
     private final GameRoomRepository gameRoomRepository;
     private final UserRoomRepository userRoomRepository;
+    private final RoomRepository roomRepository;
 
     public GameRoom leftMove(String username) {
         return this.commonMove(username, game -> game.leftMove());
@@ -34,7 +38,25 @@ public class MultiService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 게임 방을 찾을 수 없습니다. ROOM_ID : "+roomId));
     }
     public Integer findRoomId(String memberId) {
-        return userRoomRepository.findRoomIdByMemberId(memberId).orElseThrow(() -> new IllegalArgumentException("참가한 게임 방을 찾을 수 없습니다."));
+        return userRoomRepository.findRoomIdByMemberId(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("참가한 게임 방을 찾을 수 없습니다."));
+    }
+    @Transactional
+    public void exitRoom(String memberId) {
+        Integer roomId = userRoomRepository.findRoomIdByMemberId(memberId)
+                .orElseThrow();
+        GameRoom room = gameRoomRepository.findRoomByRoomId(roomId)
+                .orElseThrow();
+
+        room.setPlayers(room.getPlayers().stream()
+                .filter(player -> !memberId.equals(player.getNickname()))
+                .collect(Collectors.toList()));
+        userRoomRepository.deleteByMemberId(memberId);
+
+        if(room.getPlayers().size() == 0) {
+            gameRoomRepository.deleteByRoomId(roomId);
+            roomRepository.deleteById(Long.valueOf(roomId));
+        }
     }
     private GameRoom commonMove(String username, Consumer<Game> gameConsumer) {
         Integer roomId = userRoomRepository.findRoomIdByMemberId(username)
