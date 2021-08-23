@@ -2,10 +2,11 @@ import Layout from "../components/Layout"
 import GameBoard from "../components/GameBoard"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import { Typography } from "antd"
+import { Button, message, Typography } from "antd"
 import stompClient from "../util/socket-util"
 import { useRouter } from "next/router"
 import hotkeys from "hotkeys-js"
+import { exitRoom } from "../apis/room"
 
 const { Title } = Typography
 
@@ -45,6 +46,8 @@ const ScoreBox = styled.div`
     color: white;
   }
 `
+const key = "updatable"
+
 const Room = () => {
   const router = useRouter()
   const [gameInfo, setGameInfo] = useState({
@@ -87,7 +90,6 @@ const Room = () => {
     const headers = {
       Authorization: localStorage.getItem("token")
     }
-    console.log(`/sub/room/${roomId}`)
     stompClient.connect(headers, () => {
       stompClient.send("/pub/multi/init", {}, roomId)
       stompClient.subscribe(`/sub/room/${roomId}`, response => {
@@ -96,8 +98,20 @@ const Room = () => {
       })
     })
   }, [router])
+
+  const handleExit = async () => {
+    await exitRoom()
+    message.success({ content: "방에서 나왔습니다!", key, duration: 2 })
+    router.push({
+      pathname: "/rooms"
+    })
+  }
   return (
     <Layout width={610}>
+      <Button danger onClick={handleExit}>
+        방 나가기
+      </Button>
+      <hr></hr>
       <MainFrame>
         {gameInfo.players.map((player, index) => (
           <Frame key={index}>
