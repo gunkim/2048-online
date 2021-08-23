@@ -33,3 +33,11 @@ export const joinRoom = async (roomId: number) => {
         headers: {'Authorization': token},
     })
 }
+export const exitRoom = async() => {
+    const token: string = localStorage.getItem("token")
+    await axios({
+        method: 'put',
+        url: `${BASE_URL}/exit`,
+        headers: {'Authorization': token},
+    })
+}
