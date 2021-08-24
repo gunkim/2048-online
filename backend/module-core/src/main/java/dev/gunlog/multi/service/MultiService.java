@@ -41,6 +41,22 @@ public class MultiService {
         return userRoomRepository.findRoomIdByMemberId(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("참가한 게임 방을 찾을 수 없습니다."));
     }
+    public boolean gameStart(String memberId) {
+        Integer roomId = userRoomRepository.findRoomIdByMemberId(memberId)
+                .orElseThrow();
+        GameRoom room = gameRoomRepository.findRoomByRoomId(roomId)
+                .orElseThrow();
+        if(memberId.equals(room.getHost())) {
+            room.gameStart();
+            for (Player player : room.getPlayers()) {
+                if(player.getGameInfo() == null) {
+                    player.setGameInfo(new Game());
+                }
+            }
+            return true;
+        }
+        return false;
+    }
     @Transactional
     public void exitRoom(String memberId) {
         Integer roomId = userRoomRepository.findRoomIdByMemberId(memberId)
@@ -64,6 +80,10 @@ public class MultiService {
         GameRoom room = gameRoomRepository.findRoomByRoomId(roomId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게임 방을 찾을 수 없습니다. ROOM_ID : "+roomId));
 
+        if(!room.isStart()) {
+            return room;
+        }
+
         Stream<Player> players = room.getPlayers().stream();
         Player myPlayer = players
                 .filter(player -> username.equals(player.getNickname()))
@@ -71,6 +91,7 @@ public class MultiService {
                 .orElseThrow(() -> new IllegalArgumentException("플레이어를 찾을 수 없습니다 : "+username));
 
         gameConsumer.accept(myPlayer.getGameInfo());
+
         return room;
     }
 }
