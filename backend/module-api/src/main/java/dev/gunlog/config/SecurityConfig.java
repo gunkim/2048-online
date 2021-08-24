@@ -72,10 +72,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private List<String> getPermitAllPathList() {
         return Arrays.asList(
                 AUTHENTICATION_URL,
-                "/webSocket/**",
-                "/play/**",
-                "/game/**",
-                "/api/v2/member/check/**"
+                "/api/v2/member/check/**",
+                "/webSocket/**"
         );
     }
     @Bean

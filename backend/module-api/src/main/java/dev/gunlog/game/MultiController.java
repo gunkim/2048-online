@@ -1,5 +1,6 @@
 package dev.gunlog.game;
 
+import dev.gunlog.multi.model.GameRoom;
 import dev.gunlog.multi.service.MultiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,17 @@ import java.security.Principal;
 public class MultiController {
     private final MultiService multiService;
     private final SimpMessageSendingOperations messageTemplate;
+
+    @MessageMapping("/multi/start")
+    public void gameStart(Principal principal) {
+        String memberId = principal.getName();
+        boolean isStart = multiService.gameStart(memberId);
+        Integer roomId = multiService.findRoomId(memberId);
+        GameRoom gameRoom = multiService.findRoomByRoomId(roomId);
+        if(isStart) {
+            messageTemplate.convertAndSend("/sub/room/"+roomId, gameRoom);
+        }
+    }
 
     @MessageMapping("/multi/init")
     public void getRoomInfo(Integer roomId) {

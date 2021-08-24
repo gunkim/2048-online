@@ -3,12 +3,16 @@ import GameBoard from "../components/GameBoard"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { Button, message, Typography } from "antd"
-import stompClient from "../util/socket-util"
 import { useRouter } from "next/router"
 import hotkeys from "hotkeys-js"
 import { exitRoom } from "../apis/room"
+import stompClient from "../util/socket-util"
 
 const { Title } = Typography
+
+const MyTitle = styled(Title)`
+  color: ${props => (props["data-is-host"] ? "yellow !important" : "")};
+`
 
 const MainFrame = styled.div`
   background-color: yellow;
@@ -46,23 +50,43 @@ const ScoreBox = styled.div`
     color: white;
   }
 `
+const DummyBoard = styled.div`
+  width: 270px;
+  height: 270px;
+`
 const key = "updatable"
+
+type GameInfo = {
+  board: number[][]
+  score: number
+  gameOver: boolean
+}
+type Player = {
+  nickname: string
+  gameInfo: GameInfo | null
+}
+type GameRoom = {
+  name: string
+  players: Array<Player>
+  gameMode: string
+  maxNumberOfPeople: string
+  start: boolean
+  timer: number
+  host: string
+}
 
 const Room = () => {
   const router = useRouter()
-  const [gameInfo, setGameInfo] = useState({
-    gameMode: "SPEED_ATTACK",
-    maxNumberOfPeople: "FOUR",
-    name: "새로운 방입니당~",
-    players: [
-      {
-        gameInfo: { board: new Array(), score: 0, gameOver: false },
-        nickname: ""
-      }
-    ],
+  const [gameInfo, setGameInfo] = useState<GameRoom>({
+    name: "",
+    players: [],
+    gameMode: "",
+    maxNumberOfPeople: "",
     start: false,
-    timer: 0
+    timer: 0,
+    host: ""
   })
+
   const leftMove = e => {
     e.preventDefault()
     stompClient.send("/pub/multi/left", {})
@@ -81,6 +105,7 @@ const Room = () => {
   }
   useEffect(() => {
     console.log("DOM LOAD")
+
     hotkeys("left", leftMove)
     hotkeys("right", rightMove)
     hotkeys("up", topMove)
@@ -90,13 +115,21 @@ const Room = () => {
     const headers = {
       Authorization: localStorage.getItem("token")
     }
-    stompClient.connect(headers, () => {
+    if (stompClient.connected) {
       stompClient.send("/pub/multi/init", {}, roomId)
       stompClient.subscribe(`/sub/room/${roomId}`, response => {
         const payload = JSON.parse(response.body)
         setGameInfo(payload)
       })
-    })
+    } else {
+      stompClient.connect(headers, () => {
+        stompClient.send("/pub/multi/init", {}, roomId)
+        stompClient.subscribe(`/sub/room/${roomId}`, response => {
+          const payload = JSON.parse(response.body)
+          setGameInfo(payload)
+        })
+      })
+    }
   }, [router])
 
   const handleExit = async () => {
@@ -106,30 +139,51 @@ const Room = () => {
       pathname: "/rooms"
     })
   }
+  const handleStart = () => {
+    stompClient.send("/pub/multi/start", {})
+  }
   return (
     <Layout width={610}>
       <Button danger onClick={handleExit}>
         방 나가기
       </Button>
+      {true ? (
+        <Button type="primary" onClick={handleStart}>
+          게임 시작
+        </Button>
+      ) : (
+        ""
+      )}
+
       <hr></hr>
       <MainFrame>
         {gameInfo.players.map((player, index) => (
           <Frame key={index}>
             <Head>
               <Info>
-                <Title level={3}>{player.nickname}</Title>
+                <MyTitle
+                  level={3}
+                  data-is-host={gameInfo.host === player.nickname}
+                >
+                  {player.nickname}
+                </MyTitle>
               </Info>
-              <ScoreBox>
-                <h3>SCORE {player.gameInfo.score}</h3>
-              </ScoreBox>
+              {player.gameInfo && (
+                <ScoreBox>
+                  <h3>SCORE {player.gameInfo.score}</h3>
+                </ScoreBox>
+              )}
             </Head>
-            <GameBoard
-              board={player.gameInfo.board}
-              mainWidth={270}
-              width={50}
-              height={50}
-              over={player.gameInfo.gameOver}
-            />
+            {!player.gameInfo && <DummyBoard></DummyBoard>}
+            {player.gameInfo && (
+              <GameBoard
+                board={player.gameInfo.board}
+                mainWidth={270}
+                width={50}
+                height={50}
+                over={player.gameInfo.gameOver}
+              />
+            )}
           </Frame>
         ))}
       </MainFrame>

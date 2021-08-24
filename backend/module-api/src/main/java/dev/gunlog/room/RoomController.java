@@ -36,8 +36,8 @@ public class RoomController {
     }
     @PostMapping
     public ResponseEntity<Integer> createRoom(@RequestBody RoomCreateRequestDto requestDto, Principal principal) {
-        String username = principal.getName();
-        Integer roomId = Math.toIntExact(roomService.createRoom(requestDto, username));
+        String memberId = principal.getName();
+        Integer roomId = Math.toIntExact(roomService.createRoom(requestDto, memberId));
 
         GameRoom gameRoom = GameRoom.builder()
                 .name(requestDto.getTitle())
@@ -45,10 +45,11 @@ public class RoomController {
                 .maxNumberOfPeople(requestDto.getPersonnel())
                 .gameMode(requestDto.getMode())
                 .timer(0)
+                .host(memberId)
                 .build();
-        gameRoom.addPlayer(new Player(username));
+        gameRoom.addPlayer(new Player(memberId));
         gameRoomRepository.save(roomId, gameRoom);
-        userRoomRepository.save(username, roomId);
+        userRoomRepository.save(memberId, roomId);
 
         return ResponseEntity.ok(roomId);
     }
@@ -60,7 +61,13 @@ public class RoomController {
 
         GameRoom gameRoom = gameRoomRepository.findRoomByRoomId(roomId)
                 .orElseThrow(() -> new IllegalArgumentException("게임 방을 찾을 수 없습니다. ROOM_ID : "+roomId));
-        gameRoom.getPlayers().add(new Player(memberId));
+        List<Player> players = gameRoom.getPlayers();
+
+        boolean isNotJoin = players.stream().allMatch(player -> !player.getNickname().equals(memberId));
+
+        if(isNotJoin) {
+            players.add(new Player(memberId));
+        }
     }
     @PutMapping(path = "exit")
     public void exitRoom(Principal principal) {

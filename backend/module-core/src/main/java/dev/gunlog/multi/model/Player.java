@@ -2,16 +2,18 @@ package dev.gunlog.multi.model;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 @Getter
 @ToString
 public class Player {
     private String nickname;
+    @Setter
     private Game gameInfo;
 
     public Player(String nickname) {
-        this(nickname, new Game());
+        this(nickname, null);
     }
     @Builder
     public Player(String nickname, Game gameInfo) {
