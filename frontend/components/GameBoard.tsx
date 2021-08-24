@@ -1,11 +1,12 @@
 import { Col, Row } from "antd"
 import { Level } from "../style/Level"
 import styled from "styled-components"
+import { Fragment } from "react"
 
 const Board = styled(Row)`
   padding: 7px;
   border-radius: 5px;
-  width: ${props => `${props.mainWidth}px`};
+  width: ${props => `${props["data-is-main-width"]}px`};
 `
 const Tile = styled.div`
   background-color: ${props =>
@@ -25,8 +26,8 @@ const Blind = styled.div`
   position: absolute;
   background-color: rgba(0, 0, 0, 0.65);
   z-index: 10;
-  height: ${props => `${props.mainWidth}px`};
-  width: ${props => `${props.mainWidth}px`};
+  height: ${props => `${props.width}px`};
+  width: ${props => `${props.width}px`};
   color: white;
   font-weight: bold;
   text-align: center;
@@ -47,29 +48,27 @@ const GameBoard = ({
   width,
   height,
   over
-}: GameBoardProps) => {
-  return (
-    <>
-      {over && (
-        <Blind mainWidth={mainWidth} height={height}>
-          GAME OVER!!
-        </Blind>
-      )}
-      <Board mainWidth={`${mainWidth}`}>
-        {board.map((row: number[]) => {
-          return (
-            <>
-              {row.map((col: number) => (
-                <Tile width={width} height={height} lv={col}>
-                  {col != 0 ? Math.pow(2, col) : ""}
-                </Tile>
-              ))}
-            </>
-          )
-        })}
-      </Board>
-    </>
-  )
-}
+}: GameBoardProps) => (
+  <>
+    {over && (
+      <Blind width={mainWidth} height={height}>
+        GAME OVER!!
+      </Blind>
+    )}
+    <Board data-is-main-width={mainWidth}>
+      {board.map((row: number[], index: number) => {
+        return (
+          <Fragment key={index}>
+            {row.map((col: number, index: number) => (
+              <Tile key={index} width={width} height={height} lv={col}>
+                {col != 0 ? Math.pow(2, col) : ""}
+              </Tile>
+            ))}
+          </Fragment>
+        )
+      })}
+    </Board>
+  </>
+)
 
 export default GameBoard
