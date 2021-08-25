@@ -44,7 +44,6 @@ public class RoomController {
                 .isStart(false)
                 .maxNumberOfPeople(requestDto.getPersonnel())
                 .gameMode(requestDto.getMode())
-                .timer(0)
                 .host(memberId)
                 .build();
         gameRoom.addPlayer(new Player(memberId));

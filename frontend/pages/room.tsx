@@ -7,6 +7,8 @@ import { useRouter } from "next/router"
 import hotkeys from "hotkeys-js"
 import { exitRoom } from "../apis/room"
 import stompClient from "../util/socket-util"
+import { stringify } from "querystring"
+import Timer from "../components/Timer"
 
 const { Title } = Typography
 
@@ -86,6 +88,7 @@ const Room = () => {
     timer: 0,
     host: ""
   })
+  const [startDate, setStartDate] = useState<Date>()
 
   const leftMove = e => {
     e.preventDefault()
@@ -115,21 +118,17 @@ const Room = () => {
     const headers = {
       Authorization: localStorage.getItem("token")
     }
-    if (stompClient.connected) {
+    stompClient.connect(headers, () => {
       stompClient.send("/pub/multi/init", {}, roomId)
       stompClient.subscribe(`/sub/room/${roomId}`, response => {
         const payload = JSON.parse(response.body)
         setGameInfo(payload)
       })
-    } else {
-      stompClient.connect(headers, () => {
-        stompClient.send("/pub/multi/init", {}, roomId)
-        stompClient.subscribe(`/sub/room/${roomId}`, response => {
-          const payload = JSON.parse(response.body)
-          setGameInfo(payload)
-        })
+      stompClient.subscribe(`/sub/room/${roomId}/start`, response => {
+        const payload: string = JSON.parse(response.body)
+        setStartDate(new Date(payload))
       })
-    }
+    })
   }, [router])
 
   const handleExit = async () => {
@@ -140,10 +139,13 @@ const Room = () => {
     })
   }
   const handleStart = () => {
-    stompClient.send("/pub/multi/start", {})
+    if (!gameInfo.start) {
+      stompClient.send("/pub/multi/start", {})
+    }
   }
   return (
     <Layout width={610}>
+      <Timer startDate={startDate} />
       <Button danger onClick={handleExit}>
         방 나가기
       </Button>
@@ -154,7 +156,6 @@ const Room = () => {
       ) : (
         ""
       )}
-
       <hr></hr>
       <MainFrame>
         {gameInfo.players.map((player, index) => (

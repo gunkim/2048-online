@@ -26,39 +26,47 @@ public class MultiController {
         GameRoom gameRoom = multiService.findRoomByRoomId(roomId);
         if(isStart) {
             messageTemplate.convertAndSend("/sub/room/"+roomId, gameRoom);
+            messageTemplate.convertAndSend("/sub/room/"+roomId+"/start", gameRoom.getStartTime());
         }
     }
 
     @MessageMapping("/multi/init")
     public void getRoomInfo(Integer roomId) {
-        messageTemplate.convertAndSend("/sub/room/"+roomId, multiService.findRoomByRoomId(roomId));
+        GameRoom gameRoom = multiService.findRoomByRoomId(roomId);
+
+        messageTemplate.convertAndSend("/sub/room/"+roomId, gameRoom);
+        messageTemplate.convertAndSend("/sub/room/"+roomId+"/start", gameRoom.getStartTime());
     }
 
     @MessageMapping("/multi/left")
     public void leftMove(Principal principal) {
         String memberId = principal.getName();
         Integer roomId = multiService.findRoomId(memberId);
-        messageTemplate.convertAndSend("/sub/room/"+roomId, multiService.leftMove(memberId));
+        GameRoom room = multiService.leftMove(memberId);
+        messageTemplate.convertAndSend("/sub/room/"+roomId, room);
     }
 
     @MessageMapping("/multi/right")
     public void rightMove(Principal principal) {
         String memberId = principal.getName();
         Integer roomId = multiService.findRoomId(memberId);
-        messageTemplate.convertAndSend("/sub/room/"+roomId, multiService.rightMove(memberId));
+        GameRoom room = multiService.rightMove(memberId);
+        messageTemplate.convertAndSend("/sub/room/"+roomId, room);
     }
 
     @MessageMapping("/multi/top")
     public void topMove(Principal principal) {
         String memberId = principal.getName();
         Integer roomId = multiService.findRoomId(memberId);
-        messageTemplate.convertAndSend("/sub/room/"+roomId, multiService.topMove(memberId));
+        GameRoom room = multiService.topMove(memberId);
+        messageTemplate.convertAndSend("/sub/room/"+roomId, room);
     }
 
     @MessageMapping("/multi/bottom")
     public void bottomMove(Principal principal) {
         String memberId = principal.getName();
         Integer roomId = multiService.findRoomId(memberId);
-        messageTemplate.convertAndSend("/sub/room/"+roomId, multiService.bottomMove(memberId));
+        GameRoom room = multiService.bottomMove(memberId);
+        messageTemplate.convertAndSend("/sub/room/"+roomId, room);
     }
 }
