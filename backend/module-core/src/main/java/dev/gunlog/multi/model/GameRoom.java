@@ -41,6 +41,10 @@ public class GameRoom {
         this.isStart = true;
         this.startTime = LocalDateTime.now();
     }
+    public void gameStop() {
+        this.isStart = false;
+        this.startTime = null;
+    }
     public void addPlayer(Player player) {
         if(this.maxNumberOfPeople.getSize() <= players.size()) {
             return;

@@ -43,6 +43,10 @@ public class MultiController {
         String memberId = principal.getName();
         Integer roomId = multiService.findRoomId(memberId);
         GameRoom room = multiService.leftMove(memberId);
+
+        if(room.getStartTime() == null) {
+            messageTemplate.convertAndSend("/sub/room/"+roomId+"/start", "");
+        }
         messageTemplate.convertAndSend("/sub/room/"+roomId, room);
     }
 
@@ -51,6 +55,11 @@ public class MultiController {
         String memberId = principal.getName();
         Integer roomId = multiService.findRoomId(memberId);
         GameRoom room = multiService.rightMove(memberId);
+
+
+        if(room.getStartTime() == null) {
+            messageTemplate.convertAndSend("/sub/room/"+roomId+"/start", "");
+        }
         messageTemplate.convertAndSend("/sub/room/"+roomId, room);
     }
 
@@ -59,6 +68,11 @@ public class MultiController {
         String memberId = principal.getName();
         Integer roomId = multiService.findRoomId(memberId);
         GameRoom room = multiService.topMove(memberId);
+
+
+        if(room.getStartTime() == null) {
+            messageTemplate.convertAndSend("/sub/room/"+roomId+"/start", "");
+        }
         messageTemplate.convertAndSend("/sub/room/"+roomId, room);
     }
 
@@ -67,6 +81,11 @@ public class MultiController {
         String memberId = principal.getName();
         Integer roomId = multiService.findRoomId(memberId);
         GameRoom room = multiService.bottomMove(memberId);
+
+
+        if(room.getStartTime() == null) {
+            messageTemplate.convertAndSend("/sub/room/"+roomId+"/start", "");
+        }
         messageTemplate.convertAndSend("/sub/room/"+roomId, room);
     }
 }
