@@ -1,12 +1,13 @@
 import Layout from "../components/Layout"
 import GameBoard from "../components/GameBoard"
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import styled from "styled-components"
 import { Button, message, Typography } from "antd"
 import { useRouter } from "next/router"
 import hotkeys from "hotkeys-js"
 import { exitRoom } from "../apis/room"
 import stompClient from "../util/socket-util"
+import Timer from "../components/Timer"
 
 const { Title } = Typography
 
@@ -71,7 +72,6 @@ type GameRoom = {
   gameMode: string
   maxNumberOfPeople: string
   start: boolean
-  timer: number
   host: string
 }
 
@@ -83,53 +83,68 @@ const Room = () => {
     gameMode: "",
     maxNumberOfPeople: "",
     start: false,
-    timer: 0,
     host: ""
   })
-
-  const leftMove = e => {
-    e.preventDefault()
-    stompClient.send("/pub/multi/left", {})
-  }
-  const rightMove = e => {
-    e.preventDefault()
-    stompClient.send("/pub/multi/right", {})
-  }
-  const topMove = e => {
-    e.preventDefault()
-    stompClient.send("/pub/multi/top", {})
-  }
-  const bottomMove = e => {
-    e.preventDefault()
-    stompClient.send("/pub/multi/bottom", {})
-  }
+  const [startDate, setStartDate] = useState<Date>(null)
   useEffect(() => {
-    console.log("DOM LOAD")
+    if (!gameInfo.start) return
 
-    hotkeys("left", leftMove)
-    hotkeys("right", rightMove)
-    hotkeys("up", topMove)
-    hotkeys("down", bottomMove)
+    hotkeys("left", e => {
+      e.preventDefault()
+      if (gameInfo.start) {
+        stompClient.send("/pub/multi/left", {})
+      }
+    })
+    hotkeys("right", e => {
+      e.preventDefault()
+      if (gameInfo.start) {
+        stompClient.send("/pub/multi/right", {})
+      }
+    })
+    hotkeys("up", e => {
+      e.preventDefault()
+      if (gameInfo.start) {
+        stompClient.send("/pub/multi/top", {})
+      }
+    })
+    hotkeys("down", e => {
+      e.preventDefault()
+      if (gameInfo.start) {
+        stompClient.send("/pub/multi/bottom", {})
+      }
+    })
+
+    return () => {
+      hotkeys.unbind("left")
+      hotkeys.unbind("right")
+      hotkeys.unbind("up")
+      hotkeys.unbind("down")
+    }
+  }, [gameInfo.start])
+  useEffect(() => {
+    if (!router?.query) return
 
     const { roomId } = router.query
     const headers = {
       Authorization: localStorage.getItem("token")
     }
-    if (stompClient.connected) {
+
+    stompClient.connect(headers, () => {
       stompClient.send("/pub/multi/init", {}, roomId)
       stompClient.subscribe(`/sub/room/${roomId}`, response => {
         const payload = JSON.parse(response.body)
         setGameInfo(payload)
       })
-    } else {
-      stompClient.connect(headers, () => {
-        stompClient.send("/pub/multi/init", {}, roomId)
-        stompClient.subscribe(`/sub/room/${roomId}`, response => {
-          const payload = JSON.parse(response.body)
-          setGameInfo(payload)
-        })
+      stompClient.subscribe(`/sub/room/${roomId}/start`, response => {
+        if (response.body === "") {
+          setStartDate(null)
+          return
+        }
+        const payload: string = JSON.parse(response.body)
+
+        setStartDate(new Date(payload))
       })
-    }
+    })
   }, [router])
 
   const handleExit = async () => {
@@ -140,21 +155,21 @@ const Room = () => {
     })
   }
   const handleStart = () => {
-    stompClient.send("/pub/multi/start", {})
+    if (!gameInfo.start) {
+      stompClient.send("/pub/multi/start", {})
+    }
   }
   return (
     <Layout width={610}>
+      <Timer startDate={startDate} />
       <Button danger onClick={handleExit}>
         방 나가기
       </Button>
-      {true ? (
+      {true && (
         <Button type="primary" onClick={handleStart}>
           게임 시작
         </Button>
-      ) : (
-        ""
       )}
-
       <hr></hr>
       <MainFrame>
         {gameInfo.players.map((player, index) => (
