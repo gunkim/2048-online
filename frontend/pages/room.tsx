@@ -8,13 +8,47 @@ import hotkeys from "hotkeys-js"
 import { exitRoom } from "../apis/room"
 import stompClient from "../util/socket-util"
 import Timer from "../components/Timer"
+import { Modal } from "antd"
+
+function info() {
+  Modal.info({
+    title: <Title level={3}>결과</Title>,
+    content: (
+      <div>
+        <div>
+          <div>gunkim</div>
+          <div>score: 22</div>
+          <div>등수: 1</div>
+        </div>
+        <hr />
+        <div>
+          <div>gunkim</div>
+          <div>score: 22</div>
+          <div>등수: 1</div>
+        </div>
+        <hr />
+        <div>
+          <div>gunkim</div>
+          <div>score: 22</div>
+          <div>등수: 1</div>
+        </div>
+        <hr />
+        <div>
+          <div>gunkim</div>
+          <div>score: 22</div>
+          <div>등수: 1</div>
+        </div>
+      </div>
+    ),
+    onOk() {}
+  })
+}
 
 const { Title } = Typography
 
 const MyTitle = styled(Title)`
   color: ${props => (props["data-is-host"] ? "yellow !important" : "")};
 `
-
 const MainFrame = styled.div`
   background-color: yellow;
   float: left;
@@ -121,6 +155,9 @@ const Room = () => {
       hotkeys.unbind("down")
     }
   }, [gameInfo.start])
+  useEffect(() => {
+    info()
+  }, [info])
   useEffect(() => {
     if (!router?.query) return
 
