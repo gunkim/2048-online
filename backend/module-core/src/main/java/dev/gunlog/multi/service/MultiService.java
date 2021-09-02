@@ -54,13 +54,13 @@ public class MultiService {
         GameRoom room = gameRoomRepository.findRoomByRoomId(roomId)
                 .orElseThrow();
         if(memberId.equals(room.getHost())) {
-            room.gameStart();
-            for (Player player : room.getPlayers()) {
-                if(player.getGameInfo() == null) {
-                    player.setGameInfo(new Game());
-                }
+            if(!room.isStart()) {
+                room.gameStart();
+                room.getPlayers().stream()
+                        .forEach(player -> player.setGameInfo(new Game()));
+
+                return true;
             }
-            return true;
         }
         return false;
     }
@@ -80,6 +80,12 @@ public class MultiService {
             gameRoomRepository.deleteByRoomId(roomId);
             roomRepository.deleteById(Long.valueOf(roomId));
         }
+    }
+    public void gameStop(Integer roomId) {
+        GameRoom room = gameRoomRepository.findRoomByRoomId(roomId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게임 방을 찾을 수 없습니다. ROOM_ID : "+roomId));
+        room.gameStop();
+        this.gameRoomRepository.save(roomId, room);
     }
     private GameRoom commonMove(String username, Consumer<Game> gameConsumer) {
         Integer roomId = userRoomRepository.findRoomIdByMemberId(username)

@@ -27,6 +27,8 @@ public class MultiController {
         if(isStart) {
             messageTemplate.convertAndSend("/sub/room/"+roomId, gameRoom);
             messageTemplate.convertAndSend("/sub/room/"+roomId+"/start", gameRoom.getStartTime());
+            Thread thread = new TimerThread(roomId, multiService, messageTemplate);
+            thread.run();
         }
     }
 

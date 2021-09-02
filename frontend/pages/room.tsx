@@ -1,6 +1,6 @@
 import Layout from "../components/Layout"
 import GameBoard from "../components/GameBoard"
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { Button, message, Typography } from "antd"
 import { useRouter } from "next/router"
@@ -10,35 +10,20 @@ import stompClient from "../util/socket-util"
 import Timer from "../components/Timer"
 import { Modal } from "antd"
 
-function info() {
+function info(players: Player[]) {
+  if (!players) return
   Modal.info({
     title: <Title level={3}>결과</Title>,
     content: (
-      <div>
-        <div>
-          <div>gunkim</div>
-          <div>score: 22</div>
-          <div>등수: 1</div>
-        </div>
-        <hr />
-        <div>
-          <div>gunkim</div>
-          <div>score: 22</div>
-          <div>등수: 1</div>
-        </div>
-        <hr />
-        <div>
-          <div>gunkim</div>
-          <div>score: 22</div>
-          <div>등수: 1</div>
-        </div>
-        <hr />
-        <div>
-          <div>gunkim</div>
-          <div>score: 22</div>
-          <div>등수: 1</div>
-        </div>
-      </div>
+      <>
+        {players &&
+          players.map(player => (
+            <div>
+              <h3>{player.nickname}</h3>
+              <span>{player.gameInfo.score}</span>
+            </div>
+          ))}
+      </>
     ),
     onOk() {}
   })
@@ -156,8 +141,8 @@ const Room = () => {
     }
   }, [gameInfo.start])
   useEffect(() => {
-    info()
-  }, [info])
+    info(gameInfo.players)
+  }, [])
   useEffect(() => {
     if (!router?.query) return
 
@@ -171,6 +156,9 @@ const Room = () => {
       stompClient.subscribe(`/sub/room/${roomId}`, response => {
         const payload = JSON.parse(response.body)
         setGameInfo(payload)
+      })
+      stompClient.subscribe(`/sub/room/${roomId}/stop`, response => {
+        info(JSON.parse(response.body))
       })
       stompClient.subscribe(`/sub/room/${roomId}/start`, response => {
         if (response.body === "") {
@@ -202,7 +190,7 @@ const Room = () => {
       <Button danger onClick={handleExit}>
         방 나가기
       </Button>
-      {true && (
+      {!gameInfo.start && (
         <Button type="primary" onClick={handleStart}>
           게임 시작
         </Button>
