@@ -1,5 +1,6 @@
 package dev.gunlog.game;
 
+import dev.gunlog.multi.model.GameRoom;
 import dev.gunlog.multi.model.Player;
 import dev.gunlog.multi.service.MultiService;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +20,10 @@ public class TimerThread extends Thread {
     @SneakyThrows
     @Override
     public void run() {
-        Thread.sleep(180000); //3분
-        multiService.gameStop(this.roomId);
-        List<Player> playerList = multiService.findRoomByRoomId(this.roomId).getPlayers();
-        messageTemplate.convertAndSend("/sub/room/"+roomId+"/stop", playerList);
+        Thread.sleep(5000);//180000); //3분
+        List<Player> players = multiService.gameStop(this.roomId);
+        GameRoom room = multiService.findRoomByRoomId(this.roomId);
+        messageTemplate.convertAndSend("/sub/room/"+roomId+"/result", players);
+        messageTemplate.convertAndSend("/sub/room/"+roomId, room);
     }
 }

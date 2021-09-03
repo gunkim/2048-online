@@ -81,11 +81,13 @@ public class MultiService {
             roomRepository.deleteById(Long.valueOf(roomId));
         }
     }
-    public void gameStop(Integer roomId) {
+    public List<Player> gameStop(Integer roomId) {
         GameRoom room = gameRoomRepository.findRoomByRoomId(roomId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게임 방을 찾을 수 없습니다. ROOM_ID : "+roomId));
-        room.gameStop();
+        List<Player> players = room.gameStop();
         this.gameRoomRepository.save(roomId, room);
+
+        return players;
     }
     private GameRoom commonMove(String username, Consumer<Game> gameConsumer) {
         Integer roomId = userRoomRepository.findRoomIdByMemberId(username)

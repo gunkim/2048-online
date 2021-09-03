@@ -10,6 +10,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 public class GameRoom {
@@ -41,9 +42,15 @@ public class GameRoom {
         this.isStart = true;
         this.startTime = LocalDateTime.now();
     }
-    public void gameStop() {
+    public List<Player> gameStop() {
+        List<Player> result = this.players.stream()
+                .map(Player::new).collect(Collectors.toList());
         this.isStart = false;
         this.startTime = null;
+        this.players.stream().forEach(player -> {
+            player.setGameInfo(null);
+        });
+        return result;
     }
     public void addPlayer(Player player) {
         if(this.maxNumberOfPeople.getSize() <= players.size()) {

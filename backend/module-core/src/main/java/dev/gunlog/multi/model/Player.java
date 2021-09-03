@@ -20,4 +20,8 @@ public class Player {
         this.nickname = nickname;
         this.gameInfo = gameInfo;
     }
+    public Player(Player player) {
+        this.nickname = player.getNickname();
+        this.gameInfo = player.getGameInfo();
+    }
 }

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import useInterval from "../hooks/useInterval"
 
 const calcProgressTime = (startDate: Date): number => {
@@ -22,17 +22,13 @@ type TimerProps = {
   startDate: Date | null
 }
 const Timer = ({ startDate }: TimerProps) => {
-  const [count, setCount] = useState(
-    startDate ? calcProgressTime(startDate) : null
-  )
-  const [isRunning, setIsRunning] = useState(true)
-
-  useInterval(
-    () => {
-      setCount(count + 1)
-    },
-    isRunning ? 1000 : null
-  )
+  const [count, setCount] = useState(0)
+  useInterval(() => {
+    setCount(count + 1)
+  }, startDate && 1000)
+  useEffect(() => {
+    setCount(startDate ? calcProgressTime(startDate) : null)
+  }, [count])
   return <div style={{ textAlign: "center", fontSize: "2rem" }}>{count}</div>
 }
 export default Timer
