@@ -140,9 +140,7 @@ const Room = () => {
       hotkeys.unbind("down")
     }
   }, [gameInfo.start])
-  useEffect(() => {
-    info(gameInfo.players)
-  }, [])
+
   useEffect(() => {
     if (!router?.query) return
 
@@ -154,19 +152,17 @@ const Room = () => {
     stompClient.connect(headers, () => {
       stompClient.send("/pub/multi/init", {}, roomId)
       stompClient.subscribe(`/sub/room/${roomId}`, response => {
-        const payload = JSON.parse(response.body)
+        const payload: GameRoom = JSON.parse(response.body)
+
         setGameInfo(payload)
       })
-      stompClient.subscribe(`/sub/room/${roomId}/stop`, response => {
-        info(JSON.parse(response.body))
+      stompClient.subscribe(`/sub/room/${roomId}/result`, response => {
+        const payload: Player[] = JSON.parse(response.body)
+        info(payload)
+        setStartDate(null)
       })
       stompClient.subscribe(`/sub/room/${roomId}/start`, response => {
-        if (response.body === "") {
-          setStartDate(null)
-          return
-        }
         const payload: string = JSON.parse(response.body)
-
         setStartDate(new Date(payload))
       })
     })
