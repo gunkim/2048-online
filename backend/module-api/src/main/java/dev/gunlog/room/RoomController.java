@@ -8,6 +8,7 @@ import dev.gunlog.multi.service.MultiService;
 import dev.gunlog.room.dto.RoomCreateRequestDto;
 import dev.gunlog.room.dto.RoomListResponseDto;
 import dev.gunlog.room.service.RoomService;
+import javassist.tools.web.BadHttpRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,7 @@ public class RoomController {
     @GetMapping(path = "list")
     public ResponseEntity<List<RoomListResponseDto>> rooms() {
         List<RoomListResponseDto> result = roomService.getAllRooms();
+        result.stream().forEach(dto -> dto.setParticipant(multiService.findRoomByRoomId(dto.getId().intValue()).getPlayers().size()));
 
         return ResponseEntity.ok(result);
     }
@@ -53,7 +55,7 @@ public class RoomController {
         return ResponseEntity.ok(roomId);
     }
     @PutMapping(path = "join/{roomId}")
-    public void joinRoom(@PathVariable Integer roomId, Principal principal) {
+    public void joinRoom(@PathVariable Integer roomId, Principal principal) throws BadHttpRequest {
         String memberId = principal.getName();
 
         userRoomRepository.save(memberId, roomId);

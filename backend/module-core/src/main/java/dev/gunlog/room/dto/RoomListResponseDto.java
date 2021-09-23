@@ -17,6 +17,7 @@ public class RoomListResponseDto {
     private String username;
     private Mode mode;
     private Personnel personnel;
+    private int participant;
 
     public RoomListResponseDto(Room room) {
         this.id = room.getId();
@@ -26,11 +27,12 @@ public class RoomListResponseDto {
         this.personnel = room.getPersonnel();
     }
     @Builder
-    public RoomListResponseDto(Long id, String title, String username, Mode mode, Personnel personnel) {
+    public RoomListResponseDto(Long id, String title, String username, Mode mode, Personnel personnel, int participant) {
         this.id = id;
         this.title = title;
         this.username = username;
         this.mode = mode;
         this.personnel = personnel;
+        this.participant = participant;
     }
 }
