@@ -11,6 +11,7 @@ import dev.gunlog.room.service.RoomService;
 import javassist.tools.web.BadHttpRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.*;
@@ -55,7 +56,7 @@ public class RoomController {
         return ResponseEntity.ok(roomId);
     }
     @PutMapping(path = "join/{roomId}")
-    public void joinRoom(@PathVariable Integer roomId, Principal principal) throws BadHttpRequest {
+    public ResponseEntity<String> joinRoom(@PathVariable Integer roomId, Principal principal) throws BadHttpRequest {
         String memberId = principal.getName();
 
         userRoomRepository.save(memberId, roomId);
@@ -64,11 +65,14 @@ public class RoomController {
                 .orElseThrow(() -> new IllegalArgumentException("게임 방을 찾을 수 없습니다. ROOM_ID : "+roomId));
         List<Player> players = gameRoom.getPlayers();
 
-        boolean isNotJoin = players.stream().allMatch(player -> !player.getNickname().equals(memberId));
+        boolean isJoin = players.stream().anyMatch(player -> player.getNickname().equals(memberId));
+        boolean isPeopleLimit = gameRoom.getMaxNumberOfPeople().getSize() == players.size();
 
-        if(isNotJoin) {
-            players.add(new Player(memberId));
+        if(isJoin && isPeopleLimit) {
+            return new ResponseEntity<>( "FAILURE", HttpStatus.BAD_REQUEST);
         }
+        players.add(new Player(memberId));
+        return ResponseEntity.ok("SUCCESS");
     }
     @PutMapping(path = "exit")
     public void exitRoom(Principal principal) {
