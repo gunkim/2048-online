@@ -1,5 +1,6 @@
 package dev.gunlog.game;
 
+import dev.gunlog.enums.Mode;
 import dev.gunlog.multi.model.GameRoom;
 import dev.gunlog.multi.service.MultiService;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +25,12 @@ public class MultiController {
         boolean isStart = multiService.gameStart(memberId);
         Integer roomId = multiService.findRoomId(memberId);
         GameRoom gameRoom = multiService.findRoomByRoomId(roomId);
+
         if(isStart) {
             messageTemplate.convertAndSend("/sub/room/"+roomId, gameRoom);
             messageTemplate.convertAndSend("/sub/room/"+roomId+"/start", gameRoom.getStartTime());
+        }
+        if(gameRoom.getGameMode() == Mode.TIME_ATTACK) {
             Thread thread = new TimerThread(roomId, multiService, messageTemplate);
             thread.run();
         }
