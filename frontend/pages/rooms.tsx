@@ -35,10 +35,11 @@ const Rooms = () => {
     setIsModalVisible(true)
   }
   const handleJoin = async (roomId: number) => {
-    await joinRoom(roomId)
-    router.push({
-      pathname: "/room",
-      query: { roomId: roomId }
+    await joinRoom(roomId).then(() => {
+      router.push({
+        pathname: "/room",
+        query: { roomId: roomId }
+      })
     })
   }
   return (
@@ -55,7 +56,7 @@ const Rooms = () => {
               key={index}
               id={room.id}
               title={room.title}
-              people={1}
+              people={room.participant}
               mode={room.mode}
               personnel={room.personnel}
               handleJoin={handleJoin}

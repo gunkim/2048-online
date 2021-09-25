@@ -28,7 +28,9 @@ const RoomCard = ({
       <Card
         style={{ boxShadow: "0px 0px 5px 0px" }}
         title={title}
-        extra={<a onClick={() => handleJoin(id)}>입장하기</a>}
+        extra={
+          people != personnel && <a onClick={() => handleJoin(id)}>입장하기</a>
+        }
       >
         <p>
           <SettingOutlined /> {mode}
