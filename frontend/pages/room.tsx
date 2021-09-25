@@ -1,6 +1,6 @@
 import Layout from "../components/Layout"
 import GameBoard from "../components/GameBoard"
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { Button, message, Typography } from "antd"
 import { useRouter } from "next/router"
@@ -8,13 +8,32 @@ import hotkeys from "hotkeys-js"
 import { exitRoom } from "../apis/room"
 import stompClient from "../util/socket-util"
 import Timer from "../components/Timer"
+import { Modal } from "antd"
+
+function info(players: Player[]) {
+  if (!players) return
+  Modal.info({
+    title: <Title level={3}>결과</Title>,
+    content: (
+      <>
+        {players &&
+          players.map(player => (
+            <div>
+              <h3>{player.nickname}</h3>
+              <span>{player.gameInfo.score}</span>
+            </div>
+          ))}
+      </>
+    ),
+    onOk() {}
+  })
+}
 
 const { Title } = Typography
 
 const MyTitle = styled(Title)`
   color: ${props => (props["data-is-host"] ? "yellow !important" : "")};
 `
-
 const MainFrame = styled.div`
   background-color: yellow;
   float: left;
@@ -121,6 +140,7 @@ const Room = () => {
       hotkeys.unbind("down")
     }
   }, [gameInfo.start])
+
   useEffect(() => {
     if (!router?.query) return
 
@@ -132,16 +152,17 @@ const Room = () => {
     stompClient.connect(headers, () => {
       stompClient.send("/pub/multi/init", {}, roomId)
       stompClient.subscribe(`/sub/room/${roomId}`, response => {
-        const payload = JSON.parse(response.body)
+        const payload: GameRoom = JSON.parse(response.body)
+
         setGameInfo(payload)
       })
+      stompClient.subscribe(`/sub/room/${roomId}/result`, response => {
+        const payload: Player[] = JSON.parse(response.body)
+        info(payload)
+        setStartDate(null)
+      })
       stompClient.subscribe(`/sub/room/${roomId}/start`, response => {
-        if (response.body === "") {
-          setStartDate(null)
-          return
-        }
         const payload: string = JSON.parse(response.body)
-
         setStartDate(new Date(payload))
       })
     })
@@ -165,7 +186,7 @@ const Room = () => {
       <Button danger onClick={handleExit}>
         방 나가기
       </Button>
-      {true && (
+      {!gameInfo.start && (
         <Button type="primary" onClick={handleStart}>
           게임 시작
         </Button>

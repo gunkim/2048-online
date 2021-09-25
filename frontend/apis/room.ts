@@ -8,10 +8,12 @@ export type Room = {
     username?: string
     mode: string
     personnel: number
+    participant: number
 }
 
 export const getRooms = async (): Promise<Room[]> => {
     const token: string = localStorage.getItem("token")
+
     const response = await axios.get(`${BASE_URL}/list`, {headers: {'Authorization': token}})
     return response.data
 }
