@@ -1,129 +1,77 @@
-import { Input, message } from "antd"
-import React, { useRef, useState } from "react"
-import { UserOutlined } from "@ant-design/icons"
+import SettingOutlined from "@ant-design/icons/lib/icons/SettingOutlined"
+import TeamOutlined from "@ant-design/icons/lib/icons/TeamOutlined"
+import TrophyOutlined from "@ant-design/icons/lib/icons/TrophyOutlined"
+import UserOutlined from "@ant-design/icons/lib/icons/UserOutlined"
+import { Col, Row, Typography } from "antd"
+import Link from "next/link"
+import React from "react"
 import styled from "styled-components"
-import { checkUser, User } from "../apis/user"
-import { useDispatch, useSelector } from "react-redux"
-import { signInUserAsync } from "../store/user/actions"
-import Layout from "../components/Layout"
-import { RootState } from "../store"
-import Router from "next/router"
-import Title from "antd/lib/typography/Title"
+const { Title, Text } = Typography
 
-const MyInput = styled(Input)`
-  background: none;
-  border: 1px solid black;
-  border-radius: 15px;
-  background: white;
+const MyTitle = styled(Title)`
+  font-size: 6vh !important;
+  color: white !important;
+  color: ${props => `${props.color} !important;`};
 `
-const MyPassword = styled(Input.Password)`
-  background: none;
-  border: 1px solid black;
-  border-radius: 15px;
-  background: white;
+const MyText = styled(Text)`
+  color: ${props => (props.color ? props.color : "white")};
 `
-const Samp = styled.span`
-  background: #1f204e;
+const SingleIcon = styled(UserOutlined)`
+  font-size: 50px;
   color: white;
-  padding: 1px 4px;
 `
-const key = "updatable"
-
-const Home = () => {
-  const [user, setUser] = useState<User>({
-    username: "",
-    password: ""
-  })
-  const [check, setCheck] = useState()
-  const inputRef = useRef(null)
-  const dispatch = useDispatch()
-  const { loading, error, data } = useSelector(
-    (state: RootState) => state.user.signIn
-  )
-  if (data) {
-    message.success({ content: "로그인 완료!", key, duration: 2 })
-    Router.push("/branch")
-  }
-  if (loading) {
-    message.loading({ content: "로그인 중...", key })
-  }
-  if (error) {
-    message.error({
-      content: "로그인에 실패했습니다!",
-      key
-    })
-  }
-  const onChange = e => {
-    const name = e.target.name
-    const value = e.target.value
-
-    setUser({
-      ...user,
-      [name]: value
-    })
-  }
-  const onKeyPress = async e => {
-    if (e.key == "Enter") {
-      const name = e.target.name
-      if (name == "username") {
-        const response = await checkUser(user.username)
-        setCheck(response)
-        inputRef.current.focus()
-      } else {
-        dispatch(signInUserAsync.request(user))
-      }
-    }
-  }
+const MultiIcon = styled(TeamOutlined)`
+  font-size: 50px;
+  color: white;
+`
+const MyTrophyOutlined = styled(TrophyOutlined)`
+  font-size: 50px;
+  color: #413c69;
+`
+const MySettingOutlined = styled(SettingOutlined)`
+  font-size: 50px;
+  color: white;
+`
+const Tile = styled(Col)`
+  min-height: ${props => props.height};
+  background: ${props => props.background};
+`
+const Center = styled.div`
+  padding: 50px;
+`
+export default function Home() {
   return (
-    <Layout>
-      <div className="input-wrapper">
-        <label htmlFor="employee-id">
-          <Title level={2}>Nickname</Title>
-        </label>
-        <p id="employee-id-hint" className="input-hint">
-          게임에서 사용할 닉네임을 입력해주세요
-          <Samp>ex: 홍길동</Samp>
-        </p>
-        <MyInput
-          size="large"
-          placeholder="nickname"
-          prefix={<UserOutlined />}
-          name="username"
-          value={user.username}
-          onChange={onChange}
-          onKeyPress={onKeyPress}
-          id="employee-id"
-          aria-describedby="employee-id-hint"
-        />
-        {check != undefined && (
-          <>
-            <label htmlFor="employee-id">
-              <Title level={2}>Password</Title>
-            </label>
-            <p id="employee-id-hint" className="input-hint">
-              {check ? (
-                <div>이미 등록된 사용자입니다. 비밀번호를 입력해주세요.</div>
-              ) : (
-                <div>등록되지 않은 사용자입니다. 비밀번호를 설정해주세요.</div>
-              )}
-            </p>
-            <MyPassword
-              size="large"
-              placeholder="password"
-              prefix={<UserOutlined />}
-              name="password"
-              value={user.password}
-              onChange={onChange}
-              onKeyPress={onKeyPress}
-              id="employee-id"
-              aria-describedby="employee-id-hint"
-              ref={inputRef}
-            />
-          </>
-        )}
-      </div>
-    </Layout>
+    <div>
+      <Row>
+        <Tile xs={24} lg={15} height={"600px"} background={"#413C69"}>
+          <Center>
+            <MyTitle font={30}>
+              <MultiIcon /> 멀티
+            </MyTitle>
+          </Center>
+        </Tile>
+        <Tile xs={24} lg={9} background={"#4A47A3"}>
+          <Center>
+            <MyTitle>
+              <SingleIcon /> 싱글
+            </MyTitle>
+          </Center>
+        </Tile>
+        <Tile xs={24} lg={15} height={"369px"} background={"#ffffff"}>
+          <Center>
+            <MyTitle color={"#413C69"}>
+              <MyTrophyOutlined /> 랭킹
+            </MyTitle>
+          </Center>
+        </Tile>
+        <Tile xs={24} lg={9} background={"#A7C5EB"}>
+          <Center>
+            <MyTitle>
+              <MySettingOutlined /> 내 정보
+            </MyTitle>
+          </Center>
+        </Tile>
+      </Row>
+    </div>
   )
 }
-
-export default Home
