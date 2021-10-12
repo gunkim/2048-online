@@ -1,22 +1,20 @@
 import "antd/dist/antd.css"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import hotkeys from "hotkeys-js"
 import GameBoard from "../components/GameBoard"
 import stompClient from "../util/socket-util"
-import Layout from "../components/Layout"
 import styled from "styled-components"
 import { getUsername } from "../util/jwt-util"
+import Header from "../components/Header"
+import { Col, Row } from "antd"
 
-const ScoreBox = styled.div`
-  background: #97cdff;
-  padding: 50px;
-  border-radius: 15px;
-  position: fixed;
-  left: 15%;
-  top: 30%;
+const ScoreBox = styled.span`
   text-align: center;
+  color: white;
+  font-weight: bold;
   h2 {
     font-weight: bold;
+    color: white;
   }
 `
 
@@ -84,19 +82,20 @@ const Single = () => {
   }, [])
 
   return (
-    <Layout width={518}>
-      <ScoreBox>
-        <h2>SCORE</h2>
-        <h3>{game.score}</h3>
-      </ScoreBox>
-      <GameBoard
-        mainWidth={470}
-        board={game.board}
-        width={100}
-        height={100}
-        over={game.gameOver}
-      />
-    </Layout>
+    <div>
+      <Header />
+      <Row justify="center">
+        <Col span={24}>
+          <ScoreBox>
+            <h2>SCORE</h2>
+            <div>{game.score}</div>
+          </ScoreBox>
+        </Col>
+        <Col span={24}>
+          <GameBoard board={game.board} over={game.gameOver} />
+        </Col>
+      </Row>
+    </div>
   )
 }
 

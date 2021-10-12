@@ -6,7 +6,8 @@ const { Header: AntHeader } = Layout
 const Logo = styled.h1`
   font-size: 5rem;
   text-align: center;
-  padding: 20px 0px;
+  padding: 0px;
+  margin-top: 20px;
   span {
     box-shadow: 0px 0px 0px 3px;
     padding: 5px 30px;
