@@ -9,7 +9,7 @@ import styled from "styled-components"
 const { Title, Text } = Typography
 
 const MyTitle = styled(Title)`
-  font-size: 6vh !important;
+  font-size: 3rem !important;
   a {
     color: white !important;
     color: ${props => `${props.color} !important;`};
@@ -31,17 +31,33 @@ const MySettingOutlined = styled(SettingOutlined)`
   font-size: 50px;
   color: white;
 `
+const MyRow = styled(Row)`
+  @media screen and (max-width: 2000px) {
+    .top {
+      height: 600px;
+    }
+    .bottom {
+      height: 369px;
+    }
+  }
+  @media screen and (max-width: 1366px) {
+    .top {
+      height: 489px;
+    }
+    .bottom {
+      height: 200px;
+    }
+  }
+`
 const Tile = styled(Col)`
-  min-height: ${props => props.height};
   background: ${props => props.background};
   padding: 50px;
 `
-const Center = styled.div``
 export default function Home() {
   return (
     <div>
-      <Row>
-        <Tile xs={24} lg={15} height={"600px"} background={"#413C69"}>
+      <MyRow>
+        <Tile xs={24} lg={15} className="top" background={"#413C69"}>
           <MyTitle font={30}>
             <Link href="/rooms">
               <a>
@@ -59,7 +75,7 @@ export default function Home() {
             </Link>
           </MyTitle>
         </Tile>
-        <Tile xs={24} lg={15} height={"369px"} background={"#ffffff"}>
+        <Tile xs={24} lg={15} className="bottom" background={"#ffffff"}>
           <MyTitle color={"#413C69"}>
             <Link href="/single">
               <a>
@@ -77,7 +93,7 @@ export default function Home() {
             </Link>
           </MyTitle>
         </Tile>
-      </Row>
+      </MyRow>
     </div>
   )
-};
+}
