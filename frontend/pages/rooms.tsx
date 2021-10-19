@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Button, Row } from "antd"
+import { Avatar, Button, Col, List, Row, Skeleton, Typography } from "antd"
 import Layout from "../components/Layout"
 import RoomCard from "../components/RoomCard"
 import RoomModal from "../components/RoomModal"
@@ -8,6 +8,18 @@ import { RootState } from "../store"
 import { getRoomsAsync } from "../store/rooms/actions"
 import { useRouter } from "next/router"
 import { createRoom, joinRoom, Room } from "../apis/room"
+import Header from "../components/Header"
+import Link from "next/link"
+import styled from "styled-components"
+
+const MyList = styled(List)`
+  background: #c5d4ff;
+  margin-top: 10px;
+
+  a {
+    font-size: 1.5rem;
+  }
+`
 
 const Rooms = () => {
   const dispatch = useDispatch()
@@ -43,32 +55,47 @@ const Rooms = () => {
     })
   }
   return (
-    <Layout>
-      <Button type="primary" onClick={showModal}>
-        방 만들기
-      </Button>
-      <hr />
-      <Row>
-        {loading && <div>로딩중...</div>}
-        {data &&
-          data.map((room, index) => (
-            <RoomCard
-              key={index}
-              id={room.id}
-              title={room.title}
-              people={room.participant}
-              mode={room.mode}
-              personnel={room.personnel}
-              handleJoin={handleJoin}
+    <div>
+      <Header />
+      <Row justify="center">
+        <Col xs={23} lg={10}>
+          <Button type="primary" onClick={showModal}>
+            방 만들기
+          </Button>
+          {data && (
+            <MyList
+              size="large"
+              loading={loading}
+              itemLayout="horizontal"
+              header={<div>게임 목록</div>}
+              bordered
+              dataSource={data}
+              renderItem={room => (
+                <List.Item>
+                  <List.Item.Meta
+                    title={
+                      <>
+                        <Typography.Text mark>{room.mode}</Typography.Text>
+                        {"  "}
+                        <Link href={`/room?roomId=${room.id}`}>
+                          <a>{room.title}</a>
+                        </Link>
+                      </>
+                    }
+                    description={`인원수 ${room.personnel}/${room.participant}`}
+                  />
+                </List.Item>
+              )}
             />
-          ))}
+          )}
+        </Col>
       </Row>
       <RoomModal
         isModalVisible={isModalVisible}
         handleOk={handleOk}
         handleCancel={handleCancel}
       />
-    </Layout>
+    </div>
   )
 }
 
