@@ -19,42 +19,29 @@ import java.util.stream.Collectors;
 @Component
 @Aspect
 public class LoggingAspect {
-    @Around("within(dev.gunlog..*))")
+    @Around("within(dev.gunlog.*.*Controller)")
     public Object logging(ProceedingJoinPoint pjp) throws Throwable {
-        String params = "( X )";
-        String uri = "( X )";
-        String ip = "( X )";
-        RequestAttributes requestAttributes = RequestContextHolder
-                .getRequestAttributes();
-        if (requestAttributes != null) {
-            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
-                    .getRequestAttributes()).getRequest();
-            Map<String, String[]> paramMap = request.getParameterMap();
-            if (!paramMap.isEmpty()) {
-                params = " [" + paramMapToString(paramMap) + "]";
-            }
-            uri = request.getRequestURI();
-
-            ip = Optional.ofNullable(request.getHeader("X-FORWARDED-FOR"))
-                    .orElse(request.getRemoteAddr());
-        }
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
+                .getRequestAttributes()).getRequest();
 
         long startAt = System.currentTimeMillis();
         Object result = pjp.proceed();
         long endAt = System.currentTimeMillis();
 
-        LoggingModel.builder()
-                .uri(uri)
-                .ip(ip)
-                .requestClassName(pjp.getSignature().getDeclaringTypeName())
-                .requestMethodName(pjp.getSignature().getName())
-                .requestParams(params)
-                .responseClassName(pjp.getSignature().getDeclaringTypeName())
-                .responseMethodName(pjp.getSignature().getName())
-                .result(result)
-                .processMilliSecond(endAt - startAt)
-                .build().printLog();
+        String clientIp = Optional.ofNullable(request.getHeader("X-FORWARDED-FOR")).orElse(request.getRemoteAddr());
+        log.info("REQUEST {} > {} {} {} ({}ms)",
+                clientIp,
+                request.getMethod(),
+                request.getRequestURI(),
+                getRequestParams(),
+                endAt-startAt);
         return result;
+    }
+    private String getRequestParams() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+
+        Map<String, String[]> paramMap = request.getParameterMap();
+        return paramMap.isEmpty() ? "" : " [" + paramMapToString(paramMap) + "]";
     }
     private String paramMapToString(Map<String, String[]> paramMap) {
         return paramMap.entrySet().stream()
