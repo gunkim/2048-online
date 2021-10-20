@@ -1,5 +1,7 @@
 package dev.gunlog.room;
 
+import dev.gunlog.common.ApiResponse;
+import dev.gunlog.common.WebStatusCode;
 import dev.gunlog.multi.domain.GameRoomRepository;
 import dev.gunlog.multi.domain.UserRoomRepository;
 import dev.gunlog.multi.model.GameRoom;
@@ -14,6 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -31,14 +35,14 @@ public class RoomController {
     private final SimpMessageSendingOperations messageTemplate;
 
     @GetMapping(path = "list")
-    public ResponseEntity<List<RoomListResponseDto>> rooms() {
+    public ApiResponse<List<RoomListResponseDto>> rooms() throws HttpRequestMethodNotSupportedException {
         List<RoomListResponseDto> result = roomService.getAllRooms();
         result.stream().forEach(dto -> dto.setParticipant(multiService.findRoomByRoomId(dto.getId().intValue()).getPlayers().size()));
 
-        return ResponseEntity.ok(result);
+        return ApiResponse.success(result);
     }
     @PostMapping
-    public ResponseEntity<Integer> createRoom(@RequestBody RoomCreateRequestDto requestDto, Principal principal) {
+    public ApiResponse<Integer> createRoom(@RequestBody RoomCreateRequestDto requestDto, Principal principal) {
         String memberId = principal.getName();
         Integer roomId = Math.toIntExact(roomService.createRoom(requestDto, memberId));
 
@@ -53,10 +57,10 @@ public class RoomController {
         gameRoomRepository.save(roomId, gameRoom);
         userRoomRepository.save(memberId, roomId);
 
-        return ResponseEntity.ok(roomId);
+        return ApiResponse.success(roomId);
     }
     @PutMapping(path = "join/{roomId}")
-    public ResponseEntity<String> joinRoom(@PathVariable Integer roomId, Principal principal) throws BadHttpRequest {
+    public ApiResponse<String> joinRoom(@PathVariable Integer roomId, Principal principal) throws BadHttpRequest {
         String memberId = principal.getName();
 
         userRoomRepository.save(memberId, roomId);
@@ -69,10 +73,10 @@ public class RoomController {
         boolean isPeopleLimit = gameRoom.getMaxNumberOfPeople().getSize() == players.size();
 
         if(isJoin && isPeopleLimit) {
-            return new ResponseEntity<>( "FAILURE", HttpStatus.BAD_REQUEST);
+            return ApiResponse.of(WebStatusCode.INVALID_INPUT_VALUE);
         }
         players.add(new Player(memberId));
-        return ResponseEntity.ok("SUCCESS");
+        return ApiResponse.success();
     }
     @PutMapping(path = "exit")
     public void exitRoom(Principal principal) {
