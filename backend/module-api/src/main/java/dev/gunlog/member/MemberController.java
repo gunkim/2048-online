@@ -1,5 +1,6 @@
 package dev.gunlog.member;
 
+import dev.gunlog.common.ApiResponse;
 import dev.gunlog.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +13,8 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping(path = "check/{memberId}")
-    public ResponseEntity<Boolean> checkUser(@PathVariable String memberId) {
+    public ApiResponse<Boolean> checkUser(@PathVariable String memberId) {
         boolean isUser = memberService.checkMember(memberId);
-        return ResponseEntity.ok(isUser);
+        return ApiResponse.success(isUser);
     }
 }
