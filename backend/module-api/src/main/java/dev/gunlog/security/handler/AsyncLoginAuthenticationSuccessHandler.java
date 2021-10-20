@@ -1,6 +1,7 @@
 package dev.gunlog.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.gunlog.common.ApiResponse;
 import dev.gunlog.security.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +35,7 @@ public class AsyncLoginAuthenticationSuccessHandler implements AuthenticationSuc
 
         response.setStatus(HttpStatus.OK.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        objectMapper.writeValue(response.getWriter(), jwtToken);
+        objectMapper.writeValue(response.getWriter(), ApiResponse.success(jwtToken));
 
         HttpSession session = request.getSession(false);
 

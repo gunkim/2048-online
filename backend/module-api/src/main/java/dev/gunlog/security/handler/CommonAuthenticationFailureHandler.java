@@ -1,6 +1,8 @@
 package dev.gunlog.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.gunlog.common.ApiResponse;
+import dev.gunlog.common.WebStatusCode;
 import dev.gunlog.security.exception.AuthMethodNotSupportedException;
 import dev.gunlog.security.exception.JwtExpiredTokenException;
 import lombok.RequiredArgsConstructor;
@@ -27,14 +29,16 @@ public class CommonAuthenticationFailureHandler implements AuthenticationFailure
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
 
-        String msg = "인증 실패";
+        ApiResponse apiResponse = null;
         if (exception instanceof BadCredentialsException) {
-            msg = "비밀번호 불일치";
+            apiResponse = ApiResponse.of(WebStatusCode.INVALID_PASSWORD_VALUE);
         } else if (exception instanceof AuthMethodNotSupportedException) {
-            msg = "해당 요청으로 인한 로그인 미지원";
+            apiResponse = ApiResponse.of(WebStatusCode.METHOD_NOT_ALLOWED);
         } else if(exception instanceof JwtExpiredTokenException){
-            msg = "JWT 토큰 유효기간 만료";
+            apiResponse = ApiResponse.of(WebStatusCode.JWT_EXPIRED_TOKEN);
+        } else {
+            apiResponse = ApiResponse.of(WebStatusCode.INVALID_AUTH_REQUEST);
         }
-        objectMapper.writeValue(response.getWriter(), msg);
+        objectMapper.writeValue(response.getWriter(), apiResponse);
     }
 }
