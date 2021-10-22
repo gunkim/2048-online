@@ -19,3 +19,6 @@ jwt:
     issuer: ENC(gshnN3M5dAh0OrQm0JmpOYiO+M+IMwi/)
 logging:
   config: classpath:logback-prod.xml
+sentry:
+  dsn: ENC(FMK6bFLWfLNhD/VCmbDYw0Wjhi7MyOdJC98Zd84llM2ceysGq2gdrD5Ts+3lHoJqJrAHWPi0V4Ng9/Jt0nx9TAz4+aUuKKH4v0ieOehAUvpQPlTbvl79KA==)
+  traces-sample-rate: 1.0
