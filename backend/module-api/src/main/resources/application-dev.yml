@@ -1,12 +1,19 @@
 spring:
   datasource:
-    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    url: jdbc:log4jdbc:h2:~/leveldiary;AUTO_SERVER=TRUE
-    username: h2
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem://localhost/~/testdb;MODE=MySQL;DATABASE_TO_LOWER=TRUE
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: false
+      path: /h2
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
 jwt:
   token:
     secret-key: "2048-game-key"
