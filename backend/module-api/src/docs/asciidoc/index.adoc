@@ -1,0 +1,62 @@
+= 2048 Rest Docs API Document
+:toc-title: 2048 Rest Docs API Document
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:imagesdir: /
+:toc: left
+:toclevels: 3
+:sectlinks:
+:sectnums:
+:custom-docdir: {docdir}/src/docs/asciidoc
+:docdir: {docdir}/src/docs/asciidoc
+
+[[introduction]]
+== 소개
+
+2048 Rest Docs API
+
+[[common]]
+== 공통 사항
+
+모든 API에 공통된 사항입니다.
+
+=== Domain
+
+|===
+| 환경 | domain
+
+| 개발서버
+| `미정`
+| 운영서버
+| `미정`
+|===
+
+
+=== Header
+
+|===
+| name | 설명
+
+| `Authorization`
+| API를 사용하기 위한 인증 키
+|===
+
+=== 공통 Response Body
+
+|===
+| field | 설명
+
+| `code`
+| 응답 코드
+
+| `message`
+| 예외사항 내용 등 응답 메세지
+
+| `data`
+| 실제 반환될 데이터
+|===
+
+== Apis
+
+include::{docfile}/../member.adoc[]
