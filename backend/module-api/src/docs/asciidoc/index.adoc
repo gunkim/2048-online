@@ -8,8 +8,6 @@
 :toclevels: 3
 :sectlinks:
 :sectnums:
-:custom-docdir: {docdir}/src/docs/asciidoc
-:docdir: {docdir}/src/docs/asciidoc
 
 [[introduction]]
 == 소개
@@ -47,7 +45,7 @@
 |===
 | field | 설명
 
-| `code`
+| `status`
 | 응답 코드
 
 | `message`
