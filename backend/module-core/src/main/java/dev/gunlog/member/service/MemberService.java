@@ -1,6 +1,7 @@
 package dev.gunlog.member.service;
 
 import dev.gunlog.member.domain.MemberRepository;
+import dev.gunlog.member.dto.PasswordMatchResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class MemberService {
     private final MemberRepository memberRepository;
 
-    public boolean checkMember(String memberId) {
-        return memberRepository.findByMemberId(memberId).isPresent();
+    public PasswordMatchResponseDto checkMember(String memberId) {
+        return new PasswordMatchResponseDto(memberRepository.findByMemberId(memberId).isPresent());
     }
 }
