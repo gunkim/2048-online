@@ -77,9 +77,7 @@ const Rooms = () => {
                       <>
                         <Typography.Text mark>{room.mode}</Typography.Text>
                         {"  "}
-                        <Link href={`/room?roomId=${room.id}`}>
-                          <a>{room.title}</a>
-                        </Link>
+                        <a onClick={() => handleJoin(room.id)}>{room.title}</a>
                       </>
                     }
                     description={`인원수 ${room.personnel}/${room.participant}`}
