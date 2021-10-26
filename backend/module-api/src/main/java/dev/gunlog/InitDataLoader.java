@@ -25,6 +25,13 @@ public class InitDataLoader {
                     .name("김건")
                     .regIp("0.0.0.0")
                     .build());
+            memberRepository.save(Member.builder()
+                    .memberId("test")
+                    .password(passwordEncoder.encode("test"))
+                    .role(Role.USER)
+                    .name("김건")
+                    .regIp("0.0.0.0")
+                    .build());
         };
     }
 }
