@@ -1,12 +1,12 @@
 package dev.gunlog.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.gunlog.security.SkipPathRequestMatcher;
-import dev.gunlog.security.filter.AsyncLoginProcessingFilter;
-import dev.gunlog.security.filter.JwtTokenAuthenticationProcessingFilter;
-import dev.gunlog.security.provider.AsyncAuthenticationProvider;
-import dev.gunlog.security.provider.JwtAuthenticationProvider;
-import dev.gunlog.security.util.JwtUtil;
+import dev.gunlog.api.security.SkipPathRequestMatcher;
+import dev.gunlog.api.security.filter.AsyncLoginProcessingFilter;
+import dev.gunlog.api.security.filter.JwtTokenAuthenticationProcessingFilter;
+import dev.gunlog.api.security.provider.AsyncAuthenticationProvider;
+import dev.gunlog.api.security.provider.JwtAuthenticationProvider;
+import dev.gunlog.api.security.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

@@ -1,6 +1,6 @@
 package dev.gunlog.config;
 
-import dev.gunlog.security.util.JwtUtil;
+import dev.gunlog.api.security.util.JwtUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import lombok.RequiredArgsConstructor;

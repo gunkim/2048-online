@@ -1,8 +1,8 @@
 package dev.gunlog;
 
-import dev.gunlog.member.domain.Member;
-import dev.gunlog.member.domain.MemberRepository;
-import dev.gunlog.member.domain.Role;
+import dev.gunlog.api.member.domain.Member;
+import dev.gunlog.api.member.domain.MemberRepository;
+import dev.gunlog.api.member.domain.Role;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
