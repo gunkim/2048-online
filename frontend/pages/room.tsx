@@ -2,16 +2,16 @@ import Layout from "../components/Layout"
 import GameBoard from "../components/GameBoard"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import {Button, Col, message, Row, Typography} from "antd"
+import { Button, Col, message, Row, Typography } from "antd"
 import { useRouter } from "next/router"
 import hotkeys from "hotkeys-js"
 import { exitRoom } from "../apis/room"
 import stompClient from "../util/socket-util"
 import Timer from "../components/Timer"
 import { Modal } from "antd"
-import Header from "../components/Header";
-import GameBoard2 from "../components/GameBoard2";
-import {getUsername} from "../util/jwt-util";
+import Header from "../components/Header"
+import GameBoard2 from "../components/GameBoard2"
+import { getUsername } from "../util/jwt-util"
 
 function info(players: Player[]) {
   if (!players) return
@@ -178,97 +178,72 @@ const Room = () => {
     }
   }
   return (
-      <div>
-        <Header/>
-        <Timer startDate={startDate} />
-        <Row justify="center">
-          <Col span={11} xs={14}>
-            <div>
-
-              <Button danger onClick={handleExit}>
-                방 나가기
+    <div>
+      <Header />
+      <Timer startDate={startDate} />
+      <Row justify="center">
+        <Col span={11} xs={14}>
+          <div>
+            <Button danger onClick={handleExit}>
+              방 나가기
+            </Button>
+            {!gameInfo.start && (
+              <Button type="primary" onClick={handleStart}>
+                게임 시작
               </Button>
-              {!gameInfo.start && (
-                  <Button type="primary" onClick={handleStart}>
-                    게임 시작
-                  </Button>
-              )}
-            </div>
-            {gameInfo.players.filter(p => p.nickname === getUsername()).map(player => (
-                <Frame>
-                  <Head>
-                    <Info>
-                      <MyTitle
-                          level={3}
-                          data-is-host={gameInfo.host === player.nickname}
-                      >
-                        {player.nickname}
-                      </MyTitle>
-                    </Info>
-                    {player.gameInfo && (
-                        <ScoreBox>
-                          <h3>SCORE {player.gameInfo.score}</h3>
-                        </ScoreBox>
-                    )}
-                  </Head>
-                  {!player.gameInfo && <DummyBoard></DummyBoard>}
+            )}
+          </div>
+          {gameInfo.players
+            .filter(p => p.nickname === getUsername())
+            .map(player => (
+              <Frame>
+                <Head>
+                  <Info>
+                    <MyTitle
+                      level={3}
+                      data-is-host={gameInfo.host === player.nickname}
+                    >
+                      {player.nickname}
+                    </MyTitle>
+                  </Info>
                   {player.gameInfo && (
-                      <GameBoard
-                          board={player.gameInfo.board}
-                          over={player.gameInfo.gameOver}
-                      />
+                    <ScoreBox>
+                      <h3>SCORE {player.gameInfo.score}</h3>
+                    </ScoreBox>
                   )}
-                </Frame>
+                </Head>
+                {!player.gameInfo && <DummyBoard></DummyBoard>}
+                {player.gameInfo && (
+                  <GameBoard
+                    board={player.gameInfo.board}
+                    over={player.gameInfo.gameOver}
+                  />
+                )}
+              </Frame>
             ))}
 
-            <Frame>
-              {gameInfo.players.filter(p => p.nickname === getUsername()).map(player => (
+          <Frame>
+            {gameInfo.players
+              .filter(p => p.nickname !== getUsername())
+              .map(player => (
                 <>
                   <Head>
                     <Info>
-                      <MyTitle
-                          level={4}
-                      >
-                        {player.nickname} : 0
-                      </MyTitle>
+                      <MyTitle level={4}>{player.nickname} : 0</MyTitle>
                     </Info>
                   </Head>
-                  <GameBoard2
+                  {player.gameInfo && (
+                    <GameBoard2
                       board={player.gameInfo.board}
                       over={player.gameInfo.gameOver}
-                  />
-                  <Head>
-                    <Info>
-                      <MyTitle
-                          level={4}
-                      >
-                        {player.nickname} : 0
-                      </MyTitle>
-                    </Info>
-                  </Head>
-                  <GameBoard2
-                      board={player.gameInfo.board}
-                      over={player.gameInfo.gameOver}
-                  />
-                  <Head>
-                    <Info>
-                      <MyTitle
-                          level={4}
-                      >
-                        {player.nickname} : 0
-                      </MyTitle>
-                    </Info>
-                  </Head>
-                  <GameBoard2
-                      board={player.gameInfo.board}
-                      over={player.gameInfo.gameOver}
-                  />
+                    />
+                  )}
                 </>
               ))}
-            </Frame>
-          </Col>
-        </Row>
-      </div>
+          </Frame>
+        </Col>
+      </Row>
+    </div>
   )
 }
 
