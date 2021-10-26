@@ -1,6 +1,6 @@
 package dev.gunlog.multi.service;
 
-import dev.gunlog.enums.Mode;
+import dev.gunlog.api.room.domain.enums.Mode;
 import dev.gunlog.multi.domain.GameRoomRepository;
 import dev.gunlog.multi.domain.UserRoomRepository;
 import dev.gunlog.multi.model.Game;

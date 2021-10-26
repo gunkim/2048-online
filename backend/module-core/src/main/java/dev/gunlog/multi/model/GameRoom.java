@@ -1,8 +1,8 @@
 package dev.gunlog.multi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import dev.gunlog.enums.Mode;
-import dev.gunlog.enums.Personnel;
+import dev.gunlog.api.room.domain.enums.Mode;
+import dev.gunlog.api.room.domain.enums.Personnel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

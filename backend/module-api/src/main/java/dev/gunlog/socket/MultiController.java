@@ -1,6 +1,6 @@
 package dev.gunlog.socket;
 
-import dev.gunlog.enums.Mode;
+import dev.gunlog.api.room.domain.enums.Mode;
 import dev.gunlog.multi.model.GameRoom;
 import dev.gunlog.multi.service.MultiService;
 import lombok.RequiredArgsConstructor;

@@ -2,8 +2,8 @@ package dev.gunlog.api.room;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.gunlog.config.SecurityConfig;
-import dev.gunlog.enums.Mode;
-import dev.gunlog.enums.Personnel;
+import dev.gunlog.api.room.domain.enums.Mode;
+import dev.gunlog.api.room.domain.enums.Personnel;
 import dev.gunlog.api.member.domain.Role;
 import dev.gunlog.api.security.model.LoginRequest;
 import dev.gunlog.api.room.dto.RoomListResponseDto;

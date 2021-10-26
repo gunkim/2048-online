@@ -1,7 +1,7 @@
 package dev.gunlog.api.room.dto;
 
-import dev.gunlog.enums.Mode;
-import dev.gunlog.enums.Personnel;
+import dev.gunlog.api.room.domain.enums.Mode;
+import dev.gunlog.api.room.domain.enums.Personnel;
 import dev.gunlog.api.room.domain.Room;
 import lombok.Builder;
 import lombok.Getter;

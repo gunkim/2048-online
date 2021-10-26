@@ -1,7 +1,7 @@
 package dev.gunlog.api.room.domain;
 
-import dev.gunlog.enums.Mode;
-import dev.gunlog.enums.Personnel;
+import dev.gunlog.api.room.domain.enums.Mode;
+import dev.gunlog.api.room.domain.enums.Personnel;
 import dev.gunlog.api.member.domain.Member;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;

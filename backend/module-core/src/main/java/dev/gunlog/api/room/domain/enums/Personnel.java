@@ -1,4 +1,4 @@
-package dev.gunlog.enums;
+package dev.gunlog.api.room.domain.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
