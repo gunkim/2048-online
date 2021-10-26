@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const BASE_URL = '/api/v2/member' as const
+const BASE_URL = "/api/v2/member" as const
 
 export type User = {
   username: string
@@ -13,5 +13,5 @@ export const checkUser = async (username: string) => {
 }
 export const signIn = async (user: User) => {
   const response = await axios.post(`${BASE_URL}/signIn`, user)
-  return response.data
+  return response.data.data
 }
