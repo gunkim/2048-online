@@ -41,7 +41,9 @@ public class MultiController {
         GameRoom gameRoom = multiService.findRoomByRoomId(roomId);
 
         messageTemplate.convertAndSend("/sub/room/"+roomId, gameRoom);
-        messageTemplate.convertAndSend("/sub/room/"+roomId+"/start", gameRoom.getStartTime());
+        if(gameRoom.getStartTime() != null) {
+            messageTemplate.convertAndSend("/sub/room/"+roomId+"/start", gameRoom.getStartTime());
+        }
     }
 
     @MessageMapping("/multi/left")
