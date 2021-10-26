@@ -17,7 +17,8 @@ export const getRooms = async (): Promise<Room[]> => {
   const response = await axios.get(`${BASE_URL}/list`, {
     headers: { Authorization: token }
   })
-  return response.data.data
+  const { data } = response.data
+  return data
 }
 export const createRoom = async (room: Room) => {
   const token: string = localStorage.getItem("token")
@@ -27,7 +28,8 @@ export const createRoom = async (room: Room) => {
     headers: { Authorization: token },
     data: room
   })
-  return response.data
+  const { data } = response.data
+  return data
 }
 export const joinRoom = async (roomId: number) => {
   const token: string = localStorage.getItem("token")
