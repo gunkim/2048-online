@@ -4,6 +4,7 @@ import dev.gunlog.common.ApiResponse;
 import dev.gunlog.common.WebStatusCode;
 import dev.gunlog.multi.domain.GameRoomRepository;
 import dev.gunlog.multi.domain.UserRoomRepository;
+import dev.gunlog.multi.dto.RoomCreateResponseDto;
 import dev.gunlog.multi.model.GameRoom;
 import dev.gunlog.multi.model.Player;
 import dev.gunlog.multi.service.MultiService;
@@ -39,7 +40,7 @@ public class RoomController {
         return ApiResponse.success(result);
     }
     @PostMapping
-    public ApiResponse<Integer> createRoom(@RequestBody RoomCreateRequestDto requestDto, Principal principal) {
+    public ApiResponse<RoomCreateResponseDto> createRoom(@RequestBody RoomCreateRequestDto requestDto, Principal principal) {
         String memberId = principal.getName();
         Integer roomId = Math.toIntExact(roomService.createRoom(requestDto, memberId));
 
@@ -54,7 +55,7 @@ public class RoomController {
         gameRoomRepository.save(roomId, gameRoom);
         userRoomRepository.save(memberId, roomId);
 
-        return ApiResponse.success(roomId);
+        return ApiResponse.success(new RoomCreateResponseDto(roomId));
     }
     @PutMapping(path = "join/{roomId}")
     public ApiResponse<String> joinRoom(@PathVariable Integer roomId, Principal principal) throws BadHttpRequest {
