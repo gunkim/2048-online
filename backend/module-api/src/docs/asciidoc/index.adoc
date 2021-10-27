@@ -58,3 +58,7 @@
 == Apis
 
 include::{docfile}/../member.adoc[]
+
+include::{docfile}/../room.adoc[]
+
+include::{docfile}/../auth.adoc[]
