@@ -8,13 +8,13 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class LoginRequest {
+public class LoginRequestDto {
     private String username;
     private String password;
 
     @Builder
     @JsonCreator
-    public LoginRequest(@JsonProperty("username") String username, @JsonProperty("password") String password) {
+    public LoginRequestDto(@JsonProperty("username") String username, @JsonProperty("password") String password) {
         this.username = username;
         this.password = password;
     }

@@ -2,7 +2,7 @@ package dev.gunlog.api.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.gunlog.api.security.exception.AuthMethodNotSupportedException;
-import dev.gunlog.api.security.model.LoginRequest;
+import dev.gunlog.api.security.model.LoginRequestDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,8 +33,8 @@ public class AsyncLoginProcessingFilter extends AbstractAuthenticationProcessing
             log.debug("비동기 로그인 처리 지원이 되지 않는 메소드 요청입니다. :: "+request.getMethod());
             throw new AuthMethodNotSupportedException("Authentication method not supported");
         }
-        LoginRequest loginRequest = objectMapper.readValue(request.getReader(), LoginRequest.class);
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
+        LoginRequestDto loginRequestDto = objectMapper.readValue(request.getReader(), LoginRequestDto.class);
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(loginRequestDto.getUsername(), loginRequestDto.getPassword());
         return this.getAuthenticationManager().authenticate(token);
     }
     private boolean isAsync(HttpServletRequest request) {
