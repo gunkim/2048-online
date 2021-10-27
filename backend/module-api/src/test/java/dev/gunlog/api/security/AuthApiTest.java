@@ -1,11 +1,12 @@
 package dev.gunlog.api.security;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.gunlog.RestDocControllerTest;
-import dev.gunlog.api.security.filter.AsyncLoginProcessingFilter;
 import dev.gunlog.api.security.handler.AsyncLoginAuthenticationSuccessHandler;
 import dev.gunlog.api.security.handler.CommonAuthenticationFailureHandler;
+import dev.gunlog.api.security.model.LoginResponseDto;
 import dev.gunlog.api.security.provider.AsyncAuthenticationProvider;
 import dev.gunlog.api.security.provider.JwtAuthenticationProvider;
 import dev.gunlog.api.security.service.CustomUserDetailsService;
@@ -14,28 +15,22 @@ import dev.gunlog.config.SecurityConfig;
 import dev.gunlog.api.member.domain.Member;
 import dev.gunlog.api.member.domain.MemberRepository;
 import dev.gunlog.api.member.domain.Role;
-import dev.gunlog.api.security.model.LoginRequest;
+import dev.gunlog.api.security.model.LoginRequestDto;
 import dev.gunlog.api.security.util.JwtUtil;
 import dev.gunlog.config.TestSecurityConfig;
 import io.jsonwebtoken.Claims;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.FilterChainProxy;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.Optional;
@@ -43,6 +38,8 @@ import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -92,10 +89,20 @@ public class AuthApiTest extends RestDocControllerTest {
                 .content(getLoginInfo()))
                 .andExpect(status().isOk())
                 .andDo(print())
+                .andDo(document("auth",
+                        requestFields(
+                                fieldWithPath("username").type(JsonFieldType.STRING).description("유저 아이디"),
+                                fieldWithPath("password").type(JsonFieldType.STRING).description("유저 비밀번호")
+                        ),
+                        responseFields(
+                                beneathPath("data").withSubsectionId("data"),
+                                fieldWithPath("accessToken").type(JsonFieldType.STRING).description("액세스 jwt 토큰")
+                        )
+                ))
                 .andReturn();
 
-        ApiResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), ApiResponse.class);
-        final String jwtToken = response.getData().replaceAll("\"", "");
+        ApiResponse<LoginResponseDto> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<ApiResponse<LoginResponseDto>>() {});
+        final String jwtToken = response.getData().getAccessToken().replaceAll("\"", "");
 
         final Claims body = jwtUtil.parserToken(jwtToken).getBody();
         assertThat(body.getSubject()).isEqualTo(MEMBER_ID);
@@ -103,7 +110,7 @@ public class AuthApiTest extends RestDocControllerTest {
     }
     private String getLoginInfo() throws JsonProcessingException {
         final ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(LoginRequest.builder()
+        return objectMapper.writeValueAsString(LoginRequestDto.builder()
                 .username(MEMBER_ID)
                 .password(PASSWORD)
                 .build());
