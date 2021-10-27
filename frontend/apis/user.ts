@@ -13,5 +13,6 @@ export const checkUser = async (username: string) => {
 }
 export const signIn = async (user: User) => {
   const response = await axios.post(`${BASE_URL}/signIn`, user)
-  return response.data.data
+  const { data } = response.data
+  return data.accessToken
 }
