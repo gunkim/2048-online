@@ -32,7 +32,7 @@ public class MemberServiceTests extends SpringBootTestSupport {
         final String memberId = "gunkim";
         given(memberRepository.findByMemberId(memberId)).willReturn(Optional.of(Member.builder().build()));
 
-        final boolean isUser = memberService.checkMember(memberId);
+        final boolean isUser = memberService.checkMember(memberId).isMatchPassword();
 
         assertThat(isUser).isTrue();
     }
