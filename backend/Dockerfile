@@ -13,17 +13,12 @@ ENV TZ Asia/Seoul
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN mkdir /opt/app
-ARG JAR_FILE_PATH=module-api/build/libs/*.jar
-
-COPY ${JAR_FILE_PATH} module-api-1.0-plain.jar/
+COPY module-api/build/libs/module-api-1.0.jar /opt/app
 
 ARG PASSWORD
 ENV PASSWORD ${PASSWORD}
-ARG PORT
-ENV PORT ${PORT}
 
 CMD ["java","-jar", \
 "-Dspring.profiles.active=prod", \
-"-Dspring.port=${PORT}", \
 "-Djasypt.encryptor.password=${PASSWORD}", \
-"/module-api-1.0-plain.jar"]
+"/opt/app/module-api-1.0.jar"]
