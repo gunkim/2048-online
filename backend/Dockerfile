@@ -15,7 +15,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN mkdir /opt/app
 ARG JAR_FILE_PATH=module-api/build/libs/*.jar
 
-COPY ${JAR_FILE_PATH} module-api-1.0-plain.jar
+COPY ${JAR_FILE_PATH} module-api-1.0-plain.jar/
 
 ARG PASSWORD
 ENV PASSWORD ${PASSWORD}
