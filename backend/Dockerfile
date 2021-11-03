@@ -17,4 +17,13 @@ ARG JAR_FILE_PATH=module-api/build/libs/*.jar
 
 COPY ${JAR_FILE_PATH} module-api-1.0-plain.jar
 
-ENTRYPOINT ["java","-jar","-Dspring.profiles.active=dev","-Dspring.port=8080","/module-api-1.0-plain.jar"]
+ARG PASSWORD
+ENV PASSWORD ${PASSWORD}
+ARG PORT
+ENV PORT ${PORT}
+
+CMD ["java","-jar", \
+"-Dspring.profiles.active=prod", \
+"-Dspring.port=${PORT}", \
+"-Djasypt.encryptor.password=${PASSWORD}", \
+"/module-api-1.0-plain.jar"]
