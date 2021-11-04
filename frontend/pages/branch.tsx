@@ -1,41 +1,62 @@
 import React from "react"
-import { TeamOutlined, UserOutlined } from "@ant-design/icons"
-import Layout from "../components/Layout"
+import { User, UserNew } from "grommet-icons"
+import { Grommet, Anchor, Box, Button, Text, Paragraph, Heading } from "grommet"
 import styled from "styled-components"
-import Link from "next/link"
-import PlayingBox from "../components/PlayingBox"
+import { useRouter } from "next/router"
 
-const SingleIcon = styled(UserOutlined)`
-  font-size: 50px;
-  color: #08c;
-`
-const MultiIcon = styled(TeamOutlined)`
-  font-size: 50px;
-  color: #08c;
+const MyGrommet = styled(Grommet)`
+  height: 100%;
 `
 
-const Branch = () => {
+export default function Branch() {
+  const router = useRouter()
   return (
-    <Layout>
-      <div style={{ width: 640, margin: "0 auto" }}>
-        <Link href="/single">
-          <PlayingBox
-            icon={<SingleIcon />}
-            title="싱글"
-            descript="혼자 플레이하여 점수를 내어 다른 유저들과 순위 경쟁을 할 수
-              있습니다."
+    <MyGrommet>
+      <Box
+        style={{ height: "100%" }}
+        direction="row-responsive"
+        justify="center"
+        align="center"
+        pad="xlarge"
+        gap="medium"
+      >
+        <Box
+          pad="large"
+          align="center"
+          background={{ color: "light-5", opacity: "strong" }}
+          round
+          gap="small"
+        >
+          <UserNew size="xlarge" />
+          <Heading margin="none" level={2}>
+            같이
+          </Heading>
+          <Paragraph margin="none">
+            2048 게임을 여러 사람과 함께 즐겨보세요!
+          </Paragraph>
+          <Button
+            label="시작하기"
+            onClick={() => {
+              router.push("/rooms")
+            }}
           />
-        </Link>
-        <Link href="/rooms">
-          <PlayingBox
-            icon={<MultiIcon />}
-            title="멀티"
-            descript="여러 유저들과 함께 실시간으로 경쟁을 해볼 수 있습니다."
+        </Box>
+        <Box pad="large" align="center" background="dark-2" round gap="small">
+          <User size="xlarge" color="light-2" />
+          <Heading margin="none" color="white" level={2}>
+            혼자
+          </Heading>
+          <Paragraph margin="none" color="white">
+            혼자 플레이하며 다른 사람들과 순위 경쟁을 해보세요!
+          </Paragraph>
+          <Button
+            label="시작하기"
+            onClick={() => {
+              router.push("/single")
+            }}
           />
-        </Link>
-      </div>
-    </Layout>
+        </Box>
+      </Box>
+    </MyGrommet>
   )
 }
-
-export default Branch
