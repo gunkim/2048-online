@@ -8,7 +8,7 @@ export type Room = {
   username?: string
   mode: string
   personnel: number
-  participant: number
+  participant?: number
 }
 
 export const getRooms = async (): Promise<Room[]> => {
@@ -20,7 +20,7 @@ export const getRooms = async (): Promise<Room[]> => {
   const { data } = response.data
   return data
 }
-export const createRoom = async (room: Room) => {
+export const createRoom = async (room: Object) => {
   const token: string = localStorage.getItem("token")
   const response = await axios({
     method: "post",
