@@ -26,6 +26,16 @@ const Board = styled(Row)`
       font-size: 2rem;
     }
   }
+  @media screen and (max-width: 768px) {
+    width: 270px;
+
+    .tile {
+      width: 50px;
+      height: 50px;
+      line-height: 40px;
+      font-size: 2rem;
+    }
+  }
   margin: 0 auto;
 `
 const Tile = styled.div`
