@@ -1,23 +1,20 @@
-import "antd/dist/antd.css"
 import React, { useEffect, useState } from "react"
 import hotkeys from "hotkeys-js"
 import GameBoard from "../components/GameBoard"
 import stompClient from "../util/socket-util"
 import styled from "styled-components"
 import { getUsername } from "../util/jwt-util"
-import Header from "../components/Header"
-import { Col, Row } from "antd"
+import { Grommet, Box, Grid } from "grommet"
 
 const ScoreBox = styled.span`
   text-align: center;
-  color: white;
+  color: black;
   font-weight: bold;
   h2 {
     font-weight: bold;
     color: white;
   }
 `
-
 type Game = {
   board: number[][]
   score: number
@@ -82,20 +79,28 @@ const Single = () => {
   }, [])
 
   return (
-    <div>
-      <Header />
-      <Row justify="center">
-        <Col span={24}>
+    <Grommet full>
+      <Grid
+        rows={["xsmall", "medium"]}
+        areas={[["header"], ["main"]]}
+        gap="small"
+      >
+        <Box
+          gridArea="header"
+          direction="column"
+          justify="center"
+          align="center"
+        >
           <ScoreBox>
             <h2>SCORE</h2>
             <div>{game.score}</div>
           </ScoreBox>
-        </Col>
-        <Col span={24}>
+        </Box>
+        <Box gridArea="main">
           <GameBoard board={game.board} over={game.gameOver} />
-        </Col>
-      </Row>
-    </div>
+        </Box>
+      </Grid>
+    </Grommet>
   )
 }
 
