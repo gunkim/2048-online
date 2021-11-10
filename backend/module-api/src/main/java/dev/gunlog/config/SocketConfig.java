@@ -1,7 +1,7 @@
 package dev.gunlog.config;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -14,13 +14,19 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @Slf4j
 @Configuration
 @EnableWebSocketMessageBroker
-@RequiredArgsConstructor
 public class SocketConfig implements WebSocketMessageBrokerConfigurer {
     private final TokenAuthInterceptor tokenAuthInterceptor;
+    private final String allowIp;
+
+    public SocketConfig(TokenAuthInterceptor tokenAuthInterceptor, @Value("${allow-ip}") String allowIp) {
+        this.tokenAuthInterceptor = tokenAuthInterceptor;
+        this.allowIp = allowIp;
+    }
+
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/webSocket")
-                .setAllowedOriginPatterns("*")
+                .setAllowedOrigins(allowIp)
                 .withSockJS();
     }
     @Override

@@ -3,7 +3,7 @@ module.exports = {
     return [
       {
         source: "/api/:path*",
-        destination: "http://localhost:8080/api/:path*"
+        destination: `${process.env.NEXT_PUBLIC_SERVER_IP}/api/:path*`
       }
     ]
   }

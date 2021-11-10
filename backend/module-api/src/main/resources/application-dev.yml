@@ -21,3 +21,4 @@ jwt:
     issuer: "2048 game"
 logging:
   config: classpath:logback-dev.xml
+allow-ip: "http://localhost:3000"

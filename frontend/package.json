@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "env-cmd -f .env.dev next dev",
+    "prod": "env-cmd -f .env.prod next dev",
     "build": "next build",
     "start": "next start"
   },
