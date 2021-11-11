@@ -35,7 +35,7 @@ public class RoomController {
     @GetMapping(path = "list")
     public ApiResponse<List<RoomListResponseDto>> rooms() throws HttpRequestMethodNotSupportedException {
         List<RoomListResponseDto> result = roomService.getAllRooms();
-        result.stream().forEach(dto -> dto.setParticipant(multiService.findRoomByRoomId(dto.getId().intValue()).getPlayers().size()));
+//        result.stream().forEach(dto -> dto.setParticipant(multiService.findRoomByRoomId(dto.getId().intValue()).getPlayers().size()));
 
         return ApiResponse.success(result);
     }
