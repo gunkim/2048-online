@@ -29,7 +29,7 @@ export const createRoom = async (room: Object) => {
     data: room
   })
   const { data } = response.data
-  return data
+  return data.roomId
 }
 export const joinRoom = async (roomId: number) => {
   const token: string = localStorage.getItem("token")
