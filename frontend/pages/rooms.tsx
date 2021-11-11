@@ -18,7 +18,7 @@ import {
 import Link from "next/link"
 import { Notification, Grommet } from "grommet"
 import { Gremlin, InProgress, Gamepad, FormClose } from "grommet-icons"
-import { createRoom, Room } from "../apis/room"
+import { createRoom, joinRoom, Room } from "../apis/room"
 import { useRouter } from "next/router"
 import { useDispatch, useSelector } from "react-redux"
 import { getRoomsAsync } from "../store/rooms/actions"
@@ -68,6 +68,13 @@ const Rooms = () => {
       query: { roomId: roomId }
     })
   }
+  const handleJoin = async (roomId: number) => {
+    await joinRoom(roomId)
+    router.push({
+      pathname: "/room",
+      query: { roomId: roomId }
+    })
+  }
   return (
     <Grommet full>
       <Grid
@@ -106,11 +113,9 @@ const Rooms = () => {
               data={data.slice(0, 10)}
               primaryKey={item => (
                 <Text size="large" weight="bold">
-                  <Link
-                    href={{ pathname: "/room", query: { roomId: item.id } }}
-                  >
+                  <a onClick={() => handleJoin(item.id)}>
                     <Anchor>{item.title}</Anchor>
-                  </Link>
+                  </a>
                 </Text>
               )}
               secondaryKey={item => (
