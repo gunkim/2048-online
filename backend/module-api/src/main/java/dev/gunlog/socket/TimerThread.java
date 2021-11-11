@@ -20,7 +20,7 @@ public class TimerThread extends Thread {
     @SneakyThrows
     @Override
     public void run() {
-        Thread.sleep(5000);//180000); //3분
+        Thread.sleep(180000); //3분
         List<Player> players = multiService.gameStop(this.roomId);
         GameRoom room = multiService.findRoomByRoomId(this.roomId);
         messageTemplate.convertAndSend("/sub/room/"+roomId+"/result", players);
