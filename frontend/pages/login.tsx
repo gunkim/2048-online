@@ -1,37 +1,77 @@
-import { createGlobalStyle } from "styled-components";
-import {checkUser, User} from "../apis/user";
-import {useState} from "react";
-import {signInUserAsync} from "../store/user/actions";
-import {useDispatch} from "react-redux";
-
-const GlobalStyle = createGlobalStyle`
-  body {
-    background-color: white !important;
-  }
-`;
+import React, { useState } from "react"
+import {
+  Box,
+  Button,
+  Grommet,
+  Form,
+  FormField,
+  TextInput,
+  Notification,
+  grommet
+} from "grommet"
+import { useRouter } from "next/router"
+import { User } from "../apis/user"
+import { useDispatch } from "react-redux"
+import { signInUserAsync } from "../store/user/actions"
 
 export default function Login() {
-    const dispatch = useDispatch()
-    const [user, setUser] = useState<User>({
-        username: "",
-        password: ""
-    })
-    const onChange = e => {
-        const name = e.target.name
-        const value = e.target.value
-
-        setUser({
-            ...user,
-            [name]: value
-        })
-    }
-    const onKeyPress = async e => {
-        if (e.key == "Enter") {
-            dispatch(signInUserAsync.request(user))
-        }
-    }
-    return (<>
-        <input name="username" value={user.username} onChange={onChange}/>
-        <input name="password" value={user.password} onChange={onChange} onKeyPress={onKeyPress}/>
-    </>)
+  const dispatch = useDispatch()
+  const router = useRouter()
+  const [user, setUser] = useState<User>({
+    username: "",
+    password: ""
+  })
+  const [isLogin, setIsLogin] = useState(false)
+  const onChange = (value: User) => {
+    setUser(value)
+  }
+  const onSubmit = async () => {
+    await dispatch(signInUserAsync.request(user))
+    setIsLogin(true)
+    router.back()
+  }
+  return (
+    <Grommet full theme={grommet}>
+      <Box fill align="center" justify="center">
+        <Box width="medium">
+          <Form
+            value={user}
+            onChange={nextValue => onChange(nextValue)}
+            onSubmit={onSubmit}
+          >
+            <FormField label="Username" name="username" required>
+              <TextInput
+                name="username"
+                type="username"
+                placeholder="유저이름을 입력해주세요"
+              />
+            </FormField>
+            <FormField label="Password" name="password" required>
+              <TextInput
+                name="password"
+                type="password"
+                placeholder="비밀번호를 입력해주세요"
+              />
+            </FormField>
+            <Box direction="row" justify="between" margin={{ top: "medium" }}>
+              <Button
+                type="reset"
+                label="홈으로"
+                onClick={() => router.push("/")}
+              />
+              <Button type="submit" label="로그인" primary />
+            </Box>
+          </Form>
+        </Box>
+      </Box>
+      {isLogin && (
+        <Notification
+          toast
+          status="normal"
+          title="로그인되었습니다."
+          message="환영합니다!"
+        />
+      )}
+    </Grommet>
+  )
 }
