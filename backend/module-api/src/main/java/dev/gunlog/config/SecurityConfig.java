@@ -46,6 +46,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                .authorizeRequests()
+                .antMatchers("/api/v2/room/list").permitAll()
+                .and()
                 .addFilterBefore(buildAsyncLoginProcessingFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(buildJwtTokenAuthenticationProcessingFilter(), UsernamePasswordAuthenticationFilter.class);
     }
@@ -69,7 +72,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return Arrays.asList(
                 AUTHENTICATION_URL,
                 "/api/v2/member/check/**",
-                "/webSocket/**"
+                "/webSocket/**",
+                "/api/v2/room/list"
         );
     }
 }
