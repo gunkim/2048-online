@@ -229,7 +229,9 @@ const Room = () => {
                 <>
                   <Head>
                     <Info>
-                      <MyTitle level={4}>{player.nickname} : 0</MyTitle>
+                      <MyTitle level={4}>
+                        {player.nickname} : {player.gameInfo.score}
+                      </MyTitle>
                     </Info>
                   </Head>
                   {player.gameInfo && (
