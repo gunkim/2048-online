@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "env-cmd -f .env.dev next dev",
     "prod": "env-cmd -f .env.prod next dev",
-    "build": "next build",
+    "build": "env-cmd -f .env.prod next build",
     "start": "next start"
   },
   "dependencies": {
