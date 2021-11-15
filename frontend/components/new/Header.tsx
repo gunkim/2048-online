@@ -5,7 +5,7 @@ const Header = () => {
   return (
     <GrommetHeader background="light" pad="medium">
       <Box direction="row" align="center" gap="medium" margin="small">
-        <Anchor color="black" href="https://github.com/ShimiSun">
+        <Anchor color="black" href="/">
           이공사팔
         </Anchor>
       </Box>
