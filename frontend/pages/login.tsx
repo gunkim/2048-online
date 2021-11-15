@@ -6,16 +6,14 @@ import Layout from "../components/new/Layout"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../store"
 import {
-  Box,
   Button,
   Card,
   Grid,
-  CardActionArea,
-  CardActions,
   Snackbar,
   CardContent,
   TextField,
-  Typography
+  Typography,
+  Alert
 } from "@mui/material"
 
 export default function Login() {
@@ -25,7 +23,6 @@ export default function Login() {
     username: "",
     password: ""
   })
-  const [isLogin, setIsLogin] = useState(false)
   const onChange = e => {
     const name = e.target.name
     const value = e.target.value
@@ -36,21 +33,41 @@ export default function Login() {
     })
   }
   const onSubmit = async e => {
-    if (e.keyCode === 13 || e.target.type === "button") {
+    if (e.key === "Enter" || e.target.type === "button") {
       await dispatch(signInUserAsync.request(user))
     }
   }
-  const { data } = useSelector((state: RootState) => state.user.signIn)
+  const { data, error } = useSelector((state: RootState) => state.user.signIn)
+
   if (data) {
-    setIsLogin(true)
+    setTimeout(() => {
+      router.push("/branch")
+    }, 800)
   }
   return (
     <Layout>
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        open={isLogin}
-        message="로그인되었습니다!"
-      />
+      {data && (
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={true}
+          message="로그인되었습니다!"
+        >
+          <Alert severity="success" sx={{ width: "100%" }}>
+            환영합니다!
+          </Alert>
+        </Snackbar>
+      )}
+      {error && (
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={true}
+          message="로그인되었습니다!"
+        >
+          <Alert severity="error" sx={{ width: "100%" }}>
+            아이디 및 비밀번호를 다시 확인해주세요!
+          </Alert>
+        </Snackbar>
+      )}
       <Card
         variant="outlined"
         sx={{ maxWidth: 800, margin: "0 auto", padding: "20px 10px" }}
