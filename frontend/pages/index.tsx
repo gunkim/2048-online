@@ -1,20 +1,17 @@
+import React, { useEffect, useState } from "react"
 import {
   Button,
   Card,
   CardActionArea,
   CardActions,
   CardContent,
-  CardMedia,
-  Container,
   Typography
 } from "@mui/material"
-import { List, ResponsiveContext, Text } from "grommet"
-import React, { useContext } from "react"
+import { List } from "grommet"
 import Layout from "../components/new/Layout"
-import { styled } from "@mui/material/styles"
-import Paper from "@mui/material/Paper"
 import Grid from "@mui/material/Grid"
 import { useRouter } from "next/router"
+import { getUsername } from "../util/jwt-util"
 
 const data = []
 
@@ -26,7 +23,12 @@ for (let i = 0; i < 5; i += 1) {
 }
 const Home = () => {
   const router = useRouter()
-  const [value, setValue] = React.useState("one")
+  const [name, setName] = useState("")
+  const [value, setValue] = useState("one")
+
+  useEffect(() => {
+    setName(getUsername())
+  }, [setName])
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue)
   }
@@ -36,20 +38,38 @@ const Home = () => {
         <Grid item xs={12}>
           <Card
             sx={{ maxWidth: 345, textAlign: "center", margin: "0 auto" }}
-            onClick={() => router.push("/login")}
+            onClick={() => {
+              if (name) {
+                router.push("/rooms")
+              } else {
+                router.push("/login")
+              }
+            }}
           >
             <CardActionArea>
               <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  로그인
-                </Typography>
+                {name ? (
+                  <Typography gutterBottom variant="h5" component="div">
+                    게임 시작
+                  </Typography>
+                ) : (
+                  <Typography gutterBottom variant="h5" component="div">
+                    로그인
+                  </Typography>
+                )}
               </CardContent>
             </CardActionArea>
-            <CardActions style={{ background: "#f7f7f7" }}>
-              <Button size="small" color="primary" style={{ margin: "0 auto" }}>
-                소셜 로그인
-              </Button>
-            </CardActions>
+            {!name && (
+              <CardActions style={{ background: "#f7f7f7" }}>
+                <Button
+                  size="small"
+                  color="primary"
+                  style={{ margin: "0 auto" }}
+                >
+                  소셜 로그인
+                </Button>
+              </CardActions>
+            )}
           </Card>
         </Grid>
         <Grid item xs={12} md={6}>
