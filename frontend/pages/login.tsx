@@ -41,7 +41,7 @@ export default function Login() {
 
   if (data) {
     setTimeout(() => {
-      router.push("/branch")
+      router.push("/")
     }, 800)
   }
   return (
