@@ -48,7 +48,7 @@ const RoomsFrame = ({ children }: RoomsFrameProps) => {
     mode: "TIME_ATTACK"
   })
 
-  const handleChange = (newValue: number) => {
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
   }
   const handleOpen = () => setOpen(true)
