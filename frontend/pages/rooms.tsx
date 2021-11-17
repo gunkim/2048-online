@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Tab, Tabs } from "@mui/material"
+import { Box, Card, CardContent, Skeleton, Tab, Tabs } from "@mui/material"
 import React, { useEffect } from "react"
 import Layout from "../components/new/Layout"
 import RoomItem from "../components/RoomItem"
@@ -7,6 +7,7 @@ import { getRoomsAsync } from "../store/rooms/actions"
 import { RootState } from "../store"
 import { useDispatch, useSelector } from "react-redux"
 import { Room } from "../apis/room"
+import RoomSkeletonItem from "./../components/RoomSkeletonItem"
 
 const Rooms = () => {
   const dispatch = useDispatch()
@@ -20,6 +21,13 @@ const Rooms = () => {
   return (
     <Layout>
       <RoomsFrame>
+        {loading && (
+          <>
+            {[1, 2, 3, 4].map(() => (
+              <RoomSkeletonItem />
+            ))}
+          </>
+        )}
         {data &&
           data.map((room: Room) => {
             return (
