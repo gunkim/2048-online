@@ -1,6 +1,5 @@
 import { Anchor, Box, Header as GrommetHeader, Nav } from "grommet"
 import React, { useEffect, useState } from "react"
-import user from "../../store/user/reducer"
 import { getUsername } from "../../util/jwt-util"
 import Link from "next/link"
 

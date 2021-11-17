@@ -8,7 +8,7 @@ import {
   Typography
 } from "@mui/material"
 import { List } from "grommet"
-import Layout from "../components/new/Layout"
+import Layout from "../components/layout/Layout"
 import Grid from "@mui/material/Grid"
 import { useRouter } from "next/router"
 import { getUsername } from "../util/jwt-util"

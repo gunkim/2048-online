@@ -1,6 +1,6 @@
 import { Box, Card, CardContent, Skeleton, Tab, Tabs } from "@mui/material"
 import React, { useEffect } from "react"
-import Layout from "../components/new/Layout"
+import Layout from "../components/layout/Layout"
 import RoomItem from "../components/RoomItem"
 import RoomsFrame from "../components/RoomsFrame"
 import { getRoomsAsync } from "../store/rooms/actions"

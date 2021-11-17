@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { useRouter } from "next/router"
 import { User } from "../apis/user"
 import { signInUserAsync } from "../store/user/actions"
-import Layout from "../components/new/Layout"
+import Layout from "../components/layout/Layout"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../store"
 import {
