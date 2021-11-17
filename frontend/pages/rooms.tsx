@@ -1,4 +1,14 @@
-import { Box, Modal, Tab, Tabs } from "@mui/material"
+import {
+  Box,
+  Grid,
+  List,
+  ListItem,
+  ListItemText,
+  Modal,
+  Tab,
+  Tabs,
+  Typography
+} from "@mui/material"
 import React, { useEffect, useState } from "react"
 import Layout from "../components/layout/Layout"
 import RoomItem from "../components/RoomItem"
@@ -75,26 +85,40 @@ const Rooms = () => {
         </Box>
       </Box>
       <RoomsFrame>
-        {loading && (
-          <>
-            {[1, 2, 3, 4, 5, 6, 7, 8].map(() => (
-              <RoomSkeletonItem />
-            ))}
-          </>
-        )}
-        {data &&
-          data.map((room: Room) => {
-            return (
-              <RoomItem
-                key={room.id}
-                id={room.id}
-                title={room.title}
-                mode={room.mode}
-                participant={room.participant}
-                personnel={room.personnel}
-              />
-            )
-          })}
+        <Grid item xs={9.5}>
+          <Grid container spacing={2} style={{ overflow: "auto", height: 570 }}>
+            {loading && (
+              <>
+                {[1, 2, 3, 4, 5, 6, 7, 8].map(() => (
+                  <RoomSkeletonItem />
+                ))}
+              </>
+            )}
+            {data &&
+              data.map((room: Room) => {
+                return (
+                  <RoomItem
+                    key={room.id}
+                    id={room.id}
+                    title={room.title}
+                    mode={room.mode}
+                    participant={room.participant}
+                    personnel={room.personnel}
+                  />
+                )
+              })}
+          </Grid>
+        </Grid>
+        <Grid item xs={2.5}>
+          <Typography variant="h6" component="div">
+            접속자
+          </Typography>
+          <List style={{ overflow: "auto", height: 535 }}>
+            <ListItem style={{ padding: "0px 16px" }}>
+              <ListItemText style={{ margin: 0 }} primary="인원1" />
+            </ListItem>
+          </List>
+        </Grid>
       </RoomsFrame>
     </Layout>
   )
