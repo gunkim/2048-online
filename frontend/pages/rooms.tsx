@@ -24,6 +24,7 @@ const Rooms = () => {
           data.map((room: Room) => {
             return (
               <RoomItem
+                key={room.id}
                 id={room.id}
                 title={room.title}
                 mode={room.mode}

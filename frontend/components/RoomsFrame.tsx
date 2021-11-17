@@ -40,7 +40,7 @@ type RoomsFrameProps = {
 }
 const RoomsFrame = ({ children }: RoomsFrameProps) => {
   const router = useRouter()
-  const [value, setValue] = useState(null)
+  const [value, setValue] = useState(0)
   const [open, setOpen] = useState(false)
   const [form, setForm] = useState({
     title: "",
