@@ -1,16 +1,37 @@
 import { Box, Card, CardContent, Tab, Tabs } from "@mui/material"
-import React from "react"
+import React, { useEffect } from "react"
 import Layout from "../components/new/Layout"
 import RoomItem from "../components/RoomItem"
 import RoomsFrame from "../components/RoomsFrame"
+import { getRoomsAsync } from "../store/rooms/actions"
+import { RootState } from "../store"
+import { useDispatch, useSelector } from "react-redux"
+import { Room } from "../apis/room"
 
 const Rooms = () => {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(getRoomsAsync.request(null, null))
+  }, [dispatch])
+
+  const { loading, data, error } = useSelector(
+    (state: RootState) => state.rooms.rooms
+  )
   return (
     <Layout>
       <RoomsFrame>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(() => {
-          return <RoomItem />
-        })}
+        {data &&
+          data.map((room: Room) => {
+            return (
+              <RoomItem
+                id={room.id}
+                title={room.title}
+                mode={room.mode}
+                participant={room.participant}
+                personnel={room.personnel}
+              />
+            )
+          })}
       </RoomsFrame>
     </Layout>
   )

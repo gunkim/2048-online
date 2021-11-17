@@ -5,7 +5,22 @@ import {
   Grid,
   Typography
 } from "@mui/material"
-const RoomItem = () => {
+
+type RoomItemProps = {
+  id: number
+  title: string
+  mode: string
+  participant: number
+  personnel: number
+}
+
+const RoomItem = ({
+  id,
+  title,
+  mode,
+  participant,
+  personnel
+}: RoomItemProps) => {
   return (
     <Grid item xs={6}>
       <Card>
@@ -17,14 +32,17 @@ const RoomItem = () => {
                 xs={3}
                 style={{ borderRight: "1px solid black", maxWidth: 40 }}
               >
-                <Typography style={{ maxWidth: 40 }}>3</Typography>
+                <Typography style={{ maxWidth: 40 }}>{id}</Typography>
               </Grid>
               <Grid item xs={9} style={{ paddingLeft: 10 }}>
                 <Typography style={{ fontSize: "1.3rem" }}>
-                  안녕하세요 <span style={{ float: "right" }}>1/4</span>
+                  {title}{" "}
+                  <span style={{ float: "right" }}>
+                    {participant}/{personnel}
+                  </span>
                 </Typography>
                 <Typography style={{ fontSize: "0.8rem" }} component="div">
-                  스피드
+                  {mode}
                 </Typography>
               </Grid>
             </Grid>
