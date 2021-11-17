@@ -34,21 +34,27 @@ const RoomsFrame = ({ children }: RoomsFrameProps) => {
               label="방 만들기"
               style={{
                 borderRadius: "10px 10px 0px 0px",
-                background: "#aeadff"
+                background: "#aeadff",
+                fontWeight: "bold",
+                color: "black"
               }}
             />
             <Tab
               label="랭킹"
               style={{
                 borderRadius: "10px 10px 0px 0px",
-                background: "#e38a8a"
+                background: "#e38a8a",
+                fontWeight: "bold",
+                color: "black"
               }}
             />
             <Tab
               label="싱글"
               style={{
                 borderRadius: "10px 10px 0px 0px",
-                background: "#a5ffa4"
+                background: "#a5ffa4",
+                fontWeight: "bold",
+                color: "black"
               }}
             />
           </Tabs>
@@ -57,6 +63,15 @@ const RoomsFrame = ({ children }: RoomsFrameProps) => {
       <Card style={{ marginBottom: "10px" }}>
         <CardContent>
           <Grid container spacing={2} style={{ marginTop: 0 }}>
+            <Grid item xs={9.5}>
+              <Grid
+                container
+                spacing={2}
+                style={{ overflow: "auto", height: 570 }}
+              >
+                {children}
+              </Grid>
+            </Grid>
             <Grid item xs={2.5}>
               <Typography variant="h6" component="div">
                 접속자
@@ -66,15 +81,6 @@ const RoomsFrame = ({ children }: RoomsFrameProps) => {
                   <ListItemText style={{ margin: 0 }} primary="인원1" />
                 </ListItem>
               </List>
-            </Grid>
-            <Grid item xs={9.5}>
-              <Grid
-                container
-                spacing={2}
-                style={{ overflow: "auto", height: 570 }}
-              >
-                {children}
-              </Grid>
             </Grid>
           </Grid>
         </CardContent>
