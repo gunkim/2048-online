@@ -5,6 +5,8 @@ import {
   Grid,
   Typography
 } from "@mui/material"
+import { joinRoom } from "../apis/room"
+import { useRouter } from "next/router"
 
 type RoomItemProps = {
   id: number
@@ -21,10 +23,19 @@ const RoomItem = ({
   participant,
   personnel
 }: RoomItemProps) => {
+  const router = useRouter()
+  const handleJoin = async (roomId: number) => {
+    await joinRoom(roomId).then(() => {
+      router.push({
+        pathname: "/room",
+        query: { roomId: roomId }
+      })
+    })
+  }
   return (
     <Grid item xs={6}>
       <Card>
-        <CardActionArea>
+        <CardActionArea onClick={() => handleJoin(id)}>
           <CardContent>
             <Grid container spacing={2} style={{ marginTop: 0 }}>
               <Grid
