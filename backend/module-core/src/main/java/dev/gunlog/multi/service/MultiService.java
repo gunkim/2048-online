@@ -139,4 +139,13 @@ public class MultiService {
 
         return room;
     }
+    public void ready(String username) {
+        Integer roomId = userRoomRepository.findRoomIdByMemberId(username)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 들어가 있는 방을 찾을 수 없습니다. USERNAME : "+username));
+        GameRoom room = gameRoomRepository.findRoomByRoomId(roomId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게임 방을 찾을 수 없습니다. ROOM_ID : "+roomId));
+
+        Player me = room.getPlayers().stream().filter(player -> player.getNickname().equals(username)).findFirst().get();
+        me.ready();
+    }
 }

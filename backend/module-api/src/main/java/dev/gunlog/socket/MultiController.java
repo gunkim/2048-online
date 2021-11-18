@@ -35,6 +35,15 @@ public class MultiController {
             thread.run();
         }
     }
+    @MessageMapping("/multi/ready")
+    public void gameReady(Principal principal) {
+        String memberId = principal.getName();
+        multiService.ready(memberId);
+
+        Integer roomId = multiService.findRoomId(memberId);
+        GameRoom gameRoom = multiService.findRoomByRoomId(roomId);
+        messageTemplate.convertAndSend("/sub/room/"+roomId, gameRoom);
+    }
 
     @MessageMapping("/multi/init")
     public void getRoomInfo(Integer roomId) {
