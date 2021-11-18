@@ -74,6 +74,8 @@ public class RoomController {
             return ApiResponse.of(WebStatusCode.INVALID_INPUT_VALUE);
         }
         players.add(new Player(memberId));
+
+        messageTemplate.convertAndSend("/sub/room/"+roomId, gameRoom);
         return ApiResponse.success();
     }
     @PutMapping(path = "exit")
