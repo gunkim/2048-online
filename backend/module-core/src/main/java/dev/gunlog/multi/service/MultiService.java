@@ -55,11 +55,13 @@ public class MultiService {
                 .orElseThrow();
         if(memberId.equals(room.getHost())) {
             if(!room.isStart()) {
-                room.gameStart();
-                room.getPlayers().stream()
-                        .forEach(player -> player.setGameInfo(new Game()));
-
-                return true;
+                boolean isAllReady = room.getPlayers().stream().allMatch(player -> player.isReady());
+                if(isAllReady) {
+                    room.gameStart();
+                    room.getPlayers().stream()
+                            .forEach(player -> player.setGameInfo(new Game()));
+                    return true;
+                }
             }
         }
         return false;
@@ -139,13 +141,16 @@ public class MultiService {
 
         return room;
     }
-    public void ready(String username) {
+    public boolean ready(String username) {
         Integer roomId = userRoomRepository.findRoomIdByMemberId(username)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 들어가 있는 방을 찾을 수 없습니다. USERNAME : "+username));
         GameRoom room = gameRoomRepository.findRoomByRoomId(roomId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게임 방을 찾을 수 없습니다. ROOM_ID : "+roomId));
-
+        if(room.isStart()) {
+            return false;
+        }
         Player me = room.getPlayers().stream().filter(player -> player.getNickname().equals(username)).findFirst().get();
         me.ready();
+        return true;
     }
 }
