@@ -17,7 +17,7 @@ const data = []
 
 for (let i = 0; i < 5; i += 1) {
   data.push({
-    entry: `2021.11.15.`,
+    entry: `2021.11.1${i}.`,
     location: `안녕하세요`
   })
 }
