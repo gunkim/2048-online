@@ -25,6 +25,7 @@ const Rooms = () => {
   const dispatch = useDispatch()
   const [value, setValue] = useState(0)
   const [open, setOpen] = useState(false)
+  const [players, setPlayers] = useState([])
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
@@ -36,9 +37,27 @@ const Rooms = () => {
     dispatch(connectSocketAsync.request(null, null))
   }, [dispatch])
 
-  const { loading, data, error } = useSelector(
-    (state: RootState) => state.rooms.rooms
-  )
+  const rooms = useSelector((state: RootState) => state.rooms.rooms)
+  const {
+    loading,
+    data: stompClient,
+    error
+  } = useSelector((state: RootState) => state.socket.socket)
+
+  useEffect(() => {
+    if (stompClient == null) {
+      return
+    }
+    const headers = {
+      Authorization: localStorage.getItem("token")
+    }
+    stompClient.connect(headers, () => {
+      stompClient.subscribe("/sub/rooms", response => {
+        const payload: string[] = JSON.parse(response.body)
+        setPlayers(payload)
+      })
+    })
+  }, [stompClient])
   return (
     <Layout>
       <Modal
@@ -92,15 +111,15 @@ const Rooms = () => {
       <RoomsFrame>
         <Grid item xs={9.5}>
           <Grid container spacing={2} style={{ overflow: "auto", height: 570 }}>
-            {loading && (
+            {rooms.loading && (
               <>
                 {[1, 2, 3, 4, 5, 6, 7, 8].map(i => (
                   <RoomSkeletonItem key={i} />
                 ))}
               </>
             )}
-            {data &&
-              data.map((room: Room) => {
+            {rooms.data &&
+              rooms.data.map((room: Room) => {
                 return (
                   <RoomItem
                     key={room.id}
@@ -119,9 +138,11 @@ const Rooms = () => {
             접속자
           </Typography>
           <List style={{ overflow: "auto", height: 535 }}>
-            <ListItem style={{ padding: "0px 16px" }}>
-              <ListItemText style={{ margin: 0 }} primary="인원1" />
-            </ListItem>
+            {players.map(name => (
+              <ListItem style={{ padding: "0px 16px" }}>
+                <ListItemText style={{ margin: 0 }} primary={name} />
+              </ListItem>
+            ))}
           </List>
         </Grid>
       </RoomsFrame>
