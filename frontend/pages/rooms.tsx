@@ -19,11 +19,13 @@ import { useDispatch, useSelector } from "react-redux"
 import { Room } from "../apis/room"
 import RoomSkeletonItem from "./../components/RoomSkeletonItem"
 import RoomCreateForm from "../components/RoomCreateForm"
+import { connectSocketAsync } from "../store/socket/actions"
 
 const Rooms = () => {
   const dispatch = useDispatch()
   const [value, setValue] = useState(0)
   const [open, setOpen] = useState(false)
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
   }
@@ -31,6 +33,7 @@ const Rooms = () => {
   const handleClose = () => setOpen(false)
   useEffect(() => {
     dispatch(getRoomsAsync.request(null, null))
+    dispatch(connectSocketAsync.request(null, null))
   }, [dispatch])
 
   const { loading, data, error } = useSelector(
@@ -44,7 +47,9 @@ const Rooms = () => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <RoomCreateForm />
+        <div>
+          <RoomCreateForm />
+        </div>
       </Modal>
       <Box sx={{ width: "100%" }}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -89,8 +94,8 @@ const Rooms = () => {
           <Grid container spacing={2} style={{ overflow: "auto", height: 570 }}>
             {loading && (
               <>
-                {[1, 2, 3, 4, 5, 6, 7, 8].map(() => (
-                  <RoomSkeletonItem />
+                {[1, 2, 3, 4, 5, 6, 7, 8].map(i => (
+                  <RoomSkeletonItem key={i} />
                 ))}
               </>
             )}
