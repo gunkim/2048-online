@@ -44,6 +44,11 @@ const room = createReducer<SocketState, SocketAction>(initialState)
   .handleAction(connectSocketAsync.cancel, (state, action) => {
     return {
       ...state,
+      socket: {
+        loading: false,
+        error: action.payload,
+        data: null
+      }
     }
   })
 

@@ -12,4 +12,4 @@ export const connectSocketAsync = createAsyncAction(
   CONNECT_SOCKET_SUCCESS,
   CONNECT_SOCKET_FAILURE,
   CONNECT_SOCKET_ALREADY
-)<undefined, Stomp.Client, AxiosError, undefined>()
+)<undefined, Stomp.Client, AxiosError, Stomp.Client>()

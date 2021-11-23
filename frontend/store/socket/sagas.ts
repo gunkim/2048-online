@@ -4,17 +4,19 @@ import SockJS from "sockjs-client"
 import Stomp from "stompjs"
 
 function* connectSocket() {
-  const { data } = yield select(store => store.socket.socket)
-  if(data) {
-    yield put(connectSocketAsync.cancel(null, null))
-    return;
-  }
   try {
+    const { data } = yield select(store => store.socket.socket)
+    if (data) {
+      yield put(connectSocketAsync.cancel(null))
+      return
+    }
+
     const sockJS = new SockJS(`${process.env.NEXT_PUBLIC_SERVER_IP}/webSocket`)
     const stompClient: Stomp.Client = yield call(Stomp.over, sockJS)
     stompClient.debug = msg => {
       console.log(msg)
     }
+
     yield put(connectSocketAsync.success(stompClient))
   } catch (e) {
     console.log(e)
