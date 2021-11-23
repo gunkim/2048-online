@@ -46,8 +46,8 @@ const room = createReducer<SocketState, SocketAction>(initialState)
       ...state,
       socket: {
         loading: false,
-        error: action.payload,
-        data: null
+        error: null,
+        data: action.payload
       }
     }
   })
