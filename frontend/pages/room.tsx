@@ -1,12 +1,13 @@
-import { Box, Card, Grid, Tab, Tabs } from "@mui/material"
+import { Alert, Box, Card, Grid, Snackbar, Tab, Tabs } from "@mui/material"
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
 import Layout from "../components/layout/Layout"
 import RoomsFrame from "../components/RoomsFrame"
-import stompClient from "../util/socket-util"
-import GameBoard from "../components/GameBoard"
 import { getUsername } from "../util/jwt-util"
 import { exitRoom } from "../apis/room"
+import { useDispatch, useSelector } from "react-redux"
+import { RootState } from "../store"
+import { connectSocketAsync } from "../store/socket/actions"
 
 type GameInfo = {
   board: number[][]
@@ -36,10 +37,12 @@ const Room = () => {
     host: ""
   })
   const router = useRouter()
+  const dispatch = useDispatch()
   const { roomId } = router.query
   const [value, setValue] = useState(0)
   const [open, setOpen] = useState(false)
   const [username, setUsername] = useState("")
+  const [message, setMessage] = useState(false)
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
   }
@@ -50,7 +53,19 @@ const Room = () => {
     setUsername(getUsername())
   }, [username])
 
+  const {
+    loading,
+    data: stompClient,
+    error
+  } = useSelector((state: RootState) => state.socket.socket)
+
   useEffect(() => {
+    dispatch(connectSocketAsync.request(null, null))
+  }, [dispatch])
+  useEffect(() => {
+    if (stompClient == null) {
+      return
+    }
     const headers = {
       Authorization: localStorage.getItem("token")
     }
@@ -62,7 +77,7 @@ const Room = () => {
         setGameInfo(payload)
       })
     })
-  }, [roomId])
+  }, [stompClient])
 
   const handleExit = async () => {
     await exitRoom()
@@ -73,9 +88,29 @@ const Room = () => {
   const handleReady = () => {
     stompClient.send("/pub/multi/ready", {})
   }
-
+  const handleStart = () => {
+    if (gameInfo.players.filter(player => !player.ready).length > 0) {
+      setMessage(true)
+    }
+    if (!gameInfo.start) {
+      stompClient.send("/pub/multi/start", {})
+      router.push("/multi?roomId=" + roomId)
+    }
+  }
   return (
     <Layout>
+      {message && (
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={true}
+          autoHideDuration={4000}
+          onClose={() => setMessage(false)}
+        >
+          <Alert severity="warning" sx={{ width: "100%" }}>
+            대기방의 인원 모두가 대기해야 게임을 시작할 수 있습니다.
+          </Alert>
+        </Snackbar>
+      )}
       <Box sx={{ width: "100%" }}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs
@@ -83,6 +118,18 @@ const Room = () => {
             onChange={handleChange}
             aria-label="basic tabs example"
           >
+            {gameInfo.host === username && !gameInfo.start && (
+              <Tab
+                label="시작"
+                style={{
+                  borderRadius: "10px 10px 0px 0px",
+                  background: "#ffa5a5",
+                  fontWeight: "bold",
+                  color: "black"
+                }}
+                onClick={handleStart}
+              />
+            )}
             {!gameInfo.start &&
               (gameInfo.players.filter(
                 player => player.nickname === username
@@ -111,17 +158,7 @@ const Room = () => {
                   onClick={handleReady}
                 />
               ))}
-            {gameInfo.host === username && (
-              <Tab
-                label="시작"
-                style={{
-                  borderRadius: "10px 10px 0px 0px",
-                  background: "#ffa5a5",
-                  fontWeight: "bold",
-                  color: "black"
-                }}
-              />
-            )}
+
             <Tab
               label="나가기"
               onClick={handleExit}
