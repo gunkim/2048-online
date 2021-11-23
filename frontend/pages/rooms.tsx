@@ -56,6 +56,7 @@ const Rooms = () => {
         const payload: string[] = JSON.parse(response.body)
         setPlayers(payload)
       })
+      stompClient.send("/pub/rooms", {})
     })
   }, [stompClient])
   return (
