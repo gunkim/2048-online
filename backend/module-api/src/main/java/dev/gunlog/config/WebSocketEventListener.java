@@ -17,7 +17,7 @@ import java.util.Set;
 @Component
 @RequiredArgsConstructor
 public class WebSocketEventListener {
-    private static Set<String> players = new HashSet<>();
+    public static Set<String> players = new HashSet<>();
     private final SimpMessageSendingOperations messageTemplate;
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
