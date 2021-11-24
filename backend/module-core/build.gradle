@@ -9,4 +9,7 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.3'
     testRuntimeOnly group: 'com.h2database', name: 'h2', version: '1.4.200'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis'
+    implementation group: 'redis.clients', name: 'jedis', version: '3.7.0'
+    implementation group: 'com.github.kstyrc', name: 'embedded-redis', version: '0.6'
 }
