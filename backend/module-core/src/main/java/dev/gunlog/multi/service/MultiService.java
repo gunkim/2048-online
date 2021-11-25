@@ -1,12 +1,12 @@
 package dev.gunlog.multi.service;
 
-import dev.gunlog.api.room.domain.enums.Mode;
+import dev.gunlog.room.domain.enums.Mode;
 import dev.gunlog.multi.domain.GameRoomRepository;
 import dev.gunlog.multi.domain.UserRoomRepository;
 import dev.gunlog.multi.model.Game;
 import dev.gunlog.multi.model.GameRoom;
 import dev.gunlog.multi.model.Player;
-import dev.gunlog.api.room.domain.RoomRepository;
+import dev.gunlog.room.domain.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
