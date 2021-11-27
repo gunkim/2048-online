@@ -1,5 +1,7 @@
 package dev.gunlog.room.dto;
 
+import dev.gunlog.multi.domain.GameRoomRedis;
+import dev.gunlog.multi.model.GameRoom;
 import dev.gunlog.room.domain.enums.Mode;
 import dev.gunlog.room.domain.enums.Personnel;
 import dev.gunlog.member.domain.Member;
@@ -24,12 +26,14 @@ public class RoomCreateRequestDto {
         this.personnel = personnel;
     }
 
-    public Room toEntity(Member member) {
-        return Room.builder()
+    public GameRoomRedis toEntity(String nickname) {
+        return GameRoomRedis.builder()
+                .id(1l)
                 .title(this.title)
-                .mode(this.mode)
-                .personnel(this.personnel)
-                .member(member)
+                .isStart(false)
+                .maxNumberOfPeople(this.personnel)
+                .gameMode(this.mode)
+                .host(nickname)
                 .build();
     }
 }
