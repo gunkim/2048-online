@@ -1,5 +1,6 @@
 package dev.gunlog.socket;
 
+import dev.gunlog.multi.domain.GameRoomRedis;
 import dev.gunlog.room.domain.enums.Mode;
 import dev.gunlog.multi.model.GameRoom;
 import dev.gunlog.multi.service.MultiService;
@@ -21,90 +22,81 @@ public class MultiController {
 
     @MessageMapping("/multi/start")
     public void gameStart(Principal principal) {
-        String memberId = principal.getName();
-        boolean isStart = multiService.gameStart(memberId);
-        Integer roomId = multiService.findRoomId(memberId);
-        GameRoom gameRoom = multiService.findRoomByRoomId(roomId);
+        String nickname = principal.getName();
+        GameRoomRedis room = multiService.gameStart(nickname);
 
-        if(isStart) {
-            messageTemplate.convertAndSend("/sub/room/"+roomId, gameRoom);
-            messageTemplate.convertAndSend("/sub/room/"+roomId+"/start", gameRoom.getStartTime());
-        }
-        if(gameRoom.getGameMode() == Mode.TIME_ATTACK) {
-            Thread thread = new TimerThread(roomId, multiService, messageTemplate);
-            thread.run();
+        if(room != null) {
+            messageTemplate.convertAndSend("/sub/room/"+room.getId(), room);
+            messageTemplate.convertAndSend("/sub/room/"+room.getId()+"/start", room.getStartTime());
+
+            if(room.getGameMode() == Mode.TIME_ATTACK) {
+                Thread thread = new TimerThread(room.getId(), multiService, messageTemplate);
+                thread.run();
+            }
         }
     }
     @MessageMapping("/multi/ready")
     public void gameReady(Principal principal) {
-        String memberId = principal.getName();
-        boolean isChange = multiService.ready(memberId);
+        String nickname = principal.getName();
+        GameRoomRedis room = multiService.ready(nickname);
 
-        if(isChange) {
-            Integer roomId = multiService.findRoomId(memberId);
-            GameRoom gameRoom = multiService.findRoomByRoomId(roomId);
-            messageTemplate.convertAndSend("/sub/room/"+roomId, gameRoom);
+        if(room != null) {
+            messageTemplate.convertAndSend("/sub/room/"+room.getId(), room);
         }
     }
 
     @MessageMapping("/multi/init")
-    public void getRoomInfo(Integer roomId) {
-        GameRoom gameRoom = multiService.findRoomByRoomId(roomId);
+    public void getRoomInfo(Principal principal) {
+        String nickname = principal.getName();
+        GameRoomRedis room = multiService.findRoomByNickname(nickname);
 
-        messageTemplate.convertAndSend("/sub/room/"+roomId, gameRoom);
-        if(gameRoom.getStartTime() != null) {
-            messageTemplate.convertAndSend("/sub/room/"+roomId+"/start", gameRoom.getStartTime());
+        messageTemplate.convertAndSend("/sub/room/"+room.getId(), room);
+        if(room.getStartTime() != null) {
+            messageTemplate.convertAndSend("/sub/room/"+room.getId()+"/start", room.getStartTime());
         }
     }
 
     @MessageMapping("/multi/left")
     public void leftMove(Principal principal) {
-        String memberId = principal.getName();
-        Integer roomId = multiService.findRoomId(memberId);
-        GameRoom room = multiService.leftMove(memberId);
+        String nickname = principal.getName();
+        GameRoomRedis room = multiService.leftMove(nickname);
 
         if(room.getStartTime() == null) {
-            messageTemplate.convertAndSend("/sub/room/"+roomId+"/start", "");
+            messageTemplate.convertAndSend("/sub/room/"+room.getId()+"/start", "");
         }
-        messageTemplate.convertAndSend("/sub/room/"+roomId, room);
+        messageTemplate.convertAndSend("/sub/room/"+room.getId(), room);
     }
 
     @MessageMapping("/multi/right")
     public void rightMove(Principal principal) {
-        String memberId = principal.getName();
-        Integer roomId = multiService.findRoomId(memberId);
-        GameRoom room = multiService.rightMove(memberId);
-
+        String nickname = principal.getName();
+        GameRoomRedis room = multiService.rightMove(nickname);
+        messageTemplate.convertAndSend("/sub/room/"+room.getId(), room);
 
         if(room.getStartTime() == null) {
-            messageTemplate.convertAndSend("/sub/room/"+roomId+"/start", "");
+            messageTemplate.convertAndSend("/sub/room/"+room.getId()+"/start", "");
         }
-        messageTemplate.convertAndSend("/sub/room/"+roomId, room);
     }
 
     @MessageMapping("/multi/top")
     public void topMove(Principal principal) {
-        String memberId = principal.getName();
-        Integer roomId = multiService.findRoomId(memberId);
-        GameRoom room = multiService.topMove(memberId);
-
+        String nickname = principal.getName();
+        GameRoomRedis room = multiService.topMove(nickname);
+        messageTemplate.convertAndSend("/sub/room/"+room.getId(), room);
 
         if(room.getStartTime() == null) {
-            messageTemplate.convertAndSend("/sub/room/"+roomId+"/start", "");
+            messageTemplate.convertAndSend("/sub/room/"+room.getId()+"/start", "");
         }
-        messageTemplate.convertAndSend("/sub/room/"+roomId, room);
     }
 
     @MessageMapping("/multi/bottom")
     public void bottomMove(Principal principal) {
-        String memberId = principal.getName();
-        Integer roomId = multiService.findRoomId(memberId);
-        GameRoom room = multiService.bottomMove(memberId);
-
+        String nickname = principal.getName();
+        GameRoomRedis room = multiService.bottomMove(nickname);
+        messageTemplate.convertAndSend("/sub/room/"+room.getId(), room);
 
         if(room.getStartTime() == null) {
-            messageTemplate.convertAndSend("/sub/room/"+roomId+"/start", "");
+            messageTemplate.convertAndSend("/sub/room/"+room.getId()+"/start", "");
         }
-        messageTemplate.convertAndSend("/sub/room/"+roomId, room);
     }
 }

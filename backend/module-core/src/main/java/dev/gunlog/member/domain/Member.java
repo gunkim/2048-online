@@ -27,7 +27,7 @@ public class Member extends BaseTimeEntity {
     @Column(name = "MEMBER_PWD")
     private String password;
     @NotBlank
-    @Column(name = "MEMBER_NICKNAME")
+    @Column(name = "MEMBER_NICKNAME", unique = true)
     private String nickname;
     @Column(name = "MEMBER_PICTURE")
     private String picture;

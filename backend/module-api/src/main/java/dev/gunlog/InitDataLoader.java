@@ -22,14 +22,14 @@ public class InitDataLoader {
                     .memberId("gunkim")
                     .password(passwordEncoder.encode("test"))
                     .role(Role.USER)
-                    .name("김건")
+                    .nickname("김건1")
                     .regIp("0.0.0.0")
                     .build());
             memberRepository.save(Member.builder()
                     .memberId("test")
                     .password(passwordEncoder.encode("test"))
                     .role(Role.USER)
-                    .name("김건")
+                    .nickname("김건2")
                     .regIp("0.0.0.0")
                     .build());
         };

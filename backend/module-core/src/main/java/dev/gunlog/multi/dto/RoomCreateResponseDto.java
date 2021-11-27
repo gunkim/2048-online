@@ -7,10 +7,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RoomCreateResponseDto {
-    private Integer roomId;
+    private Long roomId;
 
     @Builder
-    public RoomCreateResponseDto(Integer roomId) {
+    public RoomCreateResponseDto(Long roomId) {
         this.roomId = roomId;
     }
 }

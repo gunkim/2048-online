@@ -1,5 +1,6 @@
 package dev.gunlog.room.dto;
 
+import dev.gunlog.multi.domain.GameRoomRedis;
 import dev.gunlog.room.domain.enums.Mode;
 import dev.gunlog.room.domain.enums.Personnel;
 import dev.gunlog.room.domain.Room;
@@ -19,12 +20,12 @@ public class RoomListResponseDto {
     private Personnel personnel;
     private int participant;
 
-    public RoomListResponseDto(Room room) {
+    public RoomListResponseDto(GameRoomRedis room) {
         this.id = room.getId();
         this.title = room.getTitle();
-        this.username = room.getMember().getNickname();
-        this.mode = room.getMode();
-        this.personnel = room.getPersonnel();
+        this.username = room.getHost();
+        this.mode = room.getGameMode();
+        this.personnel = room.getMaxNumberOfPeople();
     }
     @Builder
     public RoomListResponseDto(Long id, String title, String username, Mode mode, Personnel personnel, int participant) {

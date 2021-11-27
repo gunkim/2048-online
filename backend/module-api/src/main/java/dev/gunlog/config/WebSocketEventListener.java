@@ -1,5 +1,6 @@
 package dev.gunlog.config;
 
+import dev.gunlog.multi.service.MultiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -18,6 +19,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class WebSocketEventListener {
     public static Set<String> players = new HashSet<>();
+    private final MultiService multiService;
     private final SimpMessageSendingOperations messageTemplate;
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
@@ -32,7 +34,7 @@ public class WebSocketEventListener {
     public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
         String username = getUsername(event);
         players.remove(username);
-
+        multiService.exitRoom(username);
         messageTemplate.convertAndSend("/sub/rooms", players);
         log.info("소켓 해지 : "+username);
     }
