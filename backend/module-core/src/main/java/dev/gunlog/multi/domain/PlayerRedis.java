@@ -4,21 +4,23 @@ import dev.gunlog.multi.model.Game;
 import lombok.*;
 import org.springframework.data.redis.core.index.Indexed;
 
+import java.io.Serializable;
+
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PlayerRedis {
+public class PlayerRedis implements Serializable {
     @Indexed
     private String nickname;
     @Setter
-    private Game gameInfo;
+    private GameRedis gameInfo;
     private boolean isReady;
 
     public PlayerRedis(String nickname) {
         this(nickname, null, false);
     }
     @Builder
-    public PlayerRedis(String nickname, Game gameInfo, boolean isReady) {
+    public PlayerRedis(String nickname, GameRedis gameInfo, boolean isReady) {
         this.nickname = nickname;
         this.gameInfo = gameInfo;
         this.isReady = isReady;

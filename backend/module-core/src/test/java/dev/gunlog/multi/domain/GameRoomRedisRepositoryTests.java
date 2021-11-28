@@ -1,11 +1,11 @@
 package dev.gunlog.multi.domain;
 
-import dev.gunlog.multi.model.Game;
 import dev.gunlog.room.domain.enums.Mode;
 import dev.gunlog.room.domain.enums.Personnel;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
@@ -15,20 +15,22 @@ import java.util.List;
 public class GameRoomRedisRepositoryTests {
     @Autowired
     private GameRoomRedisRepository repository;
+    @Autowired
+    private RedisTemplate<String, GameRoomRedis> template;
     @Test
     public void test() {
         repository.deleteAll();
         PlayerRedis player = new PlayerRedis("gunkim");
-        player.setGameInfo(new Game());
-        long roomId = repository.save(GameRoomRedis.builder()
+        player.setGameInfo(new GameRedis());
+        repository.save(GameRoomRedis.builder()
                 .title("방 이름")
                 .players(List.of(player))
                 .host("gunkim")
                 .isStart(false)
                 .maxNumberOfPeople(Personnel.FOUR)
                 .gameMode(Mode.SPEED_ATTACK)
-                .build()).getId();
-
-        System.out.println(repository.findById(roomId));
+                .build());
+        System.out.println("===========================");
+        repository.findAll().forEach(System.out::println);
     }
 }

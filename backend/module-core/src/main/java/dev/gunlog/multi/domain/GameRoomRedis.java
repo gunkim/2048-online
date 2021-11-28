@@ -13,6 +13,7 @@ import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,7 +24,7 @@ import static java.util.stream.Collectors.toList;
 @Getter
 @ToString
 @RedisHash("room")
-public class GameRoomRedis {
+public class GameRoomRedis implements Serializable {
     @Id
     @Indexed
     private Long id;
@@ -62,7 +63,7 @@ public class GameRoomRedis {
     public GameRoomRedis gameStart() {
         this.isStart = true;
         this.startTime = LocalDateTime.now();
-        this.players.stream().forEach(player -> player.setGameInfo(new Game()));
+        this.players.stream().forEach(player -> player.setGameInfo(new GameRedis()));
         return this;
     }
     public void gameStop() {

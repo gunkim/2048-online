@@ -1,16 +1,16 @@
 package dev.gunlog.multi.service;
 
+import dev.gunlog.multi.domain.GameRedis;
 import dev.gunlog.multi.domain.GameRoomRedis;
 import dev.gunlog.multi.domain.GameRoomRedisRepository;
 import dev.gunlog.multi.domain.PlayerRedis;
 import dev.gunlog.multi.model.Game;
-import dev.gunlog.multi.model.GameRoom;
-import dev.gunlog.multi.model.Player;
 import dev.gunlog.room.domain.enums.Mode;
 import dev.gunlog.room.dto.RoomCreateRequestDto;
 import dev.gunlog.room.dto.RoomListResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +29,7 @@ import static java.util.stream.Collectors.toList;
 @Service
 public class MultiService {
     private final GameRoomRedisRepository roomRedisRepository;
+    private final RedisTemplate<String, Game> redisTemplate;
 
     public GameRoomRedis leftMove(String username) {
         return this.commonMove(username, game -> game.leftMove());
@@ -114,7 +115,7 @@ public class MultiService {
         room.gameStop();
         roomRedisRepository.save(room);
     }
-    private GameRoomRedis commonMove(String nickname, Consumer<Game> gameConsumer) {
+    private GameRoomRedis commonMove(String nickname, Consumer<GameRedis> gameConsumer) {
         GameRoomRedis room = roomRedisRepository.findByPlayersNickname(nickname)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 참여한 게임을 찾을 수 없습니다. NICKNAME : "+nickname));
 
