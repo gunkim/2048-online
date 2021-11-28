@@ -29,7 +29,6 @@ import static java.util.stream.Collectors.toList;
 @Service
 public class MultiService {
     private final GameRoomRedisRepository roomRedisRepository;
-    private final RedisTemplate<String, Game> redisTemplate;
 
     public GameRoomRedis leftMove(String username) {
         return this.commonMove(username, game -> game.leftMove());
