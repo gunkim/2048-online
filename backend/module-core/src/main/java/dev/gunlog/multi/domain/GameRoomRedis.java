@@ -1,7 +1,6 @@
 package dev.gunlog.multi.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import dev.gunlog.multi.model.Game;
 import dev.gunlog.room.domain.enums.Mode;
 import dev.gunlog.room.domain.enums.Personnel;
 import lombok.Builder;

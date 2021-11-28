@@ -4,13 +4,11 @@ import dev.gunlog.multi.domain.GameRedis;
 import dev.gunlog.multi.domain.GameRoomRedis;
 import dev.gunlog.multi.domain.GameRoomRedisRepository;
 import dev.gunlog.multi.domain.PlayerRedis;
-import dev.gunlog.multi.model.Game;
 import dev.gunlog.room.domain.enums.Mode;
 import dev.gunlog.room.dto.RoomCreateRequestDto;
 import dev.gunlog.room.dto.RoomListResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

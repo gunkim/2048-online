@@ -1,6 +1,5 @@
 package dev.gunlog.multi.domain;
 
-import dev.gunlog.multi.model.Game;
 import lombok.*;
 import org.springframework.data.redis.core.index.Indexed;
 

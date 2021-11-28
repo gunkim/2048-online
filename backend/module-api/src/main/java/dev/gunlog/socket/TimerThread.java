@@ -1,15 +1,11 @@
 package dev.gunlog.socket;
 
 import dev.gunlog.multi.domain.GameRoomRedis;
-import dev.gunlog.multi.model.GameRoom;
-import dev.gunlog.multi.model.Player;
 import dev.gunlog.multi.service.MultiService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
-
-import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
