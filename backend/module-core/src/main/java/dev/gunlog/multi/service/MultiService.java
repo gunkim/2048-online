@@ -57,7 +57,7 @@ public class MultiService {
         if(isHost && isNotGameStart && isAllReady) {
             return roomRedisRepository.save(room.gameStart());
         }
-        return null;
+        return GameRoom.builder().id(-1l).build();
     }
     public Long createRoom(RoomCreateRequestDto requestDto, String nickname) {
         GameRoom room = requestDto.toEntity(nickname).addPlayer(nickname);
@@ -77,18 +77,17 @@ public class MultiService {
         return room.addPlayer(nickname);
     }
     @Transactional
-    public Long exitRoom(String nickname) {
+    public GameRoom exitRoom(String nickname) {
         GameRoom room = this.findRoomByNickname(nickname).exitPlayer(nickname);
         roomRedisRepository.save(room);
 
         boolean isZeroPlayer = room.getPlayers().size() == 0;
         if(isZeroPlayer) {
             roomRedisRepository.deleteById(room.getId());
-            return -1l;
+            return GameRoom.builder().id(-1l).build();
         } else {
-            return room.getId();
+            return room;
         }
-
     }
     public void gameStop(Long roomId) {
         GameRoom room = this.findRoomByRoomId(roomId).gameStop();
