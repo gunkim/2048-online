@@ -45,10 +45,7 @@ public class MultiService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 게임 방을 찾을 수 없습니다. ROOM_ID : "+roomId));
     }
     public GameRoomRedis findRoomByNickname(String nickname) {
-        Optional<GameRoomRedis> test = roomRedisRepository.findByPlayersNickname(nickname);
-        log.info(test.toString());
-        return test
-                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 참여한 게임을 찾을 수 없습니다 : "+nickname));
+        return roomRedisRepository.findByPlayersNickname(nickname).orElseThrow(() -> new IllegalArgumentException("해당 유저가 참여한 게임을 찾을 수 없습니다 : "+nickname));
     }
     public List<RoomListResponseDto> getAllRooms() {
         return StreamSupport.stream(roomRedisRepository.findAll().spliterator(), false)
