@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 @Setter
 @Getter
 @ToString
-public class GameRedis implements Serializable {
+public class Game implements Serializable {
     private Integer[][] board;
     private int score;
     private boolean isGameOver;
@@ -22,7 +22,7 @@ public class GameRedis implements Serializable {
     private static int MAX_ROWS = 4;
     private static int MAX_COLS = 4;
 
-    public GameRedis() {
+    public Game() {
         Integer[][] board = new Integer[][]{
                 {0, 0, 0, 0},
                 {0, 0, 0, 0},
@@ -43,7 +43,7 @@ public class GameRedis implements Serializable {
         this.board = board;
         this.isGameOver = false;
     }
-    public GameRedis(Integer[][] board, int score) {
+    public Game(Integer[][] board, int score) {
         this.board = board;
         this.score = score;
         this.isGameOver = false;

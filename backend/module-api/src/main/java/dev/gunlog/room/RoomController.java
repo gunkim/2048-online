@@ -1,7 +1,7 @@
 package dev.gunlog.room;
 
 import dev.gunlog.common.ApiResponse;
-import dev.gunlog.multi.domain.GameRoomRedis;
+import dev.gunlog.multi.domain.GameRoom;
 import dev.gunlog.multi.dto.RoomCreateResponseDto;
 import dev.gunlog.multi.service.MultiService;
 import dev.gunlog.room.dto.RoomCreateRequestDto;
@@ -38,7 +38,7 @@ public class RoomController {
     public ApiResponse<String> joinRoom(@PathVariable Long roomId, Principal principal) {
         String nickname = principal.getName();
 
-        GameRoomRedis room = multiService.joinRoom(roomId, nickname);
+        GameRoom room = multiService.joinRoom(roomId, nickname);
 
         messageTemplate.convertAndSend("/sub/room/"+roomId, room);
         return ApiResponse.success();
@@ -48,7 +48,7 @@ public class RoomController {
         String nickname = principal.getName();
         Long roomId = multiService.exitRoom(nickname);
         if(roomId != -1) {
-            GameRoomRedis room = multiService.findRoomByRoomId(roomId);
+            GameRoom room = multiService.findRoomByRoomId(roomId);
             messageTemplate.convertAndSend("/sub/room/"+roomId, room);
         }
     }

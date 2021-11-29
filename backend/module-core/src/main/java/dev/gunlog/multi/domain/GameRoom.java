@@ -23,7 +23,7 @@ import static java.util.stream.Collectors.toList;
 @Getter
 @ToString
 @RedisHash("room")
-public class GameRoomRedis implements Serializable {
+public class GameRoom implements Serializable {
     @Id
     @Indexed
     private Long id;
@@ -33,7 +33,7 @@ public class GameRoomRedis implements Serializable {
     private String host;
     @Setter @NotNull
     @Indexed
-    private List<PlayerRedis> players = new LinkedList<>();
+    private List<Player> players = new LinkedList<>();
     @NotNull
     private Mode gameMode;
     @NotNull
@@ -44,7 +44,7 @@ public class GameRoomRedis implements Serializable {
     private LocalDateTime startTime;
 
     @Builder
-    public GameRoomRedis(Long id, String title, List<PlayerRedis> players, Mode gameMode, Personnel maxNumberOfPeople, boolean isStart, String host) {
+    public GameRoom(Long id, String title, List<Player> players, Mode gameMode, Personnel maxNumberOfPeople, boolean isStart, String host) {
         this.id = id;
         this.title = title;
         setPlayers(players);
@@ -56,29 +56,29 @@ public class GameRoomRedis implements Serializable {
     private void setHost(String host) {
         this.host = Optional.ofNullable(host).orElseThrow(IllegalArgumentException::new);
     }
-    private void setPlayers(List<PlayerRedis> players) {
+    private void setPlayers(List<Player> players) {
         this.players = Optional.ofNullable(players).orElse(this.players);
     }
-    public GameRoomRedis gameStart() {
+    public GameRoom gameStart() {
         this.isStart = true;
         this.startTime = LocalDateTime.now();
-        this.players.stream().forEach(player -> player.setGameInfo(new GameRedis()));
+        this.players.stream().forEach(player -> player.setGameInfo(new Game()));
         return this;
     }
-    public GameRoomRedis gameStop() {
+    public GameRoom gameStop() {
         this.isStart = false;
         this.startTime = null;
         this.players.stream().forEach(player -> player.setGameInfo(null));
         return this;
     }
-    public GameRoomRedis addPlayer(String nickname) {
+    public GameRoom addPlayer(String nickname) {
         boolean isNotPlayerFull = this.maxNumberOfPeople.getSize() > players.size();
         if(isNotPlayerFull) {
-            this.players.add(new PlayerRedis(nickname));
+            this.players.add(new Player(nickname));
         }
         return this;
     }
-    public GameRoomRedis exitPlayer(String nickname) {
+    public GameRoom exitPlayer(String nickname) {
         this.players = this.players.stream()
                 .filter(player -> !nickname.equals(player.getNickname()))
                 .collect(toList());

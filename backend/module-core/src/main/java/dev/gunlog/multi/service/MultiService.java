@@ -1,10 +1,9 @@
 package dev.gunlog.multi.service;
 
-import dev.gunlog.multi.domain.GameRedis;
-import dev.gunlog.multi.domain.GameRoomRedis;
-import dev.gunlog.multi.domain.GameRoomRedisRepository;
-import dev.gunlog.multi.domain.PlayerRedis;
-import dev.gunlog.room.domain.enums.Mode;
+import dev.gunlog.multi.domain.Game;
+import dev.gunlog.multi.domain.GameRoom;
+import dev.gunlog.multi.domain.GameRoomRepository;
+import dev.gunlog.multi.domain.Player;
 import dev.gunlog.room.dto.RoomCreateRequestDto;
 import dev.gunlog.room.dto.RoomListResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -12,11 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.StreamSupport;
 
@@ -26,25 +21,25 @@ import static java.util.stream.Collectors.toList;
 @RequiredArgsConstructor
 @Service
 public class MultiService {
-    private final GameRoomRedisRepository roomRedisRepository;
+    private final GameRoomRepository roomRedisRepository;
 
-    public GameRoomRedis leftMove(String username) {
+    public GameRoom leftMove(String username) {
         return this.commonMove(username, game -> game.leftMove());
     }
-    public GameRoomRedis rightMove(String username) {
+    public GameRoom rightMove(String username) {
         return this.commonMove(username, game -> game.rightMove());
     }
-    public GameRoomRedis topMove(String username) {
+    public GameRoom topMove(String username) {
         return this.commonMove(username, game -> game.topMove());
     }
-    public GameRoomRedis bottomMove(String username) {
+    public GameRoom bottomMove(String username) {
         return this.commonMove(username, game -> game.bottomMove());
     }
-    public GameRoomRedis findRoomByRoomId(Long roomId) {
+    public GameRoom findRoomByRoomId(Long roomId) {
         return roomRedisRepository.findById(roomId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게임 방을 찾을 수 없습니다. ROOM_ID : "+roomId));
     }
-    public GameRoomRedis findRoomByNickname(String nickname) {
+    public GameRoom findRoomByNickname(String nickname) {
         return roomRedisRepository.findByPlayersNickname(nickname)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 참여한 게임을 찾을 수 없습니다 : "+nickname));
     }
@@ -53,8 +48,8 @@ public class MultiService {
                 .map(RoomListResponseDto::new)
                 .collect(toList());
     }
-    public GameRoomRedis gameStart(String nickname) {
-        GameRoomRedis room = this.findRoomByNickname(nickname);
+    public GameRoom gameStart(String nickname) {
+        GameRoom room = this.findRoomByNickname(nickname);
         boolean isHost = nickname.equals(room.getHost());
         boolean isNotGameStart = !room.isStart();
         boolean isAllReady = room.getPlayers().stream().allMatch(player -> player.isReady());
@@ -65,13 +60,13 @@ public class MultiService {
         return null;
     }
     public Long createRoom(RoomCreateRequestDto requestDto, String nickname) {
-        GameRoomRedis room = requestDto.toEntity(nickname).addPlayer(nickname);
+        GameRoom room = requestDto.toEntity(nickname).addPlayer(nickname);
         return roomRedisRepository.save(room).getId();
     }
-    public GameRoomRedis joinRoom(Long roomId, String nickname) {
-        GameRoomRedis room = this.findRoomByRoomId(roomId);
+    public GameRoom joinRoom(Long roomId, String nickname) {
+        GameRoom room = this.findRoomByRoomId(roomId);
 
-        List<PlayerRedis> players = room.getPlayers();
+        List<Player> players = room.getPlayers();
         boolean isJoin = players.stream().anyMatch(player -> player.getNickname().equals(nickname));
         boolean isPeopleLimit = room.getMaxNumberOfPeople().getSize() == players.size();
         if(isJoin) {
@@ -83,7 +78,7 @@ public class MultiService {
     }
     @Transactional
     public Long exitRoom(String nickname) {
-        GameRoomRedis room = this.findRoomByNickname(nickname).exitPlayer(nickname);
+        GameRoom room = this.findRoomByNickname(nickname).exitPlayer(nickname);
         roomRedisRepository.save(room);
 
         boolean isZeroPlayer = room.getPlayers().size() == 0;
@@ -96,17 +91,17 @@ public class MultiService {
 
     }
     public void gameStop(Long roomId) {
-        GameRoomRedis room = this.findRoomByRoomId(roomId).gameStop();
+        GameRoom room = this.findRoomByRoomId(roomId).gameStop();
         roomRedisRepository.save(room);
     }
-    private GameRoomRedis commonMove(String nickname, Consumer<GameRedis> gameConsumer) {
-        GameRoomRedis room = this.findRoomByNickname(nickname);
+    private GameRoom commonMove(String nickname, Consumer<Game> gameConsumer) {
+        GameRoom room = this.findRoomByNickname(nickname);
 
         boolean isNotStart = !room.isStart();
         if(isNotStart) {
             return room;
         }
-        PlayerRedis myPlayer = room.getPlayers().stream()
+        Player myPlayer = room.getPlayers().stream()
                 .filter(player -> nickname.equals(player.getNickname()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("플레이어를 찾을 수 없습니다 : "+nickname));
@@ -114,12 +109,12 @@ public class MultiService {
 
         return roomRedisRepository.save(room);
     }
-    public GameRoomRedis ready(String nickname) {
-        GameRoomRedis room = this.findRoomByNickname(nickname);
+    public GameRoom ready(String nickname) {
+        GameRoom room = this.findRoomByNickname(nickname);
         if(room.isStart()) {
             return null;
         }
-        PlayerRedis me = room.getPlayers().stream().filter(player -> player.getNickname().equals(nickname)).findFirst()
+        Player me = room.getPlayers().stream().filter(player -> player.getNickname().equals(nickname)).findFirst()
                         .orElseThrow(() -> new IllegalArgumentException("플레이어가 참여한 게임을 찾을 수 없습니다. NICKNAME : "+nickname));
         me.ready();
         return roomRedisRepository.save(room);

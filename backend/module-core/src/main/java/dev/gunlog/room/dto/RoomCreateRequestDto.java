@@ -1,6 +1,6 @@
 package dev.gunlog.room.dto;
 
-import dev.gunlog.multi.domain.GameRoomRedis;
+import dev.gunlog.multi.domain.GameRoom;
 import dev.gunlog.room.domain.enums.Mode;
 import dev.gunlog.room.domain.enums.Personnel;
 import lombok.Builder;
@@ -23,8 +23,8 @@ public class RoomCreateRequestDto {
         this.personnel = personnel;
     }
 
-    public GameRoomRedis toEntity(String nickname) {
-        return GameRoomRedis.builder()
+    public GameRoom toEntity(String nickname) {
+        return GameRoom.builder()
                 .id(1l)
                 .title(this.title)
                 .isStart(false)

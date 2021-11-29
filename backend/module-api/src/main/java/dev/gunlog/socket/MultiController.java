@@ -1,7 +1,6 @@
 package dev.gunlog.socket;
 
-import dev.gunlog.multi.domain.GameRoomRedis;
-import dev.gunlog.room.domain.enums.Mode;
+import dev.gunlog.multi.domain.GameRoom;
 import dev.gunlog.multi.service.MultiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -59,7 +58,7 @@ public class MultiController {
         String nickname = principal.getName();
         socketSendData(multiService.bottomMove(nickname));
     }
-    private void socketSendData(GameRoomRedis room) {
+    private void socketSendData(GameRoom room) {
         String targetPoint = String.format("/sub/room/%d", room.getId());
         messageTemplate.convertAndSend(targetPoint, room);
     }

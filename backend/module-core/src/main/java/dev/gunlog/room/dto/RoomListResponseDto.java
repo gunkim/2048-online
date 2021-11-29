@@ -1,9 +1,8 @@
 package dev.gunlog.room.dto;
 
-import dev.gunlog.multi.domain.GameRoomRedis;
+import dev.gunlog.multi.domain.GameRoom;
 import dev.gunlog.room.domain.enums.Mode;
 import dev.gunlog.room.domain.enums.Personnel;
-import dev.gunlog.room.domain.Room;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +19,7 @@ public class RoomListResponseDto {
     private Personnel personnel;
     private int participant;
 
-    public RoomListResponseDto(GameRoomRedis room) {
+    public RoomListResponseDto(GameRoom room) {
         this.id = room.getId();
         this.title = room.getTitle();
         this.username = room.getHost();

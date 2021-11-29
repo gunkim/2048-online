@@ -8,23 +8,23 @@ import java.io.Serializable;
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PlayerRedis implements Serializable {
+public class Player implements Serializable {
     @Indexed
     private String nickname;
     @Setter
-    private GameRedis gameInfo;
+    private Game gameInfo;
     private boolean isReady;
 
-    public PlayerRedis(String nickname) {
+    public Player(String nickname) {
         this(nickname, null, false);
     }
     @Builder
-    public PlayerRedis(String nickname, GameRedis gameInfo, boolean isReady) {
+    public Player(String nickname, Game gameInfo, boolean isReady) {
         this.nickname = nickname;
         this.gameInfo = gameInfo;
         this.isReady = isReady;
     }
-    public PlayerRedis(PlayerRedis player) {
+    public Player(Player player) {
         this.nickname = player.getNickname();
         this.gameInfo = player.getGameInfo();
     }
