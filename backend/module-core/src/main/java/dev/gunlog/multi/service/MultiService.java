@@ -45,7 +45,8 @@ public class MultiService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 게임 방을 찾을 수 없습니다. ROOM_ID : "+roomId));
     }
     public GameRoomRedis findRoomByNickname(String nickname) {
-        return roomRedisRepository.findByPlayersNickname(nickname).orElseThrow(() -> new IllegalArgumentException("해당 유저가 참여한 게임을 찾을 수 없습니다 : "+nickname));
+        return roomRedisRepository.findByPlayersNickname(nickname)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 참여한 게임을 찾을 수 없습니다 : "+nickname));
     }
     public List<RoomListResponseDto> getAllRooms() {
         return StreamSupport.stream(roomRedisRepository.findAll().spliterator(), false)
@@ -65,37 +66,29 @@ public class MultiService {
         return null;
     }
     public Long createRoom(RoomCreateRequestDto requestDto, String nickname) {
-        GameRoomRedis room = requestDto.toEntity(nickname);
-        room.addPlayer(nickname);
+        GameRoomRedis room = requestDto.toEntity(nickname).addPlayer(nickname);
         return roomRedisRepository.save(room).getId();
     }
     public GameRoomRedis joinRoom(Long roomId, String nickname) {
-        List<GameRoomRedis> list = roomRedisRepository.findAll();
-        log.info(list.toString());
-        Optional<GameRoomRedis> test = roomRedisRepository.findById(roomId);
-        GameRoomRedis room = test
-                .orElseThrow(() -> new IllegalArgumentException("게임 방을 찾을 수 없습니다. ROOM_ID : "+roomId));
-        List<PlayerRedis> players = room.getPlayers();
+        GameRoomRedis room = this.findRoomByRoomId(roomId);
 
+        List<PlayerRedis> players = room.getPlayers();
         boolean isJoin = players.stream().anyMatch(player -> player.getNickname().equals(nickname));
         boolean isPeopleLimit = room.getMaxNumberOfPeople().getSize() == players.size();
         if(isJoin) {
             throw new IllegalArgumentException("해당 유저는 이미 방에 들어가 있습니다.");
         } else if(isPeopleLimit) {
             throw new IllegalArgumentException("해당 방은 이미 가득 찼습니다.");
-        } else {
-            room.addPlayer(nickname);
         }
-        return room;
+        return room.addPlayer(nickname);
     }
     @Transactional
     public Long exitRoom(String nickname) {
-        GameRoomRedis room = roomRedisRepository.findByPlayersNickname(nickname)
-                .orElseThrow();
-        room.exitPlayer(nickname);
+        GameRoomRedis room = this.findRoomByNickname(nickname).exitPlayer(nickname);
         roomRedisRepository.save(room);
 
-        if(room.getPlayers().size() == 0) {
+        boolean isZeroPlayer = room.getPlayers().size() == 0;
+        if(isZeroPlayer) {
             roomRedisRepository.deleteById(room.getId());
             return -1l;
         } else {
@@ -104,67 +97,32 @@ public class MultiService {
 
     }
     public void gameStop(Long roomId) {
-        GameRoomRedis room = roomRedisRepository.findById(roomId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 게임 방을 찾을 수 없습니다. ROOM_ID : "+roomId));
-        room.gameStop();
+        GameRoomRedis room = this.findRoomByRoomId(roomId).gameStop();
         roomRedisRepository.save(room);
     }
     private GameRoomRedis commonMove(String nickname, Consumer<GameRedis> gameConsumer) {
-        GameRoomRedis room = roomRedisRepository.findByPlayersNickname(nickname)
-                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 참여한 게임을 찾을 수 없습니다. NICKNAME : "+nickname));
+        GameRoomRedis room = this.findRoomByNickname(nickname);
 
-        if(!room.isStart()) {
+        boolean isNotStart = !room.isStart();
+        if(isNotStart) {
             return room;
         }
-        LocalDateTime startDate = room.getStartTime();
-        LocalDateTime endDate = LocalDateTime.now();
-
-        List<PlayerRedis> players = room.getPlayers();
-
-        PlayerRedis myPlayer = players.stream()
+        PlayerRedis myPlayer = room.getPlayers().stream()
                 .filter(player -> nickname.equals(player.getNickname()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("플레이어를 찾을 수 없습니다 : "+nickname));
-
-        boolean isAllGameOver = players.stream().allMatch(player -> player.getGameInfo().isGameOver() == true);
-        if(isAllGameOver) {
-            room.gameStop();
-            players.stream().forEach(player -> player.setGameInfo(null));
-        }
-        if(room.getGameMode() == Mode.TIME_ATTACK) {
-            long gameInTime = ChronoUnit.MINUTES.between(startDate, endDate);
-            if(gameInTime == 3l) {
-                room.gameStop();
-                players.stream().forEach(player -> player.setGameInfo(null));
-            }
-        } else if(room.getGameMode() == Mode.SPEED_ATTACK) {
-            Arrays.stream(myPlayer.getGameInfo().getBoard()).forEach(row -> {
-                Arrays.stream(row).forEach(col -> {
-                    if(col == 11) {
-                        room.gameStop();
-                    }
-                });
-            });
-        } else if(room.getGameMode() == Mode.SURVIVAL) {
-            boolean isWinner = 1 == room.getPlayers().stream().filter(player -> !player.getGameInfo().isGameOver()).count();
-            if(isWinner) {
-                room.gameStop();
-                players.stream().forEach(player -> player.setGameInfo(null));
-            }
-        }
         gameConsumer.accept(myPlayer.getGameInfo());
-        roomRedisRepository.save(room);
-        return room;
+
+        return roomRedisRepository.save(room);
     }
     public GameRoomRedis ready(String nickname) {
-        GameRoomRedis room = roomRedisRepository.findByPlayersNickname(nickname)
-                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 참여한 게임을 찾을 수 없습니다. NICKNAME : "+nickname));
+        GameRoomRedis room = this.findRoomByNickname(nickname);
         if(room.isStart()) {
             return null;
         }
-        PlayerRedis me = room.getPlayers().stream().filter(player -> player.getNickname().equals(nickname)).findFirst().get();
+        PlayerRedis me = room.getPlayers().stream().filter(player -> player.getNickname().equals(nickname)).findFirst()
+                        .orElseThrow(() -> new IllegalArgumentException("플레이어가 참여한 게임을 찾을 수 없습니다. NICKNAME : "+nickname));
         me.ready();
-        roomRedisRepository.save(room);
-        return room;
+        return roomRedisRepository.save(room);
     }
 }

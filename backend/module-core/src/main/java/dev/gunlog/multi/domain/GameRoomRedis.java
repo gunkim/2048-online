@@ -65,20 +65,23 @@ public class GameRoomRedis implements Serializable {
         this.players.stream().forEach(player -> player.setGameInfo(new GameRedis()));
         return this;
     }
-    public void gameStop() {
+    public GameRoomRedis gameStop() {
         this.isStart = false;
         this.startTime = null;
         this.players.stream().forEach(player -> player.setGameInfo(null));
+        return this;
     }
-    public void addPlayer(String nickname) {
+    public GameRoomRedis addPlayer(String nickname) {
         boolean isNotPlayerFull = this.maxNumberOfPeople.getSize() > players.size();
         if(isNotPlayerFull) {
             this.players.add(new PlayerRedis(nickname));
         }
+        return this;
     }
-    public void exitPlayer(String nickname) {
+    public GameRoomRedis exitPlayer(String nickname) {
         this.players = this.players.stream()
                 .filter(player -> !nickname.equals(player.getNickname()))
                 .collect(toList());
+        return this;
     }
 }
