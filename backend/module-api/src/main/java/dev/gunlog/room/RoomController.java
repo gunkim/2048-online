@@ -37,19 +37,20 @@ public class RoomController {
     @PutMapping(path = "join/{roomId}")
     public ApiResponse<String> joinRoom(@PathVariable Long roomId, Principal principal) {
         String nickname = principal.getName();
+        sendSocketData(multiService.joinRoom(roomId, nickname));
 
-        GameRoom room = multiService.joinRoom(roomId, nickname);
-
-        messageTemplate.convertAndSend("/sub/room/"+roomId, room);
         return ApiResponse.success();
     }
     @PutMapping(path = "exit")
-    public void exitRoom(Principal principal) {
+    public ApiResponse exitRoom(Principal principal) {
         String nickname = principal.getName();
-        Long roomId = multiService.exitRoom(nickname);
-        if(roomId != -1) {
-            GameRoom room = multiService.findRoomByRoomId(roomId);
-            messageTemplate.convertAndSend("/sub/room/"+roomId, room);
+        sendSocketData(multiService.exitRoom(nickname));
+
+        return ApiResponse.success();
+    }
+    private void sendSocketData(GameRoom room) {
+        if(room.getId() != -1) {
+            messageTemplate.convertAndSend("/sub/room/"+room.getId(), room);
         }
     }
 }
