@@ -59,6 +59,7 @@ public class MultiController {
         socketSendData(multiService.bottomMove(nickname));
     }
     private void socketSendData(GameRoom room) {
+        if(room.getId() == -1) return;
         String targetPoint = String.format("/sub/room/%d", room.getId());
         messageTemplate.convertAndSend(targetPoint, room);
     }
