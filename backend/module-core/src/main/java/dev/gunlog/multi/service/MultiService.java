@@ -54,8 +54,7 @@ public class MultiService {
                 .collect(toList());
     }
     public GameRoomRedis gameStart(String nickname) {
-        GameRoomRedis room = roomRedisRepository.findByPlayersNickname(nickname)
-                .orElseThrow();
+        GameRoomRedis room = this.findRoomByNickname(nickname);
         boolean isHost = nickname.equals(room.getHost());
         boolean isNotGameStart = !room.isStart();
         boolean isAllReady = room.getPlayers().stream().allMatch(player -> player.isReady());
