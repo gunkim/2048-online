@@ -22,80 +22,45 @@ public class MultiController {
     @MessageMapping("/multi/start")
     public void gameStart(Principal principal) {
         String nickname = principal.getName();
-        GameRoomRedis room = multiService.gameStart(nickname);
-
-        if(room != null) {
-            messageTemplate.convertAndSend("/sub/room/"+room.getId(), room);
-            messageTemplate.convertAndSend("/sub/room/"+room.getId()+"/start", room.getStartTime());
-
-            if(room.getGameMode() == Mode.TIME_ATTACK) {
-                Thread thread = new TimerThread(room.getId(), multiService, messageTemplate);
-                thread.run();
-            }
-        }
+        socketSendData(multiService.gameStart(nickname));
     }
     @MessageMapping("/multi/ready")
     public void gameReady(Principal principal) {
         String nickname = principal.getName();
-        GameRoomRedis room = multiService.ready(nickname);
-
-        if(room != null) {
-            messageTemplate.convertAndSend("/sub/room/"+room.getId(), room);
-        }
+        socketSendData(multiService.ready(nickname));
     }
 
     @MessageMapping("/multi/init")
     public void getRoomInfo(Principal principal) {
         String nickname = principal.getName();
-        GameRoomRedis room = multiService.findRoomByNickname(nickname);
-
-        messageTemplate.convertAndSend("/sub/room/"+room.getId(), room);
-        if(room.getStartTime() != null) {
-            messageTemplate.convertAndSend("/sub/room/"+room.getId()+"/start", room.getStartTime());
-        }
+        socketSendData(multiService.findRoomByNickname(nickname));
     }
 
     @MessageMapping("/multi/left")
     public void leftMove(Principal principal) {
         String nickname = principal.getName();
-        GameRoomRedis room = multiService.leftMove(nickname);
-
-        if(room.getStartTime() == null) {
-            messageTemplate.convertAndSend("/sub/room/"+room.getId()+"/start", "");
-        }
-        messageTemplate.convertAndSend("/sub/room/"+room.getId(), room);
+        socketSendData(multiService.leftMove(nickname));
     }
 
     @MessageMapping("/multi/right")
     public void rightMove(Principal principal) {
         String nickname = principal.getName();
-        GameRoomRedis room = multiService.rightMove(nickname);
-        messageTemplate.convertAndSend("/sub/room/"+room.getId(), room);
-
-        if(room.getStartTime() == null) {
-            messageTemplate.convertAndSend("/sub/room/"+room.getId()+"/start", "");
-        }
+        socketSendData(multiService.rightMove(nickname));
     }
 
     @MessageMapping("/multi/top")
     public void topMove(Principal principal) {
         String nickname = principal.getName();
-        GameRoomRedis room = multiService.topMove(nickname);
-        messageTemplate.convertAndSend("/sub/room/"+room.getId(), room);
-
-        if(room.getStartTime() == null) {
-            messageTemplate.convertAndSend("/sub/room/"+room.getId()+"/start", "");
-        }
+        socketSendData(multiService.topMove(nickname));
     }
 
     @MessageMapping("/multi/bottom")
     public void bottomMove(Principal principal) {
         String nickname = principal.getName();
-        GameRoomRedis room = multiService.bottomMove(nickname);
-        messageTemplate.convertAndSend("/sub/room/"+room.getId(), room);
-
-        if(room.getStartTime() == null) {
-            messageTemplate.convertAndSend("/sub/room/"+room.getId()+"/start", "");
-        }
+        socketSendData(multiService.bottomMove(nickname));
+    }
+    private void socketSendData(GameRoomRedis room) {
+        String targetPoint = String.format("/sub/room/%d", room.getId());
+        messageTemplate.convertAndSend(targetPoint, room);
     }
 }
