@@ -31,7 +31,7 @@ public class GameRoom implements Serializable {
     private String title;
     @NotNull
     private String host;
-    @Setter @NotNull
+    @NotNull
     @Indexed
     private List<Player> players = new LinkedList<>();
     @NotNull
