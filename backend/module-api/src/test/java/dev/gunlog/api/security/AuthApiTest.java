@@ -77,7 +77,7 @@ public class AuthApiTest extends RestDocControllerTest {
         when(memberRepository.findByMemberId(anyString()))
                 .thenReturn(Optional.of(Member.builder()
                         .memberId(MEMBER_ID)
-                        .name("TEST USER")
+                        .nickname("TEST USER")
                         .password(passwordEncoder.encode(PASSWORD))
                         .role(Role.USER)
                         .build()));

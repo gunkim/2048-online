@@ -15,8 +15,6 @@ import java.util.List;
 public class GameRoomRedisRepositoryTests {
     @Autowired
     private GameRoomRedisRepository repository;
-    @Autowired
-    private RedisTemplate<String, GameRoomRedis> template;
     @Test
     public void test() {
         repository.deleteAll();
