@@ -1,8 +1,9 @@
 spring:
   redis:
-    host: 127.0.0.1
+    host: ENC(2KHfP8rwkNY+r8C5nFMhhy5GF02ww68uVDT04Li3A5c=)
     port: 6379
     database: 0
+    password: ENC(J6Yi5exBuPOmQdDjvZ4CPEgbh9TjwpMI)
   datasource:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
     url: ENC(ekv/VUe7HhwM67Oa02MTFAaPrCbaUdC3W62e3leZPPw5RwjBCwt3P2VEpb56Nj1kU7ObEBXVfVnOOorGzfQLy4qs440WVjhahpUuCxmwOWA/mH8rF+c8QTLZ6HWZbM996IxKlAfTGo0+COwzGNqqn/WWsgvTJghkHUYKH54FIXdaXRQ9ypkGmt6hjgOgVCaxRBymSK2GabM=)
