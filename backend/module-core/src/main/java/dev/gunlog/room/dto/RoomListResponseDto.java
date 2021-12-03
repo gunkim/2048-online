@@ -25,6 +25,7 @@ public class RoomListResponseDto {
         this.username = room.getHost();
         this.mode = room.getGameMode();
         this.personnel = room.getMaxNumberOfPeople();
+        this.participant = room.getPlayers().size();
     }
     @Builder
     public RoomListResponseDto(Long id, String title, String username, Mode mode, Personnel personnel, int participant) {
