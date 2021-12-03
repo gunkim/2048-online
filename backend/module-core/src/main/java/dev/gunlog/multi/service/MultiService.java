@@ -78,13 +78,18 @@ public class MultiService {
     }
     @Transactional
     public GameRoom exitRoom(String nickname) {
-        GameRoom room = this.findRoomByNickname(nickname).exitPlayer(nickname);
+        GameRoom room;
+        try {
+            room = this.findRoomByNickname(nickname).exitPlayer(nickname);
+        } catch(IllegalArgumentException e) {
+            return GameRoom.builder().id(-1l).host("").build();
+        }
         roomRedisRepository.save(room);
 
         boolean isZeroPlayer = room.getPlayers().size() == 0;
         if(isZeroPlayer) {
             roomRedisRepository.deleteById(room.getId());
-            return GameRoom.builder().id(-1l).build();
+            return GameRoom.builder().id(-1l).host("").build();
         } else {
             return room;
         }
