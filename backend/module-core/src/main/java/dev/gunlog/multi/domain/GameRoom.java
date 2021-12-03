@@ -54,7 +54,7 @@ public class GameRoom implements Serializable {
         setHost(host);
     }
     private void setHost(String host) {
-        this.host = Optional.ofNullable(host).orElseThrow(IllegalArgumentException::new);
+        this.host = Optional.ofNullable(host).orElseThrow(() -> new IllegalArgumentException("호스트 초기화 값이 잘못되었습니다."));
     }
     private void setPlayers(List<Player> players) {
         this.players = Optional.ofNullable(players).orElse(this.players);
