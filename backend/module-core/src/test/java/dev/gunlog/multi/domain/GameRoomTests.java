@@ -10,9 +10,47 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DisplayName("게임 방 테스트")
 public class GameRoomTests {
+    @Test
+    @DisplayName("값 세팅")
+    void init() {
+        assertThatThrownBy(() -> GameRoom.builder()
+                .id(1l)
+                .title("테스트")
+                .players(List.of(new Player()))
+                .gameMode(Mode.SPEED_ATTACK)
+                .maxNumberOfPeople(Personnel.FOUR)
+                .isStart(false)
+                .build()).isInstanceOf(IllegalArgumentException.class);
+    }
+    @Test
+    @DisplayName("값 세팅 : 실패 -> 호스트 네임이 null")
+    void init_is_name_null_fail() {
+        assertThatThrownBy(() -> GameRoom.builder()
+                .id(1l)
+                .title("테스트")
+                .players(List.of(new Player()))
+                .gameMode(Mode.SPEED_ATTACK)
+                .maxNumberOfPeople(Personnel.FOUR)
+                .isStart(false)
+                .build()).isInstanceOf(IllegalArgumentException.class);
+    }
+    @Test
+    @DisplayName("값 세팅 : 실패 -> 플레이어 정보가 없음")
+    void init_is_player_empty_fail() {
+        assertThatThrownBy(() -> GameRoom.builder()
+                .id(1l)
+                .title("테스트")
+                .players(List.of())
+                .gameMode(Mode.SPEED_ATTACK)
+                .maxNumberOfPeople(Personnel.FOUR)
+                .isStart(false)
+                .build()).isInstanceOf(IllegalArgumentException.class);
+    }
+
     @Test
     @DisplayName("게임 시작")
     void start() {
