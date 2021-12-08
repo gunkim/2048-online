@@ -1,12 +1,16 @@
 package dev.gunlog.room.dto;
 
 import dev.gunlog.multi.domain.GameRoom;
+import dev.gunlog.multi.domain.Player;
 import dev.gunlog.room.domain.enums.Mode;
 import dev.gunlog.room.domain.enums.Personnel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -30,7 +34,7 @@ public class RoomCreateRequestDto {
                 .isStart(false)
                 .maxNumberOfPeople(this.personnel)
                 .gameMode(this.mode)
-                .host(nickname)
+                .players(new ArrayList<>(List.of(new Player(nickname))))
                 .build();
     }
 }

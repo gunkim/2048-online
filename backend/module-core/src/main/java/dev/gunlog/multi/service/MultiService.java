@@ -55,7 +55,7 @@ public class MultiService {
         boolean isAllReady = room.getPlayers().stream().allMatch(player -> player.isReady());
 
         if(isHost && isNotGameStart && isAllReady) {
-            return roomRedisRepository.save(room.gameStart());
+            return roomRedisRepository.save(room.start());
         }
         return GameRoom.builder().id(-1l).build();
     }
@@ -82,20 +82,20 @@ public class MultiService {
         try {
             room = this.findRoomByNickname(nickname).exitPlayer(nickname);
         } catch(IllegalArgumentException e) {
-            return GameRoom.builder().id(-1l).host("").build();
+            return GameRoom.builder().id(-1l).build();
         }
         roomRedisRepository.save(room);
 
         boolean isZeroPlayer = room.getPlayers().size() == 0;
         if(isZeroPlayer) {
             roomRedisRepository.deleteById(room.getId());
-            return GameRoom.builder().id(-1l).host("").build();
+            return GameRoom.builder().id(-1l).build();
         } else {
             return room;
         }
     }
     public void gameStop(Long roomId) {
-        GameRoom room = this.findRoomByRoomId(roomId).gameStop();
+        GameRoom room = this.findRoomByRoomId(roomId).stop();
         roomRedisRepository.save(room);
     }
     private GameRoom commonMove(String nickname, Consumer<Game> gameConsumer) {
