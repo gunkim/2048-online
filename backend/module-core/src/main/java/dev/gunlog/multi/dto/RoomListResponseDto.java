@@ -1,8 +1,8 @@
-package dev.gunlog.room.dto;
+package dev.gunlog.multi.dto;
 
 import dev.gunlog.multi.domain.GameRoom;
-import dev.gunlog.room.domain.enums.Mode;
-import dev.gunlog.room.domain.enums.Personnel;
+import dev.gunlog.multi.domain.enums.Mode;
+import dev.gunlog.multi.domain.enums.Personnel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

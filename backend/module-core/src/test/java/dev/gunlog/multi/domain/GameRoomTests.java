@@ -1,7 +1,7 @@
 package dev.gunlog.multi.domain;
 
-import dev.gunlog.room.domain.enums.Mode;
-import dev.gunlog.room.domain.enums.Personnel;
+import dev.gunlog.multi.domain.enums.Mode;
+import dev.gunlog.multi.domain.enums.Personnel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -1,7 +1,7 @@
 //package dev.gunlog.multi.domain;
 //
-//import dev.gunlog.room.domain.enums.Mode;
-//import dev.gunlog.room.domain.enums.Personnel;
+//import dev.gunlog.multi.domain.enums.Mode;
+//import dev.gunlog.multi.domain.enums.Personnel;
 //import org.junit.jupiter.api.Test;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.test.context.SpringBootTest;

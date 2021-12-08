@@ -2,10 +2,10 @@ package dev.gunlog.room;
 
 import dev.gunlog.common.ApiResponse;
 import dev.gunlog.multi.domain.GameRoom;
+import dev.gunlog.multi.dto.RoomCreateRequestDto;
 import dev.gunlog.multi.dto.RoomCreateResponseDto;
 import dev.gunlog.multi.service.MultiService;
-import dev.gunlog.room.dto.RoomCreateRequestDto;
-import dev.gunlog.room.dto.RoomListResponseDto;
+import dev.gunlog.multi.dto.RoomListResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
