@@ -74,7 +74,7 @@ public class MultiService {
         } else if(isPeopleLimit) {
             throw new IllegalArgumentException("해당 방은 이미 가득 찼습니다.");
         }
-        return room.addPlayer(nickname);
+        return roomRedisRepository.save(room.addPlayer(nickname));
     }
     @Transactional
     public GameRoom exitRoom(String nickname) {
