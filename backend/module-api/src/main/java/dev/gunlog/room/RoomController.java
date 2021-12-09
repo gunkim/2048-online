@@ -32,6 +32,7 @@ public class RoomController {
         String nickname = principal.getName();
         Long roomId = multiService.createRoom(requestDto, nickname);
 
+        messageTemplate.convertAndSend("/sub/rooms", multiService.getAllRooms());
         return ApiResponse.success(new RoomCreateResponseDto(roomId));
     }
     @PutMapping(path = "join/{roomId}")
@@ -49,7 +50,7 @@ public class RoomController {
         return ApiResponse.success();
     }
     private void sendSocketData(GameRoom room) {
-        if(room.getId() != -1) {
+        if(room.getId() != -1l) {
             messageTemplate.convertAndSend("/sub/room/"+room.getId(), room);
         }
     }

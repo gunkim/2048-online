@@ -18,6 +18,11 @@ public class MultiController {
     private final MultiService multiService;
     private final SimpMessageSendingOperations messageTemplate;
 
+    @MessageMapping("/rooms")
+    public void rooms(){
+        messageTemplate.convertAndSend("/sub/rooms", multiService.getAllRooms());
+    }
+
     @MessageMapping("/multi/start")
     public void gameStart(Principal principal) {
         String nickname = principal.getName();

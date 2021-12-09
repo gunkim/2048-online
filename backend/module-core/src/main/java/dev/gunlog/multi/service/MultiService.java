@@ -82,7 +82,7 @@ public class MultiService {
         try {
             room = this.findRoomByNickname(nickname).exitPlayer(nickname);
         } catch(IllegalArgumentException e) {
-            return GameRoom.builder().id(-1l).build();
+            return GameRoom.builder().id(-1l).players(List.of(Player.builder().nickname("dummy").build())).build();
         }
 
         boolean isZeroPlayer = room.getPlayers().size() == 0;

@@ -17,7 +17,6 @@ import { getRoomsAsync } from "../store/rooms/actions"
 import { RootState } from "../store"
 import { useDispatch, useSelector } from "react-redux"
 import { Room } from "../apis/room"
-import RoomSkeletonItem from "./../components/RoomSkeletonItem"
 import RoomCreateForm from "../components/RoomCreateForm"
 import { connectSocketAsync } from "../store/socket/actions"
 
@@ -26,6 +25,7 @@ const Rooms = () => {
   const [value, setValue] = useState(0)
   const [open, setOpen] = useState(false)
   const [players, setPlayers] = useState([])
+  const [rooms, setRooms] = useState([])
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
@@ -37,7 +37,6 @@ const Rooms = () => {
     dispatch(connectSocketAsync.request(null, null))
   }, [dispatch])
 
-  const rooms = useSelector((state: RootState) => state.rooms.rooms)
   const {
     loading,
     data: stompClient,
@@ -52,11 +51,17 @@ const Rooms = () => {
       Authorization: localStorage.getItem("token")
     }
     stompClient.connect(headers, () => {
-      stompClient.subscribe("/sub/rooms", response => {
+      stompClient.subscribe("/sub/rooms/players", response => {
         const payload: string[] = JSON.parse(response.body)
         setPlayers(payload)
       })
+      stompClient.subscribe("/sub/rooms", response => {
+        const payload: Room[] = JSON.parse(response.body)
+        setRooms(payload)
+      })
       stompClient.send("/pub/rooms", {})
+      stompClient.send("/pub/rooms/players", {})
+
     })
   }, [stompClient])
   return (
@@ -112,15 +117,8 @@ const Rooms = () => {
       <RoomsFrame>
         <Grid item xs={9.5}>
           <Grid container spacing={2} style={{ overflow: "auto", height: 570 }}>
-            {rooms.loading && (
-              <>
-                {[1, 2, 3, 4, 5, 6, 7, 8].map(i => (
-                  <RoomSkeletonItem key={i} />
-                ))}
-              </>
-            )}
-            {rooms.data &&
-              rooms.data.map((room: Room) => {
+            {rooms &&
+              rooms.map((room: Room) => {
                 return (
                   <RoomItem
                     key={room.id}

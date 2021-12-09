@@ -1,5 +1,6 @@
 package dev.gunlog.config;
 
+import dev.gunlog.multi.domain.GameRoom;
 import dev.gunlog.multi.service.MultiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +27,7 @@ public class WebSocketEventListener {
         String username = getUsername(event);
         players.add(username);
 
-        messageTemplate.convertAndSend("/sub/rooms", players);
+        messageTemplate.convertAndSend("/sub/rooms/players", players);
         log.info("소켓 연결 : "+username);
     }
 
@@ -34,8 +35,12 @@ public class WebSocketEventListener {
     public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
         String username = getUsername(event);
         players.remove(username);
-        multiService.exitRoom(username);
-        messageTemplate.convertAndSend("/sub/rooms", players);
+        GameRoom room = multiService.exitRoom(username);
+        messageTemplate.convertAndSend("/sub/rooms/players", players);
+        messageTemplate.convertAndSend("/sub/rooms", multiService.getAllRooms());
+        if(room.getId() != -1l) {
+            messageTemplate.convertAndSend("/sub/room/"+room.getId(), room);
+        }
         log.info("소켓 해지 : "+username);
     }
     private String getUsername(AbstractSubProtocolEvent event) {
