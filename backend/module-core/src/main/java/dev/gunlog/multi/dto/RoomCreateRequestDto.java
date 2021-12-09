@@ -35,7 +35,7 @@ public class RoomCreateRequestDto {
                 .isStart(false)
                 .maxNumberOfPeople(this.personnel)
                 .gameMode(this.mode)
-                .players(new ArrayList<>(List.of(new Player(nickname))))
+                .players(new ArrayList<>(List.of(Player.builder().nickname(nickname).isReady(true).build())))
                 .build();
     }
 }
