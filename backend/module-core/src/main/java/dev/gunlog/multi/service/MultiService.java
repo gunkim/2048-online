@@ -84,14 +84,20 @@ public class MultiService {
         } catch(IllegalArgumentException e) {
             return GameRoom.builder().id(-1l).build();
         }
-        roomRedisRepository.save(room);
 
         boolean isZeroPlayer = room.getPlayers().size() == 0;
         if(isZeroPlayer) {
             roomRedisRepository.deleteById(room.getId());
             return GameRoom.builder().id(-1l).players(List.of(Player.builder().nickname("dummy").build())).build();
         } else {
-            return room;
+            if(nickname.equals(room.getHost())) {
+                Player newHost = room.getPlayers().get(0);
+                room.setHost(newHost.getNickname());
+                if(!newHost.isReady()) {
+                    newHost.ready();
+                }
+            }
+            return roomRedisRepository.save(room);
         }
     }
     public void gameStop(Long roomId) {

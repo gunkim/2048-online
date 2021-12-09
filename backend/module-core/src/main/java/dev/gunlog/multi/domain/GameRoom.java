@@ -30,6 +30,7 @@ public class GameRoom implements Serializable {
     @NotNull
     private String title;
     @NotNull
+    @Setter
     private String host;
     @NotNull
     @Indexed
