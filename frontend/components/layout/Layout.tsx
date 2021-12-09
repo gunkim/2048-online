@@ -1,22 +1,20 @@
-import { Grommet, Main } from "grommet"
-import { grommet } from "grommet/themes"
-import React, { ReactNode } from "react"
+import {Grommet, Main} from "grommet"
+import React, {ReactNode} from "react"
 import Header from "./Header"
 import Footer from "./Footer"
-import { Container } from "@mui/material"
+import {Container} from "@mui/material"
 
 type LayoutProps = {
-  children: ReactNode
+    children: ReactNode
 }
-const Layout = ({ children }: LayoutProps) => {
-  return (
-    <Grommet theme={grommet}>
-      <Header />
-      <Main>
-        <Container maxWidth="md">{children}</Container>
-      </Main>
-      <Footer />
-    </Grommet>
-  )
+const Layout = ({children}: LayoutProps) => {
+    return (
+        <>
+            <Header/>
+            <Main>
+                <Container maxWidth="lg">{children}</Container>
+            </Main>
+        </>
+    )
 }
 export default Layout

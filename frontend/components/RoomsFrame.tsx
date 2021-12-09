@@ -1,26 +1,21 @@
 import {
-  Card,
-  CardContent,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  Typography
+    Grid,
+    styled,
 } from "@mui/material"
-import React, { ReactNode, useState } from "react"
+import React, {ReactNode, useState} from "react"
+
+const MyGrid = styled(Grid)`
+  margin-bottom: 10px;
+`
 
 type RoomsFrameProps = {
-  children: ReactNode
+    children: ReactNode
 }
-const RoomsFrame = ({ children }: RoomsFrameProps) => {
-  return (
-    <Card style={{ marginBottom: "10px" }}>
-      <CardContent>
-        <Grid container spacing={2} style={{ marginTop: 0 }}>
-          {children}
-        </Grid>
-      </CardContent>
-    </Card>
-  )
+const RoomsFrame = ({children}: RoomsFrameProps) => {
+    return (
+        <MyGrid container spacing={1} style={{marginTop: 0, minHeight: '600px', borderRadius: '11px'}}>
+            {children}
+        </MyGrid>
+    )
 }
 export default RoomsFrame
