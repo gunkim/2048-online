@@ -13,7 +13,7 @@ type RoomsFrameProps = {
 }
 const RoomsFrame = ({children}: RoomsFrameProps) => {
     return (
-        <MyGrid container spacing={1} style={{marginTop: 0, minHeight: '600px', borderRadius: '11px'}}>
+        <MyGrid container spacing={1} style={{marginTop: 0, minHeight: '600px', borderRadius: '11px', background: 'white'}}>
             {children}
         </MyGrid>
     )

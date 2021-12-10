@@ -8,15 +8,9 @@ import { exitRoom } from "../apis/room"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../store"
 import { connectSocketAsync } from "../store/socket/actions"
-import { createGlobalStyle } from "styled-components"
 import styled from "styled-components"
 import { Heading, Box, Button } from "grommet"
 
-const GlobalStyle = createGlobalStyle`
-  body {
-    background-color: #d2d2ff !important;
-  }
-`
 const Chating = styled.input`
     background: white;
     width: 100%;
@@ -191,7 +185,6 @@ const Room = () => {
   }
   return (
     <Layout>
-      <GlobalStyle />
       {message && (
         <Snackbar
           anchorOrigin={{ vertical: "top", horizontal: "center" }}

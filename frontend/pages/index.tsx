@@ -1,110 +1,143 @@
-import React, { useEffect, useState } from "react"
 import {
-  Button,
-  Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
-  Typography
+    Box,
+    Grid,
+    List,
+    ListItem,
+    ListItemText,
+    Modal,
+    Tab,
+    Tabs,
+    Typography
 } from "@mui/material"
-import { List } from "grommet"
+import React, {useEffect, useState} from "react"
 import Layout from "../components/layout/Layout"
-import Grid from "@mui/material/Grid"
-import { useRouter } from "next/router"
-import { getUsername } from "../util/jwt-util"
+import RoomItem from "../components/RoomItem"
+import RoomsFrame from "../components/RoomsFrame"
+import {getRoomsAsync} from "../store/rooms/actions"
+import {RootState} from "../store"
+import {useDispatch, useSelector} from "react-redux"
+import {Room} from "../apis/room"
+import RoomCreateForm from "../components/RoomCreateForm"
+import {connectSocketAsync} from "../store/socket/actions"
 
-const data = []
+const Index = () => {
+    const dispatch = useDispatch()
+    const [value, setValue] = useState(0)
+    const [open, setOpen] = useState(false)
+    const [players, setPlayers] = useState([])
+    const [rooms, setRooms] = useState([])
 
-for (let i = 0; i < 5; i += 1) {
-  data.push({
-    entry: `2021.11.1${i}.`,
-    location: `안녕하세요`
-  })
+    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+        setValue(newValue)
+    }
+    const handleOpen = () => setOpen(true)
+    const handleClose = () => setOpen(false)
+    useEffect(() => {
+        dispatch(getRoomsAsync.request(null, null))
+        dispatch(connectSocketAsync.request(null, null))
+    }, [dispatch])
+
+    const {
+        loading,
+        data: stompClient,
+        error
+    } = useSelector((state: RootState) => state.socket.socket)
+
+    useEffect(() => {
+        if (stompClient == null) {
+            return
+        }
+        const headers = {
+            Authorization: localStorage.getItem("token")
+        }
+        stompClient.connect(headers, () => {
+            stompClient.subscribe("/sub/rooms/players", response => {
+                const payload: string[] = JSON.parse(response.body)
+                setPlayers(payload)
+            })
+            stompClient.subscribe("/sub/rooms", response => {
+                const payload: Room[] = JSON.parse(response.body)
+                setRooms(payload)
+            })
+            stompClient.send("/pub/rooms", {})
+            stompClient.send("/pub/rooms/players", {})
+
+        })
+    }, [stompClient])
+    return (
+        <Layout>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <div>
+                    <RoomCreateForm/>
+                </div>
+            </Modal>
+            <Box sx={{width: "100%"}}>
+                <Box sx={{borderBottom: 1, borderColor: "divider"}}>
+                    <Tabs
+                        value={value}
+                        onChange={handleChange}
+                        aria-label="basic tabs example"
+                    >
+                        <Tab
+                            label="방 만들기"
+                            style={{
+                                borderRadius: "10px 10px 0px 0px",
+                                background: "#aeadff",
+                                fontWeight: "bold",
+                                color: "black"
+                            }}
+                            onClick={handleOpen}
+                        />
+                        <Tab
+                            label="랭킹"
+                            style={{
+                                borderRadius: "10px 10px 0px 0px",
+                                background: "#e38a8a",
+                                fontWeight: "bold",
+                                color: "black"
+                            }}
+                        />
+                    </Tabs>
+                </Box>
+            </Box>
+            <RoomsFrame>
+                <Grid item xs={9.5}>
+                    <Grid container spacing={2} style={{overflow: "auto", height: 570}}>
+                        {rooms &&
+                            rooms.map((room: Room) => {
+                                return (
+                                    <RoomItem
+                                        key={room.id}
+                                        id={room.id}
+                                        title={room.title}
+                                        mode={room.mode}
+                                        participant={room.participant}
+                                        personnel={room.personnel}
+                                    />
+                                )
+                            })}
+                    </Grid>
+                </Grid>
+                <Grid item xs={2.5} style={{background: 'rgb(75, 58, 169)', borderRadius: '0px 10px 10px 0px'}}>
+                    <Typography variant="h6" component="div" color="white">
+                        접속자
+                    </Typography>
+                    <List style={{overflow: "auto", height: 535}}>
+                        {players.map(name => (
+                            <ListItem style={{padding: "0px 16px", color: 'white'}}>
+                                <ListItemText style={{margin: 0}} primary={name}/>
+                            </ListItem>
+                        ))}
+                    </List>
+                </Grid>
+            </RoomsFrame>
+        </Layout>
+    )
 }
-const Home = () => {
-  const router = useRouter()
-  const [name, setName] = useState("")
-  const [value, setValue] = useState("one")
 
-  useEffect(() => {
-    setName(getUsername())
-  }, [setName])
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    setValue(newValue)
-  }
-  return (
-    <Layout>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Card
-            sx={{ maxWidth: 345, textAlign: "center", margin: "0 auto" }}
-            onClick={() => {
-              if (name) {
-                router.push("/rooms")
-              } else {
-                router.push("/login")
-              }
-            }}
-          >
-            <CardActionArea>
-              <CardContent>
-                {name ? (
-                  <Typography gutterBottom variant="h5" component="div">
-                    게임 시작
-                  </Typography>
-                ) : (
-                  <Typography gutterBottom variant="h5" component="div">
-                    로그인
-                  </Typography>
-                )}
-              </CardContent>
-            </CardActionArea>
-            {!name && (
-              <CardActions style={{ background: "#f7f7f7" }}>
-                <Button
-                  size="small"
-                  color="primary"
-                  style={{ margin: "0 auto" }}
-                >
-                  소셜 로그인
-                </Button>
-              </CardActions>
-            )}
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Typography
-            variant="h4"
-            component="h1"
-            style={{ marginBottom: "33px" }}
-          >
-            공지사항
-          </Typography>
-          <List data={data} primaryKey="entry" secondaryKey="location" />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Typography
-            variant="h4"
-            component="h1"
-            style={{ marginBottom: "33px" }}
-          >
-            소통
-          </Typography>
-          <List data={data} primaryKey="entry" secondaryKey="location" />
-        </Grid>
-        <Grid item xs={12}>
-          <Typography
-            variant="h4"
-            component="h1"
-            style={{ marginBottom: "33px" }}
-          >
-            랭킹
-          </Typography>
-          <List data={data} primaryKey="entry" secondaryKey="location" />
-        </Grid>
-      </Grid>
-    </Layout>
-  )
-}
-
-export default Home
+export default Index
