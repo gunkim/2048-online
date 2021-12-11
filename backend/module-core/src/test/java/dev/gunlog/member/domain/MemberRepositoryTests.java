@@ -1,5 +1,6 @@
 package dev.gunlog.member.domain;
 
+import dev.gunlog.RepositoryTest;
 import dev.gunlog.SpringBootTestSupport;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,14 +10,9 @@ import javax.persistence.EntityManagerFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Transactional
-public class MemberRepositoryTests extends SpringBootTestSupport {
+public class MemberRepositoryTests extends RepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
-
-    public MemberRepositoryTests(EntityManagerFactory entityManagerFactory) {
-        super(entityManagerFactory);
-    }
 
     @Test
     public void saveTest() {
