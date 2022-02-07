@@ -14,6 +14,20 @@ public class PlayerTests {
             .doesNotThrowAnyException();
     }
     @Test
+    @DisplayName("생성자에 플레이어 이름이 null일 경우 실패한다.")
+    void initEmptyPlayerName() {
+        assertThatCode(() -> new Player(null, null, false))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("플레이어 이름은 꼭 필요합니다.");
+    }
+    @Test
+    @DisplayName("생성자에 플레이어 이름이 공백일 경우 실패한다.")
+    void initBlankPlayerName() {
+        assertThatCode(() -> new Player("", null, false))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("플레이어 이름은 꼭 필요합니다.");
+    }
+    @Test
     @DisplayName("게임 준비 테스트")
     void readyTest() {
         Player player = new Player("테스트 유저", null, false);
