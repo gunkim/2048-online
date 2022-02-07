@@ -13,6 +13,9 @@ public class Player {
 
     @Builder
     public Player(String nickname, Game board, boolean isReady) {
+        if(nickname == null || nickname.isBlank()) {
+            throw new IllegalArgumentException("플레이어 이름은 꼭 필요합니다.");
+        }
         this.nickname = nickname;
         this.board = board;
         this.isReady = isReady;
