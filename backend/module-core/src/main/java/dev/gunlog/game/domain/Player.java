@@ -1,19 +1,18 @@
 package dev.gunlog.game.domain;
 
-import dev.gunlog.multi.domain.Game;
 import lombok.Builder;
 import lombok.Getter;
 
 public class Player {
 
     private String nickname;
-    private Game board;
+    private GameBoard board;
     @Getter
     private boolean isReady;
 
     @Builder
-    public Player(String nickname, Game board, boolean isReady) {
-        if(nickname == null || nickname.isBlank()) {
+    public Player(String nickname, GameBoard board, boolean isReady) {
+        if (nickname == null || nickname.isBlank()) {
             throw new IllegalArgumentException("플레이어 이름은 꼭 필요합니다.");
         }
         this.nickname = nickname;
@@ -21,10 +20,28 @@ public class Player {
         this.isReady = isReady;
     }
 
+    public void move(MoveType moveType) {
+        this.board.move(moveType);
+    }
+
     public static Player from(String nickname) {
         return Player.builder()
             .nickname(nickname)
             .build();
+    }
+
+    public void gameStart() {
+        if (!isReady) {
+            return;
+        }
+        board = new GameBoard(new Level1RandomGenerator(), 5, 5);
+    }
+
+    public void gameStop() {
+        if (isReady) {
+            return;
+        }
+        board = null;
     }
 
     public void ready() {
