@@ -1,6 +1,6 @@
 # 실시간 온라인 2048 게임
 
-![Java_11](https://img.shields.io/badge/java-11-red?logo=java)
+![Java_17](https://img.shields.io/badge/java-17-red?logo=java)
 ![Gradle](https://img.shields.io/badge/gradle-7.0.2-blue?logo=gradle)
 ![Next.js](https://img.shields.io/badge/Next.js-blue?logo=next.js)
 ![Redux](https://img.shields.io/badge/Redux-purple?logo=redux)
