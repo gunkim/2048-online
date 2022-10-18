@@ -1,26 +1,38 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+val applicationVersion: String by project
+val kotlinVersion: String by project
+val jdkVersion: String by project
+val junitVersion: String by project
+val assertJVersion: String by project
+
 plugins {
-    kotlin("jvm") version "1.7.10"
+    java
+    kotlin("jvm")
 }
 
-group = "io.github.gunkim"
-version = "1.0.0"
+allprojects {
+    apply(plugin = "java")
+    apply(plugin = "kotlin")
 
-repositories {
-    mavenCentral()
+    group = "io.github.gunkim"
+    version = applicationVersion
+
+    repositories {
+        mavenCentral()
+    }
 }
 
-dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
-    testImplementation("org.assertj:assertj-core:3.23.1")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.7.10")
-}
-
-tasks.test {
-    useJUnitPlatform()
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "17"
+subprojects {
+    dependencies {
+        implementation("org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}")
+        testImplementation("org.junit.jupiter:junit-jupiter:${junitVersion}")
+        testImplementation("org.assertj:assertj-core:${assertJVersion}")
+    }
+    tasks.withType<KotlinCompile> {
+        kotlinOptions.jvmTarget = jdkVersion
+    }
+    tasks.test {
+        useJUnitPlatform()
+    }
 }
