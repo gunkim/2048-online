@@ -21,18 +21,18 @@ data class Row(
             .reversed()
     )
 
-    private fun fill(movedRow: List<Cell>) = if (movedRow.size < SIZE) {
+    private fun fill(movedRow: List<Cell>): List<Cell> = if (movedRow.size < SIZE) {
         movedRow + List(SIZE - movedRow.size) { Cell.ZERO }
     } else {
         movedRow
     }
 
-    operator fun get(index: Int) = content[index]
+    operator fun get(index: Int): Cell = content[index]
 
-    private fun move(accumulator: List<Cell>, cell: Cell) = if (accumulator.isEmpty()) {
+    private fun move(accumulator: List<Cell>, cell: Cell): List<Cell> = if (accumulator.isEmpty()) {
         listOf(cell)
     } else {
-        val lastCell = accumulator.last()
+        val lastCell: Cell = accumulator.last()
 
         if (lastCell == cell) {
             accumulator.dropLast(1) + lastCell.merge(cell)

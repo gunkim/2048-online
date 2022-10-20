@@ -7,40 +7,19 @@ data class Rows(
         require(content.size == SIZE) { "세로 폭은 ${SIZE}여야 합니다." }
     }
 
-    fun moveLeft(): Rows {
-        val movedRows = content
-            .map(Row::moveLeft)
-        return Rows(movedRows)
-    }
+    fun moveLeft() = Rows(content.map(Row::moveLeft))
 
-    fun moveRight(): Rows {
-        val movedRows = content
-            .map(Row::moveRight)
-        return Rows(movedRows)
-    }
+    fun moveRight() = Rows(content.map(Row::moveRight))
 
-    fun moveUp(): Rows {
-        return rotate().moveLeft().rotate()
-    }
+    fun moveUp(): Rows = rotate().moveLeft().rotate()
 
-    fun moveDown(): Rows {
-        return rotate().moveRight().rotate()
-    }
+    fun moveDown(): Rows = rotate().moveRight().rotate()
 
-    private fun rotate(): Rows {
-        val main = mutableListOf<Row>()
-        for (i in IntRange(0, SIZE - 1)) {
-            val list = mutableListOf<Cell>()
-            for (j in IntRange(0, SIZE - 1)) {
-                val cell = content[j][i]
-                list.add(cell)
-            }
-            main.add(Row(list))
-        }
-        return Rows(main)
-    }
+    private fun rotate() = Rows(IntRange(0, SIZE - 1).map(::createRow))
+
+    private fun createRow(i: Int) = Row(IntRange(0, SIZE - 1).map { j -> content[j][i] })
 
     companion object {
-        private val SIZE = 4
+        private const val SIZE = 4
     }
 }
