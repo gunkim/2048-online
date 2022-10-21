@@ -1,6 +1,8 @@
 package io.github.gunkim.game.domain.vo
 
-enum class Cell(value: Int) {
+enum class Cell(
+    val value: Int
+) {
     ZERO(0),
     ONE(1),
     TWO(2),
@@ -36,5 +38,9 @@ enum class Cell(value: Int) {
         TEN -> ELEVEN
         ELEVEN -> TWELVE
         TWELVE -> error("이미 최고 레벨이므로 레벨업이 불가능합니다.")
+    }
+
+    companion object {
+        fun isWin(cell: Cell) = cell == TWELVE
     }
 }

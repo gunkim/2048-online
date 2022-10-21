@@ -1,8 +1,17 @@
 package io.github.gunkim.game.domain.vo
 
+private fun totalScore(rows: List<Row>) = rows.sumOf { it.score }
+private fun isGameWin(rows: List<Row>) = rows.any { it.isGameWin }
+
 data class Rows(
-    private val content: List<Row>
+    val content: List<Row>
 ) {
+    val score: Int
+        get() = totalScore(content)
+
+    val isGameWin: Boolean
+        get() = isGameWin(content)
+
     init {
         require(content.size == SIZE) { "세로 폭은 ${SIZE}여야 합니다." }
     }
@@ -21,5 +30,7 @@ data class Rows(
 
     companion object {
         private const val SIZE = 4
+
+        fun empty() = Rows(IntRange(0, SIZE - 1).map { Row.empty() })
     }
 }
