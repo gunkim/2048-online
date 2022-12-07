@@ -20,8 +20,8 @@ class RoomTests {
         val player2 = Player("짱구")
 
         val gamers = listOf(
-            Gamer(player1, Board.create(player1)),
-            Gamer(player2, Board.create(player2))
+            Gamer(player1, Board.create()),
+            Gamer(player2, Board.create())
         )
 
         val room = Room.stop("테스트 방", gamers)
@@ -36,8 +36,8 @@ class RoomTests {
         val player2 = Player("짱구")
 
         val gamers = listOf(
-            Gamer(player1, Board.create(player1)),
-            Gamer(player2, Board.create(player2))
+            Gamer(player1, Board.create()),
+            Gamer(player2, Board.create())
         )
 
         val room = Room.start("테스트 방", gamers)
@@ -52,8 +52,8 @@ class RoomTests {
         val player2 = Player("짱구")
 
         val gamers = listOf(
-            Gamer(player1, Board.create(player1)),
-            Gamer(player2, Board.create(player2))
+            Gamer(player1, Board.create()),
+            Gamer(player2, Board.create())
         )
 
         val room = Room.stop("테스트 방", gamers)
@@ -68,8 +68,8 @@ class RoomTests {
         val player2 = Player("짱구")
 
         val gamers = listOf(
-            Gamer(player1, Board.create(player1)),
-            Gamer(player2, Board.create(player2))
+            Gamer(player1, Board.create()),
+            Gamer(player2, Board.create())
         )
 
         val room = Room.stop("테스트 방", gamers)
@@ -84,8 +84,8 @@ class RoomTests {
         val player2 = Player("짱구")
 
         val gamers = listOf(
-            Gamer(player1, Board.create(player1)),
-            Gamer(player2, Board.create(player2))
+            Gamer(player1, Board.create()),
+            Gamer(player2, Board.create())
         )
 
         val room = Room.start("테스트 방", gamers)
@@ -100,8 +100,8 @@ class RoomTests {
         val player2 = Player("짱구")
 
         val gamers = listOf(
-            Gamer(player1, Board.create(player1), true),
-            Gamer(player2, Board.create(player2))
+            Gamer(player1, Board.create(), true),
+            Gamer(player2, Board.create())
         )
 
         val room = Room.stop("테스트 방", gamers)
@@ -117,8 +117,8 @@ class RoomTests {
         val player2 = Player("짱구")
 
         val gamers = listOf(
-            Gamer(player1, Board.create(player1), true),
-            Gamer(player2, Board.create(player2))
+            Gamer(player1, Board.create(), true),
+            Gamer(player2, Board.create())
         )
 
         val room = Room.start("테스트 방", gamers)

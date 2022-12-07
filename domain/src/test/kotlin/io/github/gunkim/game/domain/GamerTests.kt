@@ -8,7 +8,7 @@ class GamerTests {
     @Test
     fun `플레이어를 가지고 있다면 참을 반환한다`() {
         val player = Player("gunkim")
-        val gamer = Gamer(player, Board.create(player))
+        val gamer = Gamer(player, Board.create())
 
         assertTrue(gamer.hasPlayer(player))
     }
@@ -16,7 +16,7 @@ class GamerTests {
     @Test
     fun `플레이어를 가지고 있지 않다면 거짓을 반환한다`() {
         val player = Player("gunkim")
-        val gamer = Gamer(player, Board.create(player))
+        val gamer = Gamer(player, Board.create())
 
         val player2 = Player("gunkim2")
         assertFalse(gamer.hasPlayer(player2))
