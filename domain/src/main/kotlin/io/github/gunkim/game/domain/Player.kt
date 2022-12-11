@@ -1,6 +1,9 @@
 package io.github.gunkim.game.domain
 
+import java.util.*
+
 data class Player(
+    val id: UUID = UUID.randomUUID(),
     val name: String,
     val profileImageUrl: String? = null
 ) {

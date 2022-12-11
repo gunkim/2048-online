@@ -1,6 +1,7 @@
 package io.github.gunkim.game.domain
 
 import io.github.gunkim.game.domain.vo.MoveType
+import java.util.*
 
 private fun List<Gamer>.move(player: Player, moveType: MoveType) = this.map {
     if (it.hasPlayer(player)) {
@@ -14,6 +15,7 @@ private fun List<Gamer>.find(player: Player) = this.find { it.hasPlayer(player) 
     ?: throw IllegalArgumentException("게임에 참여하지 않은 플레이어 입니다.")
 
 data class Room(
+    val id: UUID = UUID.randomUUID(),
     val title: String,
     val gamers: List<Gamer>,
     val isStart: Boolean
@@ -55,7 +57,7 @@ data class Room(
     }
 
     companion object {
-        fun start(title: String, gamers: List<Gamer>) = Room(title, gamers, true)
-        fun stop(title: String, gamers: List<Gamer>) = Room(title, gamers, false)
+        fun start(title: String, gamers: List<Gamer>) = Room(title = title, gamers = gamers, isStart = true)
+        fun stop(title: String, gamers: List<Gamer>) = Room(title = title, gamers = gamers, isStart = false)
     }
 }
