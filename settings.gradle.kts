@@ -10,3 +10,4 @@ pluginManagement {
 include("domain")
 include("core")
 include("infra")
+include("api")
