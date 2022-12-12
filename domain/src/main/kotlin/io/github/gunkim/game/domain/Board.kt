@@ -20,7 +20,7 @@ data class Board(
     fun moveDown() = createBoard(rows.moveDown())
     fun move(type: MoveType) = type.move(this)
 
-    private fun createBoard(rows: Rows) = Board(rows = rows)
+    private fun createBoard(rows: Rows) = Board(id, rows)
 
     companion object {
         fun create() = Board(rows = Rows.empty())
