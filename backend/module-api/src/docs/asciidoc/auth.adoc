@@ -1,4 +1,0 @@
-=== 로그인
-로그인을 하여 JWT 토큰을 발급합니다.
-
-operation::auth[snippets='http-request,http-response,request-fields,response-fields-data']
