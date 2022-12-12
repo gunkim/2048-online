@@ -1,4 +1,4 @@
-package Io.github.gunkim
+package io.github.gunkim
 
 import io.github.gunkim.game.domain.Room
 import io.github.gunkim.game.domain.Rooms
