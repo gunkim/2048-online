@@ -8,3 +8,4 @@ pluginManagement {
 }
 
 include("domain")
+include("core")
