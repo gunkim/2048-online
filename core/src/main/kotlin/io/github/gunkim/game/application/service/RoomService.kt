@@ -1,12 +1,7 @@
 package io.github.gunkim.game.application.service
 
-import io.github.gunkim.game.application.usecase.room.FindUseCase
-import io.github.gunkim.game.application.usecase.room.JoinUseCase
-import io.github.gunkim.game.application.usecase.room.LeaveUseCase
-import io.github.gunkim.game.application.usecase.room.StartUseCase
-import io.github.gunkim.game.domain.Room
-import io.github.gunkim.game.domain.Rooms
-import io.github.gunkim.game.domain.Users
+import io.github.gunkim.game.application.usecase.room.*
+import io.github.gunkim.game.domain.*
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -14,7 +9,7 @@ import java.util.*
 class RoomService(
     private val users: Users,
     private val rooms: Rooms
-) : FindUseCase, JoinUseCase, LeaveUseCase, StartUseCase {
+) : FindUseCase, JoinUseCase, LeaveUseCase, StartUseCase, CreateUseCase {
     override fun find() = rooms.find()
 
     override fun find(gamerId: UUID, roomId: UUID) = rooms.find(roomId)
@@ -36,6 +31,14 @@ class RoomService(
         val (user, room) = load(userId, roomId)
 
         rooms.save(room.leave(user))
+    }
+
+    override fun create(title: String, userId: UUID): Room {
+        val user = users.find(userId)
+        val hostGamer = Gamer(user = user, board = Board.create())
+        val room = Room(title = title, gamers = listOf(hostGamer), isStart = false)
+
+        return rooms.save(room)
     }
 
     private fun load(userId: UUID, roomId: UUID) = users.find(userId) to rooms.find(roomId)
