@@ -22,6 +22,9 @@ data class Room(
     val gamers: List<Gamer>,
     val isStart: Boolean
 ) {
+    val hostName: String
+        get() = gamers.find { it.isHost }?.user?.name ?: throw IllegalStateException("방장이 없습니다.")
+
     init {
         require(gamers.isNotEmpty()) { "게임에 참여할 수 있는 인원은 최소 1명 이상입니다." }
     }

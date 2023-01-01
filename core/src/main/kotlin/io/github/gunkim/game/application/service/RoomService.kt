@@ -35,7 +35,7 @@ class RoomService(
 
     override fun create(title: String, userId: UUID): Room {
         val user = users.find(userId)
-        val hostGamer = Gamer(user = user, board = Board.create())
+        val hostGamer = Gamer(user = user, board = Board.create(), isHost = true)
         val room = Room(title = title, gamers = listOf(hostGamer), isStart = false)
 
         return rooms.save(room)
