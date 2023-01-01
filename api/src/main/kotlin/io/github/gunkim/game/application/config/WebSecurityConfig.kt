@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.security.ConditionalOnDefaultWebSe
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
 
@@ -14,14 +13,22 @@ import org.springframework.security.web.SecurityFilterChain
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 open class WebSecurityConfig {
     @Bean
-    open fun filterChain(http: HttpSecurity): SecurityFilterChain {
+    open fun filterChain(http: HttpSecurity): SecurityFilterChain =
         http.csrf().disable()
+            .cors().disable()
             .httpBasic().disable()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .authorizeHttpRequests()
-            .requestMatchers("/ws/*", "/error", "/ws/*", "/ws/*/*/websocket").permitAll()
+            .requestMatchers(
+                "/websocket",
+                "/",
+                "/favicon.ico",
+                "/error",
+                "/websocket/info",
+                "/websocket/*/*/*",
+                "/websocket/*/*",
+                "/js/**"
+            ).permitAll()
             .anyRequest().denyAll()
-
-        return http.build()
-    }
+            .let { http.build() }
 }

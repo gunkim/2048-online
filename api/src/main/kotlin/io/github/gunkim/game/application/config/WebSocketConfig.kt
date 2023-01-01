@@ -13,7 +13,7 @@ open class WebSocketConfig(
     private val authInterceptor: AuthInterceptor
 ) : WebSocketMessageBrokerConfigurer {
     override fun registerStompEndpoints(registry: StompEndpointRegistry) {
-        registry.run { addEndpoint("/ws").setAllowedOrigins("*") }.withSockJS()
+        registry.addEndpoint("/websocket").setAllowedOriginPatterns("*").withSockJS()
     }
 
     override fun configureMessageBroker(registry: MessageBrokerRegistry) {
