@@ -16,8 +16,8 @@ class RoomTests {
 
     @Test
     fun `게임이 시작되지 않았을 경우 예외가 발생한다`() {
-        val user1 = User(name = "깜지")
-        val user2 = User(name = "짱구")
+        val user1 = User(name = "깜지", email = "gunkim.dev@gmail.com")
+        val user2 = User(name = "짱구", email = "gunkim.dev@gmail.com")
 
         val gamers = listOf(
             Gamer(user = user1, board = Board.create()),
@@ -32,8 +32,8 @@ class RoomTests {
 
     @Test
     fun `게임이 이미 시작된 상태에서 또 시작을 할 경우 예외가 발생한다`() {
-        val user1 = User(name = "깜지")
-        val user2 = User(name = "짱구")
+        val user1 = User(name = "깜지", email = "gunkim.dev@gmail.com")
+        val user2 = User(name = "짱구", email = "gunkim.dev@gmail.com")
 
         val gamers = listOf(
             Gamer(user = user1, board = Board.create()),
@@ -48,8 +48,8 @@ class RoomTests {
 
     @Test
     fun `게임이 시작되지 않았는데 종료할 경우 예외가 발생한다`() {
-        val user1 = User(name = "깜지")
-        val user2 = User(name = "짱구")
+        val user1 = User(name = "깜지", email = "gunkim.dev@gmail.com")
+        val user2 = User(name = "짱구", email = "gunkim.dev@gmail.com")
 
         val gamers = listOf(
             Gamer(user = user1, board = Board.create()),
@@ -64,8 +64,8 @@ class RoomTests {
 
     @Test
     fun `방장이 아닌 플레이어가 시작을 할 경우 예외가 발생한다`() {
-        val user1 = User(name = "깜지")
-        val user2 = User(name = "짱구")
+        val user1 = User(name = "깜지", email = "gunkim.dev@gmail.com")
+        val user2 = User(name = "짱구", email = "gunkim.dev@gmail.com")
 
         val gamers = listOf(
             Gamer(user = user1, board = Board.create()),
@@ -80,8 +80,8 @@ class RoomTests {
 
     @Test
     fun `방장이 아닌 플레이어가 종료를 할 경우 예외가 발생한다`() {
-        val user1 = User(name = "깜지")
-        val user2 = User(name = "짱구")
+        val user1 = User(name = "깜지", email = "gunkim.dev@gmail.com")
+        val user2 = User(name = "짱구", email = "gunkim.dev@gmail.com")
 
 
         val gamers = listOf(
@@ -97,8 +97,8 @@ class RoomTests {
 
     @Test
     fun `방장은 게임을 시작할 수 있다`() {
-        val user1 = User(name = "깜지")
-        val user2 = User(name = "짱구")
+        val user1 = User(name = "깜지", email = "gunkim.dev@gmail.com")
+        val user2 = User(name = "짱구", email = "gunkim.dev@gmail.com")
 
         val gamers = listOf(
             Gamer(user = user1, board = Board.create(), isHost = true),
@@ -114,8 +114,8 @@ class RoomTests {
 
     @Test
     fun `방장은 게임을 종료할 수 있다`() {
-        val user1 = User(name = "깜지")
-        val user2 = User(name = "짱구")
+        val user1 = User(name = "깜지", email = "gunkim.dev@gmail.com")
+        val user2 = User(name = "짱구", email = "gunkim.dev@gmail.com")
 
         val gamers = listOf(
             Gamer(user = user1, board = Board.create(), isHost = true),
