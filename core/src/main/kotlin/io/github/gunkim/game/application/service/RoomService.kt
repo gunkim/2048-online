@@ -35,6 +35,11 @@ class RoomService(
 
     override fun create(title: String, userId: UUID): Room {
         val user = users.find(userId)
+
+        if(rooms.existByUserId(user.id)) {
+            throw IllegalArgumentException("이미 방에 참여중입니다.")
+        }
+
         val hostGamer = Gamer(user = user, board = Board.create(), isHost = true)
         val room = Room(title = title, gamers = listOf(hostGamer), isStart = false)
 

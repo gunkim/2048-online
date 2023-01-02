@@ -62,6 +62,7 @@ data class Room(
     }
 
     fun hasGamerId(gamerId: UUID) = gamers.hasId(gamerId)
+    fun hasUserId(userId: UUID) = gamers.any { it.user.id == userId }
 
     fun join(user: User): Room {
         if (isStart) {
