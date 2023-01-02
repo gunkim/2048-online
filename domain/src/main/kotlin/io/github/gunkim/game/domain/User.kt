@@ -8,8 +8,18 @@ data class User(
     val name: String,
     val email: String,
     val social: Social,
-    val profileImageUrl: String? = null
+    val profileImageUrl: String? = null,
+    val role: Role = Role.USER
 ) {
+    fun update(name: String, profileImageUrl: String) = User(
+        id,
+        name,
+        email,
+        social,
+        profileImageUrl,
+        role
+    )
+
     init {
         require(name.isNotBlank()) { "이름이 비어있을 수 없습니다." }
     }
