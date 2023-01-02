@@ -12,6 +12,9 @@ class DummyUsers(
     override fun find() = map.values.toList()
 
     override fun find(id: UUID) = map[id] ?: throw IllegalArgumentException("존재하지 않는 유저입니다.")
+    override fun findByEmail(email: String): User? {
+        return map.values.find { it.email == email }
+    }
 
     override fun save(user: User) = user.also { map[user.id] = user }
 }

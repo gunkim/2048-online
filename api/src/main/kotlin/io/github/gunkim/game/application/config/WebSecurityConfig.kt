@@ -1,5 +1,6 @@
 package io.github.gunkim.game.application.config
 
+import io.github.gunkim.game.application.config.service.OAuth2Service
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication
 import org.springframework.boot.autoconfigure.security.ConditionalOnDefaultWebSecurity
 import org.springframework.context.annotation.Bean
@@ -11,13 +12,14 @@ import org.springframework.security.web.SecurityFilterChain
 @Configuration
 @ConditionalOnDefaultWebSecurity
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-open class WebSecurityConfig {
+open class WebSecurityConfig(
+    private val oAuth2Service: OAuth2Service
+) {
     @Bean
     open fun filterChain(http: HttpSecurity): SecurityFilterChain =
         http.csrf().disable()
             .cors().disable()
             .httpBasic().disable()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .authorizeHttpRequests()
             .requestMatchers(
                 "/websocket",
@@ -29,6 +31,7 @@ open class WebSecurityConfig {
                 "/websocket/*/*",
                 "/js/**"
             ).permitAll()
-            .anyRequest().denyAll()
+            .anyRequest().denyAll().and()
+            .oauth2Login().userInfoEndpoint().userService(oAuth2Service)
             .let { http.build() }
 }
