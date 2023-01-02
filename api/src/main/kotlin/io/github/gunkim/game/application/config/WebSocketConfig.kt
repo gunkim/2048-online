@@ -1,7 +1,6 @@
 package io.github.gunkim.game.application.config
 
 import org.springframework.context.annotation.Configuration
-import org.springframework.messaging.simp.config.ChannelRegistration
 import org.springframework.messaging.simp.config.MessageBrokerRegistry
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry
@@ -9,9 +8,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 
 @Configuration
 @EnableWebSocketMessageBroker
-open class WebSocketConfig(
-    private val authInterceptor: AuthInterceptor
-) : WebSocketMessageBrokerConfigurer {
+open class WebSocketConfig : WebSocketMessageBrokerConfigurer {
     override fun registerStompEndpoints(registry: StompEndpointRegistry) {
         registry.addEndpoint("/websocket").setAllowedOriginPatterns("*").withSockJS()
     }
@@ -21,9 +18,5 @@ open class WebSocketConfig(
             setApplicationDestinationPrefixes("/app")
             enableSimpleBroker("/topic")
         }
-    }
-
-    override fun configureClientInboundChannel(registration: ChannelRegistration) {
-        registration.interceptors(authInterceptor)
     }
 }
