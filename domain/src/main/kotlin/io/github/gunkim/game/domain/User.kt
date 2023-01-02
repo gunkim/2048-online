@@ -7,10 +7,15 @@ data class User(
     val id: UUID = UUID.randomUUID(),
     val name: String,
     val email: String,
-    val social: Social,
+    val social: Social = Social.GOOGLE,
     val profileImageUrl: String? = null,
     val role: Role = Role.USER
 ) {
+    init {
+        require(name.isNotBlank()) { "이름이 비어있을 수 없습니다." }
+        require(EMAIL_REGEX.matches(email)) { "이메일 형식이 올바르지 않습니다." }
+    }
+
     fun update(name: String, profileImageUrl: String) = User(
         id,
         name,
@@ -20,7 +25,8 @@ data class User(
         role
     )
 
-    init {
-        require(name.isNotBlank()) { "이름이 비어있을 수 없습니다." }
+    companion object {
+        private val EMAIL_REGEX =
+            Regex("^([\\w\\.\\_\\-])*[a-zA-Z0-9]+([\\w\\.\\_\\-])*([a-zA-Z0-9])+([\\w\\.\\_\\-])+@([a-zA-Z0-9]+\\.)+[a-zA-Z0-9]{2,8}\$")
     }
 }
