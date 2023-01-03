@@ -34,7 +34,7 @@ data class Room(
             throw IllegalStateException("게임이 시작되지 않았습니다.")
         }
         gamers.find(user).move(moveType)
-        return start(title, gamers.move(user, moveType))
+        return Room(id, title, gamers.move(user, moveType), isStart)
     }
 
     fun start(user: User): Room {
@@ -46,7 +46,7 @@ data class Room(
             throw IllegalArgumentException("시작은 방장만 할 수 있습니다.")
         }
 
-        return start(title, gamers)
+        return Room(id, title, gamers.map(Gamer::start), true)
     }
 
     fun stop(user: User): Room {
@@ -58,7 +58,7 @@ data class Room(
             throw IllegalArgumentException("종료는 방장만 할 수 있습니다.")
         }
 
-        return stop(title, gamers)
+        return Room(id, title, gamers, false)
     }
 
     fun hasGamerId(gamerId: UUID) = gamers.hasId(gamerId)
@@ -89,6 +89,8 @@ data class Room(
         val gamers = gamers.filter { !it.hasPlayer(user) }
         return Room(id, title, gamers, isStart)
     }
+
+    fun findGamer(user: User): Gamer = gamers.find(user)
 
     companion object {
         fun start(title: String, gamers: List<Gamer>) =

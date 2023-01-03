@@ -4,5 +4,5 @@ import io.github.gunkim.game.domain.vo.MoveType
 import java.util.*
 
 interface MoveUseCase {
-    fun move(gamerId: UUID, type: MoveType)
+    fun move(roomId: UUID, userId: UUID, type: MoveType)
 }

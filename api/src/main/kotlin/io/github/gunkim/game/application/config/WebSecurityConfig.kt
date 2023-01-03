@@ -1,6 +1,7 @@
 package io.github.gunkim.game.application.config
 
 import io.github.gunkim.game.application.config.service.OAuth2Service
+import io.github.gunkim.game.domain.Role
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication
 import org.springframework.boot.autoconfigure.security.ConditionalOnDefaultWebSecurity
 import org.springframework.context.annotation.Bean
@@ -29,8 +30,10 @@ open class WebSecurityConfig(
                 "/websocket/info",
                 "/websocket/*/*/*",
                 "/websocket/*/*",
-                "/js/**"
+                "/js/**",
+                "/rooms",
             ).permitAll()
+            .requestMatchers("/rooms/*/details", "/rooms/*").hasRole(Role.USER.name)
             .anyRequest().denyAll().and()
             .oauth2Login().userInfoEndpoint().userService(oAuth2Service)
             .let { http.build() }

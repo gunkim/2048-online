@@ -24,6 +24,13 @@ data class Rows(
 
     fun moveDown(): Rows = rotate().moveRight().rotate()
 
+    fun init(x: Int, y: Int): Rows {
+        val rows = content.toMutableList()
+        rows[y] = content[y].init(x)
+
+        return Rows(rows)
+    }
+
     private fun rotate() = Rows(IntRange(0, SIZE - 1).map(::createRow))
 
     private fun createRow(i: Int) = Row(IntRange(0, SIZE - 1).map { j -> content[j][i] })

@@ -5,5 +5,5 @@ import java.util.*
 
 interface FindUseCase {
     fun find(): List<Room>
-    fun find(gamerId: UUID, roomId: UUID): Room
+    fun find(userId: UUID, roomId: UUID): Room
 }

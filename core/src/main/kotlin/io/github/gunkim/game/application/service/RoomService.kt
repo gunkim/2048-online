@@ -12,8 +12,8 @@ class RoomService(
 ) : FindUseCase, JoinUseCase, LeaveUseCase, StartUseCase, CreateUseCase {
     override fun find() = rooms.find()
 
-    override fun find(gamerId: UUID, roomId: UUID) = rooms.find(roomId)
-        .also { validate(it, gamerId, roomId) }
+    override fun find(userId: UUID, roomId: UUID) = rooms.find(roomId)
+        .also { validate(it, userId, roomId) }
 
     override fun join(roomId: UUID, userId: UUID) {
         val (user, room) = load(userId, roomId)
@@ -50,11 +50,11 @@ class RoomService(
 
     private fun validate(
         room: Room,
-        gamerId: UUID,
+        userId: UUID,
         roomId: UUID
     ) {
-        if (!room.hasGamerId(gamerId)) {
-            throw IllegalArgumentException("해당 플레이어는 방에 참여하지 않았습니다. (gamer_id : $gamerId, room_id : $roomId)")
+        if (!room.hasUserId(userId)) {
+            throw IllegalArgumentException("해당 플레이어는 방에 참여하지 않았습니다. (gamer_id : $userId, room_id : $roomId)")
         }
     }
 }
