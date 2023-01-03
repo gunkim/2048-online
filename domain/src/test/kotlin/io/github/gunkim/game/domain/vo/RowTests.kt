@@ -12,7 +12,7 @@ class RowTests {
     }
 
     @Test
-    fun `왼쪽으로 이동한다`() {
+    fun `경로상 같은 셀이 있다면 왼쪽 이동하면서 합쳐진다`() {
         val row = Row(listOf(Cell.ONE, Cell.ONE, Cell.ONE, Cell.ONE))
         val movedRow = row.moveLeft()
 
@@ -20,10 +20,26 @@ class RowTests {
     }
 
     @Test
-    fun `오른쪽으로 이동한다`() {
+    fun `경로상 같은 셀이 없다면 왼쪽 이동한다`() {
+        val row = Row(listOf(Cell.ZERO, Cell.ZERO, Cell.ZERO, Cell.ONE))
+        val movedRow = row.moveLeft()
+
+        assertThat(movedRow).isEqualTo(Row(listOf(Cell.ONE, Cell.ZERO, Cell.ZERO, Cell.ZERO)))
+    }
+
+    @Test
+    fun `경로상 같은 셀이 있다면 오른쪽 이동하면서 합쳐진다`() {
         val row = Row(listOf(Cell.ONE, Cell.ONE, Cell.ONE, Cell.ONE))
         val movedRow = row.moveRight()
 
         assertThat(movedRow).isEqualTo(Row(listOf(Cell.ZERO, Cell.ZERO, Cell.TWO, Cell.TWO)))
+    }
+
+    @Test
+    fun `경로상 같은 셀이 없다면 오른쪽 이동한다`() {
+        val row = Row(listOf(Cell.ONE, Cell.ZERO, Cell.ZERO, Cell.ZERO))
+        val movedRow = row.moveRight()
+
+        assertThat(movedRow).isEqualTo(Row(listOf(Cell.ZERO, Cell.ZERO, Cell.ZERO, Cell.ONE)))
     }
 }
