@@ -3,6 +3,8 @@ package io.github.gunkim.game.domain.vo
 private fun totalScore(cells: List<Cell>) = cells.sumOf(Cell::value)
 private fun isGameWin(cells: List<Cell>) = cells.any(Cell.Companion::isWin)
 
+private fun List<Cell>.removeZero() = filterNot { it == Cell.ZERO }
+
 data class Row(
     val content: List<Cell>
 ) {
@@ -18,6 +20,7 @@ data class Row(
 
     fun moveLeft() = Row(
         content
+            .removeZero()
             .fold(emptyList(), ::move)
             .let(::fill)
     )
@@ -25,6 +28,7 @@ data class Row(
     fun moveRight() = Row(
         content
             .reversed()
+            .removeZero()
             .fold(emptyList(), ::move)
             .let(::fill)
             .reversed()
@@ -48,6 +52,12 @@ data class Row(
         } else {
             accumulator + cell
         }
+    }
+
+    fun init(x: Int): Row {
+        val row = content.toMutableList()
+        row[x] = Cell.ONE
+        return Row(row)
     }
 
     companion object {
