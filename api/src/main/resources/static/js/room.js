@@ -1,3 +1,18 @@
+const level = {
+  "ZERO": 0,
+  "ONE": 1,
+  "TWO": 2,
+  "THREE": 3,
+  "FOUR": 4,
+  "FIVE": 5,
+  "SIX": 6,
+  "SEVEN": 7,
+  "EIGHT": 8,
+  "NINE": 9,
+  "TEN": 10,
+  "ELEVEN": 11,
+  "TWELVE": 12,
+}
 const createRoom = (room) => {
   return `
     <h2>번호 : ${room.id}</h2>
@@ -15,9 +30,7 @@ const createRoom = (room) => {
                           return `
                           <tr>
                             ${row.content.map(cell => {
-                            return `<td>
-                              ${cell}
-                            </td>`
+                            return `<td class="${cell}" style="border: 1px solid black; width: 100px; height: 100px;">${level[cell] * 2}</td>`
                           })}
                           </tr>`
                         })}

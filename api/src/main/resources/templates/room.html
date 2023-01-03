@@ -3,10 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>2048 Application</title>
+    <style>
+      body {
+        background-color: #faf8ef;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        color: #776e65;
+        margin: 0;
+        text-align: center;
+      }
+    </style>
+    <link th:href="@{/css/level.css}" rel="stylesheet">
 </head>
 <body>
-    <button onclick="startRoom();">게임 시작</button>
-    <div id="room"></div>
+<button onclick="startRoom();">게임 시작</button>
+<div id="room"></div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>

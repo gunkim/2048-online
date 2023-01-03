@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.security.ConditionalOnDefaultWebSe
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
 
 @Configuration
@@ -31,6 +30,7 @@ open class WebSecurityConfig(
                 "/websocket/*/*/*",
                 "/websocket/*/*",
                 "/js/**",
+                "/css/**",
                 "/rooms",
             ).permitAll()
             .requestMatchers("/rooms/*/details", "/rooms/*").hasRole(Role.USER.name)
