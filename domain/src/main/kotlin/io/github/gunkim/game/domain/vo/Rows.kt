@@ -12,17 +12,38 @@ data class Rows(
     val isGameWin: Boolean
         get() = isGameWin(content)
 
+    val isFull: Boolean
+        get() = content.all(Row::isFull)
+
     init {
         require(content.size == SIZE) { "세로 폭은 ${SIZE}여야 합니다." }
     }
 
-    fun moveLeft() = Rows(content.map(Row::moveLeft))
+    fun moveLeft(): Pair<Rows, Boolean> {
+        val content = content.map(Row::moveLeft)
+        val rows: List<Row> = content.map { it.first }
 
-    fun moveRight() = Rows(content.map(Row::moveRight))
+        return Rows(rows) to content.any { it.second }
+    }
 
-    fun moveUp(): Rows = rotate().moveLeft().rotate()
+    fun moveRight(): Pair<Rows, Boolean> {
+        val content = content.map(Row::moveRight)
+        val rows: List<Row> = content.map { it.first }
 
-    fun moveDown(): Rows = rotate().moveRight().rotate()
+        return Rows(rows) to content.any { it.second }
+    }
+
+    fun moveUp(): Pair<Rows, Boolean> {
+        val content = rotate().moveLeft()
+
+        return content.first.rotate() to content.second
+    }
+
+    fun moveDown(): Pair<Rows, Boolean> {
+        val content = rotate().moveRight()
+
+        return content.first.rotate() to content.second
+    }
 
     fun init(x: Int, y: Int): Rows {
         val rows = content.toMutableList()
@@ -31,6 +52,7 @@ data class Rows(
         return Rows(rows)
     }
 
+    operator fun get(index: Int): Row = content[index]
     private fun rotate() = Rows(IntRange(0, SIZE - 1).map(::createRow))
 
     private fun createRow(i: Int) = Row(IntRange(0, SIZE - 1).map { j -> content[j][i] })

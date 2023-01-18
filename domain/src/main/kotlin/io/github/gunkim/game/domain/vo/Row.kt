@@ -14,25 +14,32 @@ data class Row(
     val isGameWin: Boolean
         get() = isGameWin(content)
 
+    val isFull: Boolean
+        get() = content.all { it != Cell.ZERO }
+
     init {
         require(content.size == SIZE) { "가로 폭은 ${SIZE}여야 합니다." }
     }
 
-    fun moveLeft() = Row(
-        content
+    fun moveLeft(): Pair<Row, Boolean> {
+        val content = content
             .removeZero()
             .fold(emptyList(), ::move)
             .let(::fill)
-    )
 
-    fun moveRight() = Row(
-        content
+        return Row(content) to (content != this.content)
+    }
+
+    fun moveRight(): Pair<Row, Boolean> {
+        val content = content
             .reversed()
             .removeZero()
             .fold(emptyList(), ::move)
             .let(::fill)
             .reversed()
-    )
+
+        return Row(content) to (content != this.content)
+    }
 
     private fun fill(movedRow: List<Cell>): List<Cell> = if (movedRow.size < SIZE) {
         movedRow + List(SIZE - movedRow.size) { Cell.ZERO }
@@ -42,15 +49,17 @@ data class Row(
 
     operator fun get(index: Int): Cell = content[index]
 
-    private fun move(accumulator: List<Cell>, cell: Cell): List<Cell> = if (accumulator.isEmpty()) {
-        listOf(cell)
-    } else {
-        val lastCell: Cell = accumulator.last()
+    private fun move(accumulator: List<Cell>, cell: Cell): List<Cell> {
+        return if (accumulator.isNotEmpty()) {
+            val lastCell = accumulator.last()
 
-        if (lastCell == cell) {
-            accumulator.dropLast(1) + lastCell.merge(cell)
+            if (lastCell == cell) {
+                accumulator.dropLast(1) + lastCell.levelUp()
+            } else {
+                accumulator + cell
+            }
         } else {
-            accumulator + cell
+            listOf(cell)
         }
     }
 

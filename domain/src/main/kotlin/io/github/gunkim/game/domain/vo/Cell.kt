@@ -17,14 +17,7 @@ enum class Cell(
     ELEVEN(1024),
     TWELVE(2048);
 
-    fun merge(cell: Cell): Cell {
-        if (cell != this || cell == ZERO) {
-            return cell
-        }
-        return levelUp()
-    }
-
-    private fun levelUp(): Cell = when (this) {
+    fun levelUp(): Cell = when (this) {
         ZERO -> ONE
         ONE -> TWO
         TWO -> THREE

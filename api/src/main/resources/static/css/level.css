@@ -1,26 +1,26 @@
 .ZERO {
-  background-color: #eee4da;
+  background-color: #e7e7e7;
   color: #776e65;
 }
 
 .ONE {
-  background-color: #ede0c8;
+  background-color: #b3e0a6;
   color: #776e65;
 }
 
 .TWO {
-  background-color: #f2b179;
-  color: #f9f6f2;
+  background-color: #debc91;
+  color: #70665a;
 }
 
 .THREE {
-  background-color: #f59563;
-  color: #f9f6f2;
+  background-color: #93a9cc;
+  color: #797775;
 }
 
 .FOUR {
-  background-color: #f67c5f;
-  color: #f9f6f2;
+  background-color: #fc9379;
+  color: #575553;
 }
 
 .FIVE {

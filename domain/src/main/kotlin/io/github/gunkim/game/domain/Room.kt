@@ -33,7 +33,6 @@ data class Room(
         if (!isStart) {
             throw IllegalStateException("게임이 시작되지 않았습니다.")
         }
-        gamers.find(user).move(moveType)
         return Room(id, title, gamers.move(user, moveType), isStart)
     }
 
