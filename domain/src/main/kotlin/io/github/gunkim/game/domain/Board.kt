@@ -7,7 +7,7 @@ import java.util.*
 
 data class Board(
     val id: UUID = UUID.randomUUID(),
-    val rows: Rows
+    val rows: Rows,
 ) {
     val score: Int
         get() = rows.score
@@ -18,50 +18,54 @@ data class Board(
     fun moveLeft(): Board {
         val content = rows.moveLeft()
 
-        if(content.second) {
+        if (content.second) {
             return createBoard(content.first).generateRandomCell()
         }
         return createBoard(content.first)
     }
+
     fun moveRight(): Board {
         val content = rows.moveRight()
 
-        if(content.second) {
+        if (content.second) {
             return createBoard(content.first).generateRandomCell()
         }
         return createBoard(content.first)
     }
+
     fun moveUp(): Board {
         val content = rows.moveUp()
 
-        if(content.second) {
+        if (content.second) {
             return createBoard(content.first).generateRandomCell()
         }
         return createBoard(content.first)
     }
+
     fun moveDown(): Board {
         val content = rows.moveDown()
 
-        if(content.second) {
+        if (content.second) {
             return createBoard(content.first).generateRandomCell()
         }
         return createBoard(content.first)
     }
+
     fun move(type: MoveType) = type.move(this)
 
     fun init(a: Pair<Int, Int>, b: Pair<Int, Int>): Board {
         return Board(id, rows.init(a.first, a.second).init(b.first, b.second))
     }
 
-    fun generateRandomCell(): Board {
+    private fun generateRandomCell(): Board {
         var cnt = 0
 
         var rows: Rows = rows
-        while(cnt < 2 && rows.isFull.not()) {
+        while (cnt < RANDOM_GENERATE_CELL_CNT && rows.isFull.not()) {
             val posX = (0..3).random()
             val posY = (0..3).random()
 
-            if(rows[posX][posY] == Cell.ZERO) {
+            if (rows[posX][posY] == Cell.ZERO) {
                 rows = rows.init(posY, posX)
                 cnt++
             }
@@ -72,6 +76,8 @@ data class Board(
     private fun createBoard(rows: Rows) = Board(id, rows)
 
     companion object {
+        private const val RANDOM_GENERATE_CELL_CNT = 1
+
         fun create() = Board(rows = Rows.empty())
 
         fun start(): Board {
