@@ -62,7 +62,7 @@ data class Board(
             val posY = (0..3).random()
 
             if(rows[posX][posY] == Cell.ZERO) {
-                rows = rows.init(posX, posY)
+                rows = rows.init(posY, posX)
                 cnt++
             }
         }
