@@ -5,6 +5,8 @@ import io.github.gunkim.game.domain.vo.MoveType
 import io.github.gunkim.game.domain.vo.Rows
 import java.util.*
 
+private fun generateRandomPoint(): Pair<Int, Int> = (0..3).random() to (0..3).random()
+
 data class Board(
     val id: UUID = UUID.randomUUID(),
     val rows: Rows,
@@ -15,49 +17,35 @@ data class Board(
     val isGameWin: Boolean
         get() = rows.isGameWin
 
-    fun moveLeft(): Board {
-        val content = rows.moveLeft()
+    fun moveLeft(): Board = move(rows.moveLeft())
 
-        if (content.second) {
-            return createBoard(content.first).generateRandomCell()
-        }
-        return createBoard(content.first)
-    }
+    fun moveRight(): Board = move(rows.moveRight())
 
-    fun moveRight(): Board {
-        val content = rows.moveRight()
+    fun moveUp(): Board = move(rows.moveUp())
 
-        if (content.second) {
-            return createBoard(content.first).generateRandomCell()
-        }
-        return createBoard(content.first)
-    }
-
-    fun moveUp(): Board {
-        val content = rows.moveUp()
-
-        if (content.second) {
-            return createBoard(content.first).generateRandomCell()
-        }
-        return createBoard(content.first)
-    }
-
-    fun moveDown(): Board {
-        val content = rows.moveDown()
-
-        if (content.second) {
-            return createBoard(content.first).generateRandomCell()
-        }
-        return createBoard(content.first)
-    }
+    fun moveDown(): Board = move(rows.moveDown())
 
     fun move(type: MoveType) = type.move(this)
 
     fun init(a: Pair<Int, Int>, b: Pair<Int, Int>): Board {
-        return Board(id, rows.init(a.first, a.second).init(b.first, b.second))
+        return Board(
+            id,
+            rows.init(a.first, a.second).init(b.first, b.second)
+        )
     }
 
-    private fun generateRandomCell(): Board {
+    private fun move(content: Pair<Rows, Boolean>): Board {
+        val (rows, isMoved) = content
+        val board = Board(id, rows)
+
+        return if (isMoved) {
+            board.addRandomCellAsLevel1()
+        } else {
+            board
+        }
+    }
+
+    private fun addRandomCellAsLevel1(): Board {
         var cnt = 0
 
         var rows: Rows = rows
@@ -70,23 +58,15 @@ data class Board(
                 cnt++
             }
         }
+
         return Board(id, rows)
     }
-
-    private fun createBoard(rows: Rows) = Board(id, rows)
 
     companion object {
         private const val RANDOM_GENERATE_CELL_CNT = 1
 
         fun create() = Board(rows = Rows.empty())
 
-        fun start(): Board {
-            val a =
-                listOf(0, 1, 2, 3, 0, 1, 2, 3).shuffled().take(2).sorted().let { it[0] to it[1] }
-            val b =
-                listOf(0, 1, 2, 3, 0, 1, 2, 3).shuffled().take(2).sorted().let { it[0] to it[1] }
-
-            return Board(rows = Rows.empty()).init(a, b)
-        }
+        fun start() = Board(rows = Rows.empty()).init(generateRandomPoint(), generateRandomPoint())
     }
 }
