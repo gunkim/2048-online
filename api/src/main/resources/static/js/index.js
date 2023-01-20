@@ -15,10 +15,15 @@ const putHtml = (html) => {
   document.getElementById('rooms').innerHTML = html;
 }
 
-const createRoom = () => {
+const createRoom = async () => {
   const title = document.getElementById('create-title').value;
 
-  stompClient.send('/app/room/create', {}, title);
+  const response = await axios.post("/rooms", {'title': title});
+
+  if (response.status === 201) {
+    const redirectUri = response.headers.location;
+    window.location.href = redirectUri;
+  }
 }
 
 const stompClient = (() => {
