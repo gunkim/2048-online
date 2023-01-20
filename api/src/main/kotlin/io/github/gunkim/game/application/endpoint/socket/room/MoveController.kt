@@ -1,4 +1,4 @@
-package io.github.gunkim.game.application.socket.room
+package io.github.gunkim.game.application.endpoint.socket.room
 
 import io.github.gunkim.game.application.usecase.board.MoveUseCase
 import io.github.gunkim.game.application.usecase.room.FindUseCase
