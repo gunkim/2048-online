@@ -1,7 +1,6 @@
 package io.github.gunkim.game.application.ui
 
-import io.github.gunkim.game.application.socket.room.FindRoomResponse
-import io.github.gunkim.game.application.usecase.room.FindUseCase
+import io.github.gunkim.game.application.usecase.room.JoinUseCase
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -11,25 +10,23 @@ import java.util.UUID
 
 @Controller
 class IndexController(
-    private val findRoomUseCase: FindUseCase
+    private val joinUseCase: JoinUseCase,
 ) {
     @GetMapping("/")
     fun index(): String {
         return "index"
     }
+
     @GetMapping("/rooms/{roomId}/details")
     fun room(
         @PathVariable roomId: UUID,
         principal: OAuth2AuthenticationToken,
-        model: Model
+        model: Model,
     ): String {
         val userId = principal.principal.attributes["id"] as UUID
 
-        model.addAttribute("room", findRoomUseCase.find(userId, roomId))
+        joinUseCase.join(roomId, userId)
 
         return "room"
     }
-
-    private fun roomResponses() = findRoomUseCase.find()
-        .map(::FindRoomResponse)
 }
