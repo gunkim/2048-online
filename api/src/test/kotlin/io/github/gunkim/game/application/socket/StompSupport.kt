@@ -22,8 +22,8 @@ open class StompSupport {
     private val url: String = "ws://localhost"
     private val webSocketClient: WebSocketStompClient = WebSocketStompClient(
         SockJsClient(
-            createTransport()
-        )
+            createTransport(),
+        ),
     )
 
     init {

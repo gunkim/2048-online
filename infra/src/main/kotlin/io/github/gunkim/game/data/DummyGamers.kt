@@ -4,11 +4,11 @@ import io.github.gunkim.game.domain.Gamer
 import io.github.gunkim.game.domain.Gamers
 import io.github.gunkim.game.domain.Rooms
 import org.springframework.stereotype.Repository
-import java.util.*
+import java.util.UUID
 
 @Repository
 class DummyGamers(
-    private val rooms: Rooms
+    private val rooms: Rooms,
 ) : Gamers {
     override fun find() = rooms.find().flatMap { it.gamers }
 

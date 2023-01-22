@@ -6,7 +6,7 @@ private fun isGameWin(cells: List<Cell>) = cells.any(Cell.Companion::isWin)
 private fun List<Cell>.removeZero() = filterNot { it == Cell.ZERO }
 
 data class Row(
-    val content: List<Cell>
+    val content: List<Cell>,
 ) {
     val score: Int
         get() = totalScore(content)

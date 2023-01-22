@@ -42,6 +42,7 @@ class RowTests {
 
         assertThat(movedRow).isEqualTo(Row(listOf(Cell.ZERO, Cell.ZERO, Cell.ZERO, Cell.ONE)))
     }
+
     @Test
     fun test() {
         val row = Row(listOf(Cell.TWO, Cell.TWO, Cell.TWO, Cell.TWO))

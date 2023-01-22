@@ -1,7 +1,7 @@
 package io.github.gunkim.game.domain.vo
 
 enum class Cell(
-    val value: Int
+    val value: Int,
 ) {
     ZERO(0),
     ONE(1),
@@ -15,7 +15,8 @@ enum class Cell(
     NINE(256),
     TEN(512),
     ELEVEN(1024),
-    TWELVE(2048);
+    TWELVE(2048),
+    ;
 
     fun levelUp(): Cell = when (this) {
         ZERO -> ONE

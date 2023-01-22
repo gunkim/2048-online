@@ -2,6 +2,7 @@ package io.github.gunkim.game.domain.vo
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertAll
 import org.junit.jupiter.api.assertThrows
 
 class RowsTests {
@@ -10,6 +11,7 @@ class RowsTests {
         assertThrows<IllegalArgumentException> { Rows(listOf()) }
             .apply { assertThat(message).isEqualTo("세로 폭은 4여야 합니다.") }
     }
+
     @Test
     fun `위로 이동`() {
         val rows = Rows(
@@ -17,18 +19,26 @@ class RowsTests {
                 Row(listOf(Cell.ZERO, Cell.ONE, Cell.ONE, Cell.THREE)),
                 Row(listOf(Cell.ZERO, Cell.ONE, Cell.ONE, Cell.THREE)),
                 Row(listOf(Cell.ZERO, Cell.ONE, Cell.ONE, Cell.THREE)),
-                Row(listOf(Cell.ZERO, Cell.ONE, Cell.ONE, Cell.THREE))
-            )
+                Row(listOf(Cell.ZERO, Cell.ONE, Cell.ONE, Cell.THREE)),
+            ),
         )
-        assertThat(rows.moveUp()).isEqualTo(
-            Rows(
-                listOf(
-                    Row(listOf(Cell.ZERO, Cell.TWO, Cell.TWO, Cell.FOUR)),
-                    Row(listOf(Cell.ZERO, Cell.TWO, Cell.TWO, Cell.FOUR)),
-                    Row(listOf(Cell.ZERO, Cell.ZERO, Cell.ZERO, Cell.ZERO)),
-                    Row(listOf(Cell.ZERO, Cell.ZERO, Cell.ZERO, Cell.ZERO))
+
+        val (movedRows, isMoved) = rows.moveUp()
+
+        assertAll(
+            {
+                assertThat(movedRows).isEqualTo(
+                    Rows(
+                        listOf(
+                            Row(listOf(Cell.ZERO, Cell.TWO, Cell.TWO, Cell.FOUR)),
+                            Row(listOf(Cell.ZERO, Cell.TWO, Cell.TWO, Cell.FOUR)),
+                            Row(listOf(Cell.ZERO, Cell.ZERO, Cell.ZERO, Cell.ZERO)),
+                            Row(listOf(Cell.ZERO, Cell.ZERO, Cell.ZERO, Cell.ZERO)),
+                        ),
+                    ),
                 )
-            )
+            },
+            { assertThat(isMoved).isTrue() },
         )
     }
 
@@ -39,18 +49,26 @@ class RowsTests {
                 Row(listOf(Cell.ZERO, Cell.ONE, Cell.ONE, Cell.THREE)),
                 Row(listOf(Cell.ZERO, Cell.ONE, Cell.ONE, Cell.THREE)),
                 Row(listOf(Cell.ZERO, Cell.ONE, Cell.ONE, Cell.THREE)),
-                Row(listOf(Cell.ZERO, Cell.ONE, Cell.ONE, Cell.THREE))
-            )
+                Row(listOf(Cell.ZERO, Cell.ONE, Cell.ONE, Cell.THREE)),
+            ),
         )
-        assertThat(rows.moveDown()).isEqualTo(
-            Rows(
-                listOf(
-                    Row(listOf(Cell.ZERO, Cell.ZERO, Cell.ZERO, Cell.ZERO)),
-                    Row(listOf(Cell.ZERO, Cell.ZERO, Cell.ZERO, Cell.ZERO)),
-                    Row(listOf(Cell.ZERO, Cell.TWO, Cell.TWO, Cell.FOUR)),
-                    Row(listOf(Cell.ZERO, Cell.TWO, Cell.TWO, Cell.FOUR))
+
+        val (movedRows, isMoved) = rows.moveDown()
+
+        assertAll(
+            {
+                assertThat(movedRows).isEqualTo(
+                    Rows(
+                        listOf(
+                            Row(listOf(Cell.ZERO, Cell.ZERO, Cell.ZERO, Cell.ZERO)),
+                            Row(listOf(Cell.ZERO, Cell.ZERO, Cell.ZERO, Cell.ZERO)),
+                            Row(listOf(Cell.ZERO, Cell.TWO, Cell.TWO, Cell.FOUR)),
+                            Row(listOf(Cell.ZERO, Cell.TWO, Cell.TWO, Cell.FOUR)),
+                        ),
+                    ),
                 )
-            )
+            },
+            { assertThat(isMoved).isTrue() },
         )
     }
 }

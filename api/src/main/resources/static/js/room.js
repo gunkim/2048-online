@@ -70,7 +70,7 @@ const stompClient = (() => {
 })();
 
 const startRoom = () => {
-  stompClient.send(`/app/room/${roomId}/start`, {});
+  stompClient.send(`/app/rooms/${roomId}/start`, {});
 }
 
 (async () => {
@@ -82,13 +82,17 @@ const startRoom = () => {
 
   document.addEventListener("keydown", function (e) {
     if (e.key === 'ArrowLeft') {
-      stompClient.send(`/app/rooms/${roomId}/move/left`, {});
+      stompClient.send(`/app/rooms/${roomId}/move`, {},
+          JSON.stringify({direction: 'LEFT'}));
     } else if (e.key === 'ArrowRight') {
-      stompClient.send(`/app/rooms/${roomId}/move/right`, {});
+      stompClient.send(`/app/rooms/${roomId}/move`, {},
+          JSON.stringify({direction: 'RIGHT'}));
     } else if (e.key === 'ArrowUp') {
-      stompClient.send(`/app/rooms/${roomId}/move/top`, {});
+      stompClient.send(`/app/rooms/${roomId}/move`, {},
+          JSON.stringify({direction: 'TOP'}));
     } else if (e.key === 'ArrowDown') {
-      stompClient.send(`/app/rooms/${roomId}/move/down`, {});
+      stompClient.send(`/app/rooms/${roomId}/move`, {},
+          JSON.stringify({direction: 'DOWN'}));
     }
   });
 })();

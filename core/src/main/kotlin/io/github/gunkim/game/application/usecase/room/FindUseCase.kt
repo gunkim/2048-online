@@ -1,7 +1,7 @@
 package io.github.gunkim.game.application.usecase.room
 
 import io.github.gunkim.game.domain.Room
-import java.util.*
+import java.util.UUID
 
 interface FindUseCase {
     fun find(): List<Room>

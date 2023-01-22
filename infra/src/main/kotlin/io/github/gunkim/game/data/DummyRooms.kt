@@ -3,11 +3,11 @@ package io.github.gunkim.game.data
 import io.github.gunkim.game.domain.Room
 import io.github.gunkim.game.domain.Rooms
 import org.springframework.stereotype.Repository
-import java.util.*
+import java.util.UUID
 
 @Repository
 class DummyRooms(
-    val map: MutableMap<UUID, Room> = mutableMapOf()
+    val map: MutableMap<UUID, Room> = mutableMapOf(),
 ) : Rooms {
     override fun find() = map.values.toList()
 

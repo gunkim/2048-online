@@ -1,14 +1,22 @@
 package io.github.gunkim.game.application.service
 
-import io.github.gunkim.game.application.usecase.room.*
-import io.github.gunkim.game.domain.*
+import io.github.gunkim.game.application.usecase.room.CreateUseCase
+import io.github.gunkim.game.application.usecase.room.FindUseCase
+import io.github.gunkim.game.application.usecase.room.JoinUseCase
+import io.github.gunkim.game.application.usecase.room.LeaveUseCase
+import io.github.gunkim.game.application.usecase.room.StartUseCase
+import io.github.gunkim.game.domain.Board
+import io.github.gunkim.game.domain.Gamer
+import io.github.gunkim.game.domain.Room
+import io.github.gunkim.game.domain.Rooms
+import io.github.gunkim.game.domain.Users
 import org.springframework.stereotype.Service
-import java.util.*
+import java.util.UUID
 
 @Service
 class RoomService(
     private val users: Users,
-    private val rooms: Rooms
+    private val rooms: Rooms,
 ) : FindUseCase, JoinUseCase, LeaveUseCase, StartUseCase, CreateUseCase {
     override fun find() = rooms.find()
 
@@ -36,7 +44,7 @@ class RoomService(
     override fun create(title: String, userId: UUID): Room {
         val user = users.find(userId)
 
-        if(rooms.existByUserId(user.id)) {
+        if (rooms.existByUserId(user.id)) {
             throw IllegalArgumentException("이미 방에 참여중입니다.")
         }
 
@@ -51,7 +59,7 @@ class RoomService(
     private fun validate(
         room: Room,
         userId: UUID,
-        roomId: UUID
+        roomId: UUID,
     ) {
         if (!room.hasUserId(userId)) {
             throw IllegalArgumentException("해당 플레이어는 방에 참여하지 않았습니다. (gamer_id : $userId, room_id : $roomId)")

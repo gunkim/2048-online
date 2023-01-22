@@ -1,6 +1,6 @@
 package io.github.gunkim.game.domain
 
-import java.util.*
+import java.util.UUID
 
 interface Users {
     fun find(): List<User>

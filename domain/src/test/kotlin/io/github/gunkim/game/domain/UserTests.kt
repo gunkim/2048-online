@@ -19,8 +19,8 @@ class UserTests {
             "gun@com",
             "한글@한글",
             "gun@com@com",
-            "gunkim"
-        ]
+            "gunkim",
+        ],
     )
     fun `이메일 형식이 유효하지 않을 경우 예외가 발생한다`() {
         assertThrows<IllegalArgumentException> { User(name = "거누", email = "gun@com") }

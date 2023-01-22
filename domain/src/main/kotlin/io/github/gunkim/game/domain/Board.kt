@@ -3,7 +3,7 @@ package io.github.gunkim.game.domain
 import io.github.gunkim.game.domain.vo.Cell
 import io.github.gunkim.game.domain.vo.MoveType
 import io.github.gunkim.game.domain.vo.Rows
-import java.util.*
+import java.util.UUID
 
 private fun generateRandomPoint(): Pair<Int, Int> = (0..3).random() to (0..3).random()
 
@@ -30,7 +30,7 @@ data class Board(
     fun init(a: Pair<Int, Int>, b: Pair<Int, Int>): Board {
         return Board(
             id,
-            rows.init(a.first, a.second).init(b.first, b.second)
+            rows.init(a.first, a.second).init(b.first, b.second),
         )
     }
 

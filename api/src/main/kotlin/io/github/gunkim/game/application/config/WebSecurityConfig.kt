@@ -13,7 +13,7 @@ import org.springframework.security.web.SecurityFilterChain
 @ConditionalOnDefaultWebSecurity
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 open class WebSecurityConfig(
-    private val oAuth2Service: OAuth2Service
+    private val oAuth2Service: OAuth2Service,
 ) {
     @Bean
     open fun filterChain(http: HttpSecurity): SecurityFilterChain =

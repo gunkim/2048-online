@@ -1,7 +1,7 @@
 package io.github.gunkim.game.domain
 
 import io.github.gunkim.game.domain.vo.Social
-import java.util.*
+import java.util.UUID
 
 data class User(
     val id: UUID = UUID.randomUUID(),
@@ -9,7 +9,7 @@ data class User(
     val email: String,
     val social: Social = Social.GOOGLE,
     val profileImageUrl: String? = null,
-    val role: Role = Role.USER
+    val role: Role = Role.USER,
 ) {
     init {
         require(name.isNotBlank()) { "이름이 비어있을 수 없습니다." }
@@ -22,7 +22,7 @@ data class User(
         email,
         social,
         profileImageUrl,
-        role
+        role,
     )
 
     companion object {

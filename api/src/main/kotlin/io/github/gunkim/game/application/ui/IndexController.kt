@@ -1,31 +1,31 @@
 package io.github.gunkim.game.application.ui
 
+import io.github.gunkim.game.application.common.SessionUserId
 import io.github.gunkim.game.application.usecase.room.JoinUseCase
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken
 import org.springframework.stereotype.Controller
-import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import java.util.UUID
 
-@Controller
-class IndexController(
-    private val joinUseCase: JoinUseCase,
-) {
+interface IndexController {
     @GetMapping("/")
-    fun index(): String {
-        return "index"
-    }
+    fun index(): String
 
     @GetMapping("/rooms/{roomId}/details")
     fun room(
+        @SessionUserId sessionUserId: UUID,
         @PathVariable roomId: UUID,
-        principal: OAuth2AuthenticationToken,
-        model: Model,
-    ): String {
-        val userId = principal.principal.attributes["id"] as UUID
+    ): String
+}
 
-        joinUseCase.join(roomId, userId)
+@Controller
+class IndexControllerImpl(
+    private val joinUseCase: JoinUseCase,
+) : IndexController {
+    override fun index() = "index"
+
+    override fun room(sessionUserId: UUID, roomId: UUID): String {
+        joinUseCase.join(roomId, sessionUserId)
 
         return "room"
     }

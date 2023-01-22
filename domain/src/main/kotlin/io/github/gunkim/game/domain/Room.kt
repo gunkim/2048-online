@@ -1,7 +1,7 @@
 package io.github.gunkim.game.domain
 
 import io.github.gunkim.game.domain.vo.MoveType
-import java.util.*
+import java.util.UUID
 
 private fun List<Gamer>.move(user: User, moveType: MoveType) = this.map {
     if (it.hasPlayer(user)) {
@@ -20,7 +20,7 @@ data class Room(
     val id: UUID = UUID.randomUUID(),
     val title: String,
     val gamers: List<Gamer>,
-    val isStart: Boolean
+    val isStart: Boolean,
 ) {
     val hostName: String
         get() = gamers.find { it.isHost }?.user?.name ?: throw IllegalStateException("방장이 없습니다.")

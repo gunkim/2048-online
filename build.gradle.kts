@@ -9,11 +9,13 @@ val assertJVersion: String by project
 plugins {
     java
     kotlin("jvm")
+    id("org.jlleitschuh.gradle.ktlint-idea") version "11.0.0"
 }
 
 allprojects {
     apply(plugin = "java")
     apply(plugin = "kotlin")
+    apply(plugin = "org.jlleitschuh.gradle.ktlint")
 
     group = "io.github.gunkim"
     version = applicationVersion
@@ -25,9 +27,9 @@ allprojects {
 
 subprojects {
     dependencies {
-        implementation("org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}")
-        testImplementation("org.junit.jupiter:junit-jupiter:${junitVersion}")
-        testImplementation("org.assertj:assertj-core:${assertJVersion}")
+        implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+        testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
+        testImplementation("org.assertj:assertj-core:$assertJVersion")
     }
     tasks.withType<KotlinCompile> {
         kotlinOptions.jvmTarget = jdkVersion

@@ -12,10 +12,9 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User
 import org.springframework.security.oauth2.core.user.OAuth2User
 import org.springframework.stereotype.Service
 
-
 @Service
 class OAuth2Service(
-    private val users: Users
+    private val users: Users,
 ) : OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     override fun loadUser(userRequest: OAuth2UserRequest): OAuth2User {
         val delegate = DefaultOAuth2UserService()
@@ -27,7 +26,7 @@ class OAuth2Service(
         return DefaultOAuth2User(
             listOf(SimpleGrantedAuthority("ROLE_${user.role.name}")),
             attributes.attributes + mapOf("id" to user.id),
-            attributes.nameAttributeKey
+            attributes.nameAttributeKey,
         )
     }
 
@@ -40,7 +39,7 @@ class OAuth2Service(
 
     private fun initData(
         delegate: DefaultOAuth2UserService,
-        userRequest: OAuth2UserRequest
+        userRequest: OAuth2UserRequest,
     ): Pair<Map<String, Any>, String> {
         val oAuth2User = delegate.loadUser(userRequest)
         val userNameAttributeName =
@@ -55,7 +54,7 @@ class OAuthAttributes(
     val nameAttributeKey: String,
     val name: String,
     val email: String,
-    val picture: String
+    val picture: String,
 ) {
     fun toUser(): User {
         return User(
@@ -63,21 +62,21 @@ class OAuthAttributes(
             email = email,
             profileImageUrl = picture,
             role = Role.USER,
-            social = Social.GOOGLE
+            social = Social.GOOGLE,
         )
     }
 
     companion object {
         fun ofGoogle(
             userNameAttributeName: String,
-            attributes: Map<String, Any>
+            attributes: Map<String, Any>,
         ): OAuthAttributes {
             return OAuthAttributes(
                 attributes,
                 userNameAttributeName,
                 attributes["name"] as String,
                 attributes["email"] as String,
-                attributes["picture"] as String
+                attributes["picture"] as String,
             )
         }
     }
