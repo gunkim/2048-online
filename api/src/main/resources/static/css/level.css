@@ -1,64 +1,51 @@
 .ZERO {
-  background-color: #e7e7e7;
-  color: #776e65;
+  background-color: #ECECEC;
 }
 
 .ONE {
-  background-color: #b3e0a6;
-  color: #776e65;
+  background-color: #7FE9DE;
 }
 
 .TWO {
-  background-color: #debc91;
-  color: #70665a;
+  background-color: #F8FFDB;
 }
 
 .THREE {
-  background-color: #93a9cc;
-  color: #797775;
+  background-color: #0081C9;
 }
 
 .FOUR {
-  background-color: #fc9379;
-  color: #575553;
+  background-color: #3B3486;
 }
 
 .FIVE {
-  background-color: #f65e3b;
-  color: #f9f6f2;
+  background-color: #FF8787;
 }
 
 .SIX {
-  background-color: #edcf72;
-  color: #f9f6f2;
+  background-color: #F0FF42;
 }
 
 .SEVEN {
-  background-color: #edcc61;
-  color: #f9f6f2;
+  background-color: #379237;
 }
 
 .EIGHT {
-  background-color: #edc850;
-  color: #f9f6f2;
+  background-color: #FF6363;
 }
 
 .NINE {
-  background-color: #edc53f;
-  color: #f9f6f2;
+  background-color: #FFAB76;
 }
 
 .TEN {
-  background-color: #edc22e;
-  color: #f9f6f2;
+  background-color: #FFFDA2;
 }
 
 .ELEVEN {
-  background-color: #3c3a32;
-  color: #f9f6f2;
+  background-color: #BAFFB4;
 }
 
 .TWELVE {
-  background-color: #3c3a32;
-  color: #f9f6f2;
+  background-color: #CF4DCE;
 }
