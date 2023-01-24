@@ -1,4 +1,38 @@
-const level = {
+const createRow = (row) => row.content.map(cell => `
+<td class="${cell} cell">
+    ${(2 ** levels[cell]) === 1 ? '' : 2 ** levels[cell]}
+</td>
+`).join('');
+
+const createRows = (gamer) => gamer.board.rows.content.map(row => `
+<tr>
+    ${(createRow(row))}
+</tr>
+`).join('');
+
+const createBoard = (room) => room.gamers.map(gamer => `
+<td>
+    <table>
+        ${(createRows(gamer))}
+    </table>
+</td>
+`).join('');
+
+const createRoom = (room) => `
+<h2>번호 : ${room.id}</h2>
+<h2>방제 : ${room.title}</h2>
+<h2>시작 여부 : ${room.start}</h2>
+    
+<table>
+    <tbody>
+        <tr>
+            ${(createBoard(room))}
+        </tr>
+    </tbody>
+</table>
+`;
+
+const levels = {
   "ZERO": 0,
   "ONE": 1,
   "TWO": 2,
@@ -14,39 +48,16 @@ const level = {
   "TWELVE": 12,
 }
 
-const getMap2 = (row) => row.content.map(cell => `
-<td class="${cell}" style="border: 1px solid black; width: 100px; height: 100px;">
-    ${(2 ** level[cell]) === 1 ? 0 : 2 ** level[cell]}
-</td>
-`).join('');
-
-const getMap1 = (gamer) => gamer.board.rows.content.map(row => `
-<tr>
-    ${(getMap2(row))}
-</tr>
-`).join('');
-
-const getMap = (room) => room.gamers.map(gamer => `
-<td>
-    <table>
-        ${(getMap1(gamer))}
-    </table>
-</td>
-`).join('');
-
-const createRoom = (room) => `
-<h2>번호 : ${room.id}</h2>
-<h2>방제 : ${room.title}</h2>
-<h2>시작 여부 : ${room.start}</h2>
-    
-<table>
-    <tbody>
-        <tr>
-            ${(getMap(room))}
-        </tr>
-    </tbody>
-</table>
-`;
+const arrows = {
+  "ArrowLeft": () => stompClient.send(`/app/rooms/${roomId}/move`, {},
+      JSON.stringify({direction: 'LEFT'})),
+  "ArrowRight": () => stompClient.send(`/app/rooms/${roomId}/move`, {},
+      JSON.stringify({direction: 'RIGHT'})),
+  "ArrowUp": () => stompClient.send(`/app/rooms/${roomId}/move`, {},
+      JSON.stringify({direction: 'TOP'})),
+  "ArrowDown": () => stompClient.send(`/app/rooms/${roomId}/move`, {},
+      JSON.stringify({direction: 'DOWN'}))
+}
 
 const roomId = document.location.href.split('/')[4];
 
@@ -80,19 +91,7 @@ const startRoom = () => {
   console.log(room);
   putHtml(createRoom(room));
 
-  document.addEventListener("keydown", function (e) {
-    if (e.key === 'ArrowLeft') {
-      stompClient.send(`/app/rooms/${roomId}/move`, {},
-          JSON.stringify({direction: 'LEFT'}));
-    } else if (e.key === 'ArrowRight') {
-      stompClient.send(`/app/rooms/${roomId}/move`, {},
-          JSON.stringify({direction: 'RIGHT'}));
-    } else if (e.key === 'ArrowUp') {
-      stompClient.send(`/app/rooms/${roomId}/move`, {},
-          JSON.stringify({direction: 'TOP'}));
-    } else if (e.key === 'ArrowDown') {
-      stompClient.send(`/app/rooms/${roomId}/move`, {},
-          JSON.stringify({direction: 'DOWN'}));
-    }
+  document.addEventListener("keydown", (e) => {
+    arrows[e.key]();
   });
 })();
