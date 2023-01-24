@@ -1,5 +1,6 @@
 package io.github.gunkim.game.domain
 
+import io.github.gunkim.game.domain.exception.JoinedPlayerException
 import io.github.gunkim.game.domain.vo.MoveType
 import java.util.UUID
 
@@ -14,7 +15,7 @@ private fun List<Gamer>.move(user: User, moveType: MoveType) = this.map {
 private fun List<Gamer>.find(user: User) = this.find { it.hasPlayer(user) }
     ?: throw IllegalArgumentException("게임에 참여하지 않은 플레이어 입니다.")
 
-private fun List<Gamer>.hasId(id: UUID) = this.any { it.id == id }
+private fun List<Gamer>.hasId(id: UUID) = this.any { it.isSameUserId(id) }
 
 data class Room(
     val id: UUID = UUID.randomUUID(),
@@ -69,7 +70,7 @@ data class Room(
         }
 
         if (gamers.hasId(user.id)) {
-            throw IllegalArgumentException("이미 게임에 참여한 플레이어 입니다.")
+            throw JoinedPlayerException()
         }
 
         val gamers = gamers + Gamer(user = user, board = Board.create())

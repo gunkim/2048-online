@@ -13,4 +13,6 @@ data class Gamer(
     fun move(moveType: MoveType) = Gamer(id, user, moveType(board), isHost)
 
     fun hasPlayer(user: User) = this.user == user
+
+    fun isSameUserId(userId: UUID) = user.isSameId(userId)
 }

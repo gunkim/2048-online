@@ -25,6 +25,8 @@ data class User(
         role,
     )
 
+    fun isSameId(id: UUID) = this.id == id
+
     companion object {
         private val EMAIL_REGEX =
             Regex("^([\\w\\.\\_\\-])*[a-zA-Z0-9]+([\\w\\.\\_\\-])*([a-zA-Z0-9])+([\\w\\.\\_\\-])+@([a-zA-Z0-9]+\\.)+[a-zA-Z0-9]{2,8}\$")
