@@ -19,31 +19,13 @@ data class Rows(
         require(content.size == SIZE) { "세로 폭은 ${SIZE}여야 합니다." }
     }
 
-    fun moveLeft(): Pair<Rows, Boolean> {
-        val content = content.map(Row::moveLeft)
-        val rows: List<Row> = content.map { it.first }
+    fun moveLeft() = Rows(content.map(Row::moveLeft))
 
-        return Rows(rows) to content.any { it.second }
-    }
+    fun moveRight() = Rows(content.map(Row::moveRight))
 
-    fun moveRight(): Pair<Rows, Boolean> {
-        val content = content.map(Row::moveRight)
-        val rows: List<Row> = content.map { it.first }
+    fun moveUp() = rotate().moveLeft().rotate()
 
-        return Rows(rows) to content.any { it.second }
-    }
-
-    fun moveUp(): Pair<Rows, Boolean> {
-        val content = rotate().moveLeft()
-
-        return content.first.rotate() to content.second
-    }
-
-    fun moveDown(): Pair<Rows, Boolean> {
-        val content = rotate().moveRight()
-
-        return content.first.rotate() to content.second
-    }
+    fun moveDown() = rotate().moveRight().rotate()
 
     fun init(x: Int, y: Int): Rows {
         val rows = content.toMutableList()

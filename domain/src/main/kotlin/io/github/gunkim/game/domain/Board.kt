@@ -34,10 +34,10 @@ data class Board(
         )
     }
 
-    private fun move(content: Pair<Rows, Boolean>): Board {
-        val (rows, isMoved) = content
+    private fun move(rows: Rows): Board {
         val board = Board(id, rows)
 
+        val isMoved = board.rows != this.rows
         return if (isMoved) {
             board.addRandomCellAsLevel1()
         } else {

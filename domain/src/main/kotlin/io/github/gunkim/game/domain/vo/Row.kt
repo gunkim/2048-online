@@ -21,25 +21,17 @@ data class Row(
         require(content.size == SIZE) { "가로 폭은 ${SIZE}여야 합니다." }
     }
 
-    fun moveLeft(): Pair<Row, Boolean> {
-        val content = content
-            .removeZero()
-            .fold(emptyList(), ::move)
-            .let(::fill)
+    fun moveLeft() = Row(content
+        .removeZero()
+        .fold(emptyList(), ::move)
+        .let(::fill))
 
-        return Row(content) to (content != this.content)
-    }
-
-    fun moveRight(): Pair<Row, Boolean> {
-        val content = content
-            .reversed()
-            .removeZero()
-            .fold(emptyList(), ::move)
-            .let(::fill)
-            .reversed()
-
-        return Row(content) to (content != this.content)
-    }
+    fun moveRight() = Row(content
+        .reversed()
+        .removeZero()
+        .fold(emptyList(), ::move)
+        .let(::fill)
+        .reversed())
 
     private fun fill(movedRow: List<Cell>): List<Cell> = if (movedRow.size < SIZE) {
         movedRow + List(SIZE - movedRow.size) { Cell.ZERO }

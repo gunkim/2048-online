@@ -23,7 +23,7 @@ class RowsTests {
             ),
         )
 
-        val (movedRows, isMoved) = rows.moveUp()
+        val movedRows = rows.moveUp()
 
         assertAll(
             {
@@ -38,7 +38,6 @@ class RowsTests {
                     ),
                 )
             },
-            { assertThat(isMoved).isTrue() },
         )
     }
 
@@ -53,7 +52,7 @@ class RowsTests {
             ),
         )
 
-        val (movedRows, isMoved) = rows.moveDown()
+        val movedRows = rows.moveDown()
 
         assertAll(
             {
@@ -68,7 +67,6 @@ class RowsTests {
                     ),
                 )
             },
-            { assertThat(isMoved).isTrue() },
         )
     }
 }

@@ -14,7 +14,8 @@ class RowTests {
     @Test
     fun `경로상 같은 셀이 있다면 왼쪽 이동하면서 합쳐진다`() {
         val row = Row(listOf(Cell.ONE, Cell.ONE, Cell.ONE, Cell.ONE))
-        val movedRow = row.moveLeft().first
+
+        val movedRow = row.moveLeft()
 
         assertThat(movedRow).isEqualTo(Row(listOf(Cell.TWO, Cell.TWO, Cell.ZERO, Cell.ZERO)))
     }
@@ -22,7 +23,8 @@ class RowTests {
     @Test
     fun `경로상 같은 셀이 없다면 왼쪽 이동한다`() {
         val row = Row(listOf(Cell.ZERO, Cell.ZERO, Cell.ZERO, Cell.ONE))
-        val movedRow = row.moveLeft().first
+
+        val movedRow = row.moveLeft()
 
         assertThat(movedRow).isEqualTo(Row(listOf(Cell.ONE, Cell.ZERO, Cell.ZERO, Cell.ZERO)))
     }
@@ -30,7 +32,8 @@ class RowTests {
     @Test
     fun `경로상 같은 셀이 있다면 오른쪽 이동하면서 합쳐진다`() {
         val row = Row(listOf(Cell.ONE, Cell.ONE, Cell.ONE, Cell.ONE))
-        val movedRow = row.moveRight().first
+
+        val movedRow = row.moveRight()
 
         assertThat(movedRow).isEqualTo(Row(listOf(Cell.ZERO, Cell.ZERO, Cell.TWO, Cell.TWO)))
     }
@@ -38,7 +41,8 @@ class RowTests {
     @Test
     fun `경로상 같은 셀이 없다면 오른쪽 이동한다`() {
         val row = Row(listOf(Cell.ONE, Cell.ZERO, Cell.ZERO, Cell.ZERO))
-        val movedRow = row.moveRight().first
+
+        val movedRow = row.moveRight()
 
         assertThat(movedRow).isEqualTo(Row(listOf(Cell.ZERO, Cell.ZERO, Cell.ZERO, Cell.ONE)))
     }
@@ -46,7 +50,8 @@ class RowTests {
     @Test
     fun test() {
         val row = Row(listOf(Cell.TWO, Cell.TWO, Cell.TWO, Cell.TWO))
-        val movedRow = row.moveRight().first
+
+        val movedRow = row.moveRight()
 
         assertThat(movedRow).isEqualTo(Row(listOf(Cell.ZERO, Cell.ZERO, Cell.THREE, Cell.THREE)))
     }
