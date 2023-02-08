@@ -1,19 +1,18 @@
 package io.github.gunkim.game.domain.vo
 
+import io.kotest.core.spec.DisplayName
+import io.kotest.core.spec.style.StringSpec
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
 import org.junit.jupiter.api.assertThrows
 
-class RowsTests {
-    @Test
-    fun `사이즈가 4가 아닐 경우 예외가 발생한다`() {
+@DisplayName("행들은")
+class RowsTests : StringSpec({
+    "사이즈가 4가 아닐 경우 예외가 발생한다" {
         assertThrows<IllegalArgumentException> { Rows(listOf()) }
             .apply { assertThat(message).isEqualTo("세로 폭은 4여야 합니다.") }
     }
-
-    @Test
-    fun `위로 이동`() {
+    "위로 이동한다" {
         val rows = Rows(
             listOf(
                 Row(listOf(Cell.ZERO, Cell.ONE, Cell.ONE, Cell.THREE)),
@@ -40,9 +39,7 @@ class RowsTests {
             },
         )
     }
-
-    @Test
-    fun `아래로 이동`() {
+    "아래로 이동한다" {
         val rows = Rows(
             listOf(
                 Row(listOf(Cell.ZERO, Cell.ONE, Cell.ONE, Cell.THREE)),
@@ -69,4 +66,4 @@ class RowsTests {
             },
         )
     }
-}
+})
