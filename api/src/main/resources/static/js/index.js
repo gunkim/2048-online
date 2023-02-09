@@ -1,11 +1,17 @@
 const createRooms = (rooms) => {
+  if (rooms.length === 0) {
+    return `
+    <tr>
+      <td colspan="3" style="text-align: center;">방이 없습니다.</td>
+    </tr>
+`;
+  }
   return rooms.map(room => {
     return `
       <tr>
-        <td><a href="/rooms/${room.id}/details">${room.id}</a></td>
-        <td>${room.title}</td>
+        <td>${room.id}></td>
+        <td><a href="/rooms/${room.id}/details">${room.title}</a></td>
         <td>${room.host}</td>
-        <td>${room.start}</td>
       </tr>
       `;
   });

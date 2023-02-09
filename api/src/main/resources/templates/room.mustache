@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>2048 Application</title>
-  <link th:href="@{/css/room.css}" rel="stylesheet">
-  <link th:href="@{/css/level.css}" rel="stylesheet">
+  <link href="/css/room.css" rel="stylesheet">
+  <link href="/css/level.css" rel="stylesheet">
 </head>
 <body>
 <button onclick="startRoom();">게임 시작</button>
@@ -13,5 +13,5 @@
 <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-<script type="text/javascript" th:src="@{/js/room.js}"></script>
+<script type="text/javascript" src="/js/room.js"></script>
 </html>

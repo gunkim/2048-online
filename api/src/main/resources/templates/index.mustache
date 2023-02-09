@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>2048 Application</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <style>
+    html {
+      background: #ececec;
+    }
+
+    .level {
+      margin-top: 20px;
+      margin-bottom: 40px;
+    }
+  </style>
+</head>
+<body>
+<nav class="level">
+  <p class="level-item has-text-centered">
+    <a href="/"><img src="/img/logo.png" style="height: 60px;"></a>
+  </p>
+</nav>
+<div class="modal">
+  <div class="modal-background" onclick="closeRoomModal();"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">방 만들기</p>
+    </header>
+    <section class="modal-card-body">
+      <input id="create-title" class="input is-medium" type="text" name="name" placeholder="방 이름을 입력하세요">
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-success" onclick="createRoom();">완료</button>
+    </footer>
+  </div>
+</div>
+<div class="container">
+  <div>
+    <button class="button is-primary" onclick="openRoomModal();">방 만들기</button>
+
+    <button class="button is-link" onclick="location.href='/oauth2/authorization/google'">로그인</button>
+    <table class="table is-hoverable" style="width: 100%;">
+      <colgroup>
+        <col width="20%"/>
+        <col width="60%"/>
+        <col width="20%"/>
+      </colgroup>
+      <thead>
+      <tr>
+        <th><abbr title="Position">번호</abbr></th>
+        <th>제목</th>
+        <th><abbr title="Played">방장</abbr></th>
+      </tr>
+      </thead>
+      <tfoot>
+      <tr>
+        <th><abbr title="Position">번호</abbr></th>
+        <th>제목</th>
+        <th><abbr title="Played">방장</abbr></th>
+      </tr>
+      </tfoot>
+      <tbody id="rooms"/>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+<script>
+  const openRoomModal = () => {
+    const modal = document.querySelector('.modal');
+    modal.classList.add('is-active');
+  }
+  const closeRoomModal = () => {
+    const modal = document.querySelector('.modal');
+    modal.classList.remove('is-active');
+  }
+</script>
+</html>

@@ -31,6 +31,7 @@ open class WebSecurityConfig(
                 "/websocket/*/*",
                 "/js/**",
                 "/css/**",
+                "/img/**",
                 "/rooms",
             ).permitAll()
             .requestMatchers("/rooms/*/details", "/rooms/*").hasRole(Role.USER.name)
