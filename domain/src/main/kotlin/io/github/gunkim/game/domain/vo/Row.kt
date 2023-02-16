@@ -21,17 +21,20 @@ data class Row(
         require(content.size == SIZE) { "가로 폭은 ${SIZE}여야 합니다." }
     }
 
-    fun moveLeft() = Row(content
-        .removeZero()
-        .fold(emptyList(), ::move)
-        .let(::fill))
+    fun moveLeft() = Row(
+        content
+            .removeZero()
+            .fold(emptyList(), ::move)
+            .let(::fill)
+    )
 
-    fun moveRight() = Row(content
-        .reversed()
-        .removeZero()
-        .fold(emptyList(), ::move)
-        .let(::fill)
-        .reversed())
+    fun moveRight() = Row(
+        content.reversed()
+            .removeZero()
+            .fold(emptyList(), ::move)
+            .let(::fill)
+            .reversed()
+    )
 
     private fun fill(movedRow: List<Cell>): List<Cell> = if (movedRow.size < SIZE) {
         movedRow + List(SIZE - movedRow.size) { Cell.ZERO }
