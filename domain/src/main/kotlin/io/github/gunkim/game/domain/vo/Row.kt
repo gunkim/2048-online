@@ -4,6 +4,12 @@ private fun totalScore(cells: List<Cell>) = cells.sumOf(Cell::value)
 private fun isGameWin(cells: List<Cell>) = cells.any(Cell.Companion::isWin)
 
 private fun List<Cell>.removeZero() = filterNot { it == Cell.ZERO }
+private fun List<Cell>.addLevel1Cell(posX: Int): List<Cell> {
+    val content = this.toMutableList()
+    content[posX] = Cell.ONE
+
+    return content
+}
 
 data class Row(
     val content: List<Cell>,
@@ -58,11 +64,7 @@ data class Row(
         }
     }
 
-    fun init(x: Int): Row {
-        val row = content.toMutableList()
-        row[x] = Cell.ONE
-        return Row(row)
-    }
+    fun addOneCell(x: Int) = Row(content.addLevel1Cell(x))
 
     companion object {
         private val SIZE = 4

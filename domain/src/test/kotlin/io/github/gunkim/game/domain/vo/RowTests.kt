@@ -39,4 +39,11 @@ class RowTests : StringSpec({
 
         assertThat(movedRow).isEqualTo(Row(listOf(Cell.ZERO, Cell.ZERO, Cell.ZERO, Cell.ONE)))
     }
+    "특정 위치에 Level1 Cell을 추가한다" {
+        val row = Row.empty()
+
+        val addedRow = row.addOneCell(0)
+
+        assertThat(addedRow).isEqualTo(Row(listOf(Cell.ONE, Cell.ZERO, Cell.ZERO, Cell.ZERO)))
+    }
 })

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 
-
 @RestController
 class CreateRoomController(
     private val createUseCase: CreateUseCase,
