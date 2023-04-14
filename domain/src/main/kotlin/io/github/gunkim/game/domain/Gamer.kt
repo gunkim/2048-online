@@ -9,6 +9,9 @@ data class Gamer(
     val board: Board,
     val isHost: Boolean = false,
 ) {
+    val score: Int
+        get() = board.score
+
     fun start() = Gamer(id, user, Board.start(), isHost)
     fun move(moveType: MoveType) = Gamer(id, user, moveType(board), isHost)
 

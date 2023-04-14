@@ -18,6 +18,8 @@ enum class Cell(
     TWELVE(2048),
     ;
 
+    val score = 2 * value
+
     fun levelUp(): Cell = when (this) {
         ZERO -> ONE
         ONE -> TWO
