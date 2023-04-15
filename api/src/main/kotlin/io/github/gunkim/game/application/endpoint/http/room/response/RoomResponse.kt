@@ -1,4 +1,4 @@
-package io.github.gunkim.game.application.endpoint.socket.room.response
+package io.github.gunkim.game.application.endpoint.http.room.response
 
 import io.github.gunkim.game.domain.Room
 import java.util.UUID

@@ -34,7 +34,7 @@ open class WebSecurityConfig(
                 "/img/**",
                 "/rooms",
             ).permitAll()
-            .requestMatchers("/rooms/*/details", "/rooms/*").hasRole(Role.USER.name)
+            .requestMatchers("/rooms/*/details", "/rooms/*", "/waitroom/*", "/rooms/*/wait").hasRole(Role.USER.name)
             .anyRequest().denyAll().and()
             .oauth2Login().userInfoEndpoint().userService(oAuth2Service)
             .let { http.build() }

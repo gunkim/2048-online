@@ -1,8 +1,8 @@
 package io.github.gunkim.game.application.endpoint.http.room
 
 import io.github.gunkim.game.application.common.id
-import io.github.gunkim.game.application.endpoint.socket.room.request.CreateRoomRequest
-import io.github.gunkim.game.application.endpoint.socket.room.response.RoomResponse
+import io.github.gunkim.game.application.endpoint.http.room.request.CreateRoomRequest
+import io.github.gunkim.game.application.endpoint.http.room.response.RoomResponse
 import io.github.gunkim.game.application.usecase.room.CreateUseCase
 import io.github.gunkim.game.application.usecase.room.FindUseCase
 import org.springframework.http.ResponseEntity
@@ -29,6 +29,6 @@ class CreateRoomController(
 
         messagingTemplate.convertAndSend("/topic/rooms", response)
 
-        return ResponseEntity.created(URI.create("/rooms/$createdRoomId/details")).build()
+        return ResponseEntity.created(URI.create("/waitroom/$createdRoomId")).build()
     }
 }

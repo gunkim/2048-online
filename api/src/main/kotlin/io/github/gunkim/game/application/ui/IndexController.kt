@@ -11,4 +11,7 @@ class IndexController {
 
     @GetMapping("/rooms/{roomId}/details")
     fun room(user: OAuth2AuthenticationToken) = "room"
+
+    @GetMapping("/waitroom/{roomId}")
+    fun wait() = "waitroom"
 }
