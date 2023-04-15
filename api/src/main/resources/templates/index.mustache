@@ -1,83 +1,250 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>2048 Application</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <title>게임 방 목록</title>
   <style>
-    html {
-      background: #ececec;
+    body {
+      background-color: #FAF8EF;
+      font-family: Arial, sans-serif;
     }
 
-    .level {
-      margin-top: 20px;
-      margin-bottom: 40px;
+    .container {
+      margin: auto;
+      max-width: 800px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      font-size: 50px;
+      font-weight: bold;
+      color: #776E65;
+      text-transform: uppercase;
+      background-image: linear-gradient(to right, #EEE4DA, #EDC22E, #F3B74E, #F2A44C, #F17C5F, #F2573D, #F23C5E, #EFC528);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .create-room-btn {
+      background-color: #8F7A66;
+      border: none;
+      color: #FFF;
+      font-size: 20px;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .room-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      grid-gap: 20px;
+    }
+
+    .room-card {
+      background-color: #EEE4DA;
+      border: 5px solid #BBADA0;
+      border-radius: 5px;
+      padding: 20px;
+      position: relative; /* 추가 */
+      cursor: pointer;
+    }
+    .room-card:hover {
+      background-color: #BBADA0;
+    }
+
+    .room-members {
+      position: absolute; /* 추가 */
+      bottom: 0; /* 추가 */
+      left: 0; /* 추가 */
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+    }
+
+    .modal-content {
+      background-color: #EEE4DA;
+      margin: 10% auto;
+      padding: 20px;
+      border: 5px solid #BBADA0;
+      width: 50%;
+      border-radius: 5px;
+      box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    }
+
+    .close {
+      color: #BBADA0;
+      float: right;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.2s ease-in-out;
+    }
+
+    .close:hover {
+      color: #776E65;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #776E65;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      font-family: inherit;
+      border-radius: 5px;
+      border: 1px solid #BBADA0;
+      box-sizing: border-box;
+      margin-bottom: 15px;
+    }
+
+    button[type="submit"] {
+      background-color: #8F7A66;
+      color: #FFF;
+      font-size: 16px;
+      font-weight: bold;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #776E65;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #FFF;
+      background-color: #BBADA0;
+      border-radius: 15px;
+      margin-right: 10px;
+      position: absolute; /* 추가 */
+      top: -10px; /* 추가 */
+      left: -10px; /* 추가 */
     }
   </style>
 </head>
 <body>
-<nav class="level">
-  <p class="level-item has-text-centered">
-    <a href="/"><img src="/img/logo.png" style="height: 60px;"></a>
-  </p>
-</nav>
-<div class="modal">
-  <div class="modal-background" onclick="closeRoomModal();"></div>
-  <div class="modal-card">
-    <header class="modal-card-head">
-      <p class="modal-card-title">방 만들기</p>
-    </header>
-    <section class="modal-card-body">
-      <input id="create-title" class="input is-medium" type="text" name="name" placeholder="방 이름을 입력하세요">
-    </section>
-    <footer class="modal-card-foot">
-      <button class="button is-success" onclick="createRoom();">완료</button>
-    </footer>
-  </div>
-</div>
 <div class="container">
-  <div>
-    <button class="button is-primary" onclick="openRoomModal();">방 만들기</button>
+  <div class="header">
+    <div class="logo">2048</div>
+    <button class="create-room-btn">방 만들기</button>
+  </div>
 
-    <button class="button is-link" onclick="location.href='/oauth2/authorization/google'">로그인</button>
-    <table class="table is-hoverable" style="width: 100%;">
-      <colgroup>
-        <col width="20%"/>
-        <col width="60%"/>
-        <col width="20%"/>
-      </colgroup>
-      <thead>
-      <tr>
-        <th><abbr title="Position">번호</abbr></th>
-        <th>제목</th>
-        <th><abbr title="Played">방장</abbr></th>
-      </tr>
-      </thead>
-      <tfoot>
-      <tr>
-        <th><abbr title="Position">번호</abbr></th>
-        <th>제목</th>
-        <th><abbr title="Played">방장</abbr></th>
-      </tr>
-      </tfoot>
-      <tbody id="rooms"/>
-      </tbody>
-    </table>
+  <div class="room-list">
+    <div class="room-card">
+      <div class="room-name">방 이름</div>
+      <div class="room-info">
+        <div class="room-members">
+          <span class="badge">1/4</span>
+        </div>
+      </div>
+    </div>
+    <div class="room-card">
+      <div class="room-name">방 이름</div>
+      <div class="room-info">
+        <div class="room-members">
+          <span class="badge">1/4</span>
+        </div>
+      </div>
+    </div>
+    <div class="room-card">
+      <div class="room-name">방 이름</div>
+      <div class="room-info">
+        <div class="room-members">
+          <span class="badge">1/4</span>
+        </div>
+      </div>
+    </div>
+    <div class="room-card">
+      <div class="room-name">방 이름</div>
+      <div class="room-info">
+        <div class="room-members">
+          <span class="badge">1/4</span>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
-</body>
-<script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-<script type="text/javascript" src="/js/index.js"></script>
+
+<!-- 모달 -->
+<div class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>방 만들기</h2>
+    <form>
+      <label for="room-name">방 이름</label>
+      <input type="text" id="room-name" name="room-name">
+
+      <button type="submit">방 만들기</button>
+    </form>
+  </div>
+</div>
+
 <script>
-  const openRoomModal = () => {
-    const modal = document.querySelector('.modal');
-    modal.classList.add('is-active');
-  }
-  const closeRoomModal = () => {
-    const modal = document.querySelector('.modal');
-    modal.classList.remove('is-active');
-  }
+  const createRoomBtn = document.querySelector('.create-room-btn');
+  const modal = document.querySelector('.modal');
+  const closeBtn = document.querySelector('.close');
+  const form = document.querySelector('form');
+
+  // 방 만들기 버튼 클릭 시 모달 열기
+  createRoomBtn.addEventListener('click', () => {
+    modal.style.display = 'block';
+  });
+
+  // 모달 닫기 버튼 클릭 시 모달 닫기
+  closeBtn.addEventListener('click', () => {
+    modal.style.display = 'none';
+  });
+
+  // 모달 바깥을 클릭하면 모달 닫기
+  window.addEventListener('click', (event) => {
+    if (event.target == modal) {
+      modal.style.display = 'none';
+    }
+  });
+
+  // 방 만들기 폼 제출 시 처리
+  form.addEventListener('submit', (event) => {
+    event.preventDefault(); // 폼 제출 이벤트 취소
+
+    // 입력한 방 이름과 방장 이름 가져오기
+    const roomName = document.getElementById('room-name').value;
+    const ownerName = document.getElementById('owner-name').value;
+
+    // 방 생성 후 목록에 추가하는 코드 작성하기
+    // ...
+
+    // 모달 닫기
+    modal.style.display = 'none';
+  });
 </script>
+</body>
 </html>
