@@ -1,0 +1,157 @@
+body {
+  background-color: #FAF8EF;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  margin: auto;
+  max-width: 800px;
+  padding: 20px;
+  text-align: center;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  font-size: 50px;
+  font-weight: bold;
+  color: #776E65;
+  text-transform: uppercase;
+  background-image: linear-gradient(to right, #EEE4DA, #EDC22E, #F3B74E, #F2A44C, #F17C5F, #F2573D, #F23C5E, #EFC528);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.create-room-btn, .login-btn {
+  border: none;
+  color: #FFF;
+  font-size: 20px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.create-room-btn {
+  background-color: #8F7A66;
+}
+
+.login-btn {
+  background-color: #ef8e8e;
+}
+
+.room-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-gap: 20px;
+}
+
+.room-card {
+  background-color: #EEE4DA;
+  border: 5px solid #BBADA0;
+  border-radius: 5px;
+  padding: 20px;
+  position: relative; /* 추가 */
+  cursor: pointer;
+}
+
+.room-card:hover {
+  background-color: #BBADA0;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #EEE4DA;
+  margin: 10% auto;
+  padding: 20px;
+  border: 5px solid #BBADA0;
+  width: 50%;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.close {
+  color: #BBADA0;
+  float: right;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+
+.close:hover {
+  color: #776E65;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #776E65;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  font-family: inherit;
+  border-radius: 5px;
+  border: 1px solid #BBADA0;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+}
+
+button[type="button"] {
+  background-color: #8F7A66;
+  color: #FFF;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+button[type="submit"]:hover {
+  background-color: #776E65;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 8px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #FFF;
+  background-color: #BBADA0;
+  border-radius: 15px;
+  margin-right: 10px;
+  position: absolute; /* 추가 */
+  top: -10px; /* 추가 */
+  left: -10px; /* 추가 */
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+a:hover {
+  color: white;
+}

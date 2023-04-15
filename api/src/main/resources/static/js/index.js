@@ -1,28 +1,22 @@
 const createRooms = (rooms) => {
-  if (rooms.length === 0) {
-    return `
-    <tr>
-      <td colspan="3" style="text-align: center;">방이 없습니다.</td>
-    </tr>
-`;
-  }
   return rooms.map(room => {
     return `
-      <tr>
-        <td>${room.id}></td>
-        <td><a href="/rooms/${room.id}/details">${room.title}</a></td>
-        <td>${room.host}</td>
-      </tr>
+      <a href="/waitroom/${room.id}">
+        <div class="room-card">
+          <div class="room-name">${room.title}</div>
+          <span class="badge">1/4</span>
+        </div>
+      </a>
       `;
   });
 }
 
 const putHtml = (html) => {
-  document.getElementById('rooms').innerHTML = html;
+  document.getElementById('room-list').innerHTML = html;
 }
 
 const createRoom = async () => {
-  const title = document.getElementById('create-title').value;
+  const title = document.getElementById('room-name').value;
 
   const response = await axios.post("/rooms", {'title': title});
 
