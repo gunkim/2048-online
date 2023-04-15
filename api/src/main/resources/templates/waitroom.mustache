@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>게임 대기방 화면</title>
+  <link href="/css/waitroom.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="logo">2048</div>
+  </div>
+  <div class="lobby">
+    <div class="room-title" id="room-title"></div>
+    <ul class="player-list" id="player-list">
+    </ul>
+    <div class="chat">
+      <div class="chat-display">
+        <div class="chat-message">Player 1: 안녕하세요!</div>
+        <div class="chat-message">Player 2: 안녕하세요~</div>
+        <div class="chat-message">Player 3: 다들 준비되셨나요?</div>
+      </div>
+      <input placeholder="채팅을 입력하세요..."/>
+    </div>
+    <button class="start-button">시작하기</button>
+    <button class="leave-button">방 나가기</button>
+  </div>
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script type="text/javascript" src="/js/waitroom.js"></script>
+</html>

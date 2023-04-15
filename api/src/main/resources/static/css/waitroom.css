@@ -1,0 +1,144 @@
+body {
+  background-color: #FAF8EF;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  font-size: 50px;
+  font-weight: bold;
+  color: #776E65;
+  text-transform: uppercase;
+  background-image: linear-gradient(to right, #EEE4DA, #EDC22E, #F3B74E, #F2A44C, #F17C5F, #F2573D, #F23C5E, #EFC528);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.lobby {
+  border-radius: 5px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border: 5px solid #BBADA0;
+  background-color: #EEE4DA;
+}
+
+.player-list {
+  list-style: none;
+  padding: 0;
+}
+
+.player {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #9b9b9b;
+}
+
+.player:last-child {
+  border-bottom: none;
+}
+
+.player-info {
+  display: flex;
+  align-items: center;
+}
+
+.player-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+  background-color: #ccc;
+  background-size: cover;
+}
+
+.status {
+  font-size: 14px;
+  color: #888;
+}
+
+.ready {
+  color: #1e90ff;
+}
+
+.kick {
+  color: #ff4500;
+  cursor: pointer;
+}
+
+.chat {
+  margin-top: 20px;
+}
+
+.chat input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 3px solid #615c5c;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 14px;
+  margin-top: 10px;
+  background-color: #f2eeeb;
+}
+
+.start-button, .leave-button {
+  display: block;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  padding: 10px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.start-button {
+  background-color: #8F7A66;
+  color: #ffffff;
+}
+
+.leave-button {
+  background-color: #F2573D;
+  color: #ffffff;
+}
+
+.chat-display {
+  background-color: #f2eeeb;
+  border: 3px solid #615c5c;
+  border-radius: 5px;
+  height: 200px;
+  overflow-y: auto;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.chat-message {
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.chat-message:last-child {
+  margin-bottom: 0;
+}
+
+.room-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #776E65;
+  text-align: center;
+  margin-bottom: 20px;
+}
