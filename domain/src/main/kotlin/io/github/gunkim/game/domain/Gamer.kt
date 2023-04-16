@@ -19,6 +19,8 @@ data class Gamer(
 
     fun isSameUserId(userId: UUID) = user.isSameId(userId)
 
+    fun host() = Gamer(id, user, board, true)
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

@@ -3,7 +3,7 @@ const createRooms = (rooms) => {
     return `
       <div class="room-card" onclick="joinRoom('${room.id}');" style="cursor: pointer;">
         <div class="room-name">${room.title}</div>
-        <span class="badge">1/4</span>
+        <span class="badge">${room.currentPlayer}/${room.maxPlayer}</span>
       </div>
       `;
   });

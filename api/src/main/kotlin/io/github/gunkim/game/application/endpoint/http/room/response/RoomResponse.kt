@@ -6,13 +6,13 @@ import java.util.UUID
 data class RoomResponse(
     val id: UUID,
     val title: String,
-    val host: String,
-    val isStart: Boolean,
+    val maxPlayer: Int,
+    val currentPlayer: Int,
 ) {
     constructor(room: Room) : this(
         room.id,
         room.title,
-        room.hostName,
-        room.isStart,
+        4, //TODO 이 부분은 도메인으로 추출이 필요할 듯?
+        room.gamers.size
     )
 }

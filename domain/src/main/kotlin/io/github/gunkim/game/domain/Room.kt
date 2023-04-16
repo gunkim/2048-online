@@ -1,6 +1,7 @@
 package io.github.gunkim.game.domain
 
 import io.github.gunkim.game.domain.exception.JoinedPlayerException
+import io.github.gunkim.game.domain.exception.LeaveHostException
 import io.github.gunkim.game.domain.vo.MoveType
 import java.util.UUID
 
@@ -86,7 +87,19 @@ data class Room(
             throw IllegalArgumentException("게임에 참여하지 않은 플레이어 입니다.")
         }
 
-        val gamers = gamers.filter { !it.hasPlayer(user) }
+        if(gamers.size == 1) {
+            throw LeaveHostException()
+        }
+
+        val gamers = gamers
+            .filter { !it.hasPlayer(user) }
+            .mapIndexed { index, gamer ->
+                if (index == 0) {
+                    gamer.host()
+                } else {
+                    gamer
+                }
+            }
         return Room(id, title, gamers, isStart)
     }
 

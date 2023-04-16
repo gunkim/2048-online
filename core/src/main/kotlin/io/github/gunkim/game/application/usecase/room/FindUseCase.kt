@@ -6,4 +6,5 @@ import java.util.UUID
 interface FindUseCase {
     fun find(): List<Room>
     fun find(userId: UUID, roomId: UUID): Room
+    fun find(roomId: UUID): Room
 }

@@ -10,6 +10,7 @@ import io.github.gunkim.game.domain.Gamer
 import io.github.gunkim.game.domain.Room
 import io.github.gunkim.game.domain.Rooms
 import io.github.gunkim.game.domain.Users
+import io.github.gunkim.game.domain.exception.LeaveHostException
 import org.springframework.stereotype.Service
 import java.util.UUID
 
@@ -23,8 +24,14 @@ class RoomService(
     override fun find(userId: UUID, roomId: UUID) = rooms.find(roomId)
         .also { validate(it, userId, roomId) }
 
+    override fun find(roomId: UUID) = rooms.find(roomId)
+
     override fun join(roomId: UUID, userId: UUID) {
         val (user, room) = load(userId, roomId)
+
+        if (rooms.existByUserId(user.id)) {
+            throw IllegalArgumentException("이미 방에 참여중입니다.")
+        }
 
         rooms.save(room.join(user))
     }
@@ -35,10 +42,16 @@ class RoomService(
         rooms.save(room.start(user))
     }
 
-    override fun leave(roomId: UUID, userId: UUID) {
+    override fun leave(roomId: UUID, userId: UUID): Boolean {
         val (user, room) = load(userId, roomId)
 
-        rooms.save(room.leave(user))
+        return try {
+            rooms.save(room.leave(user))
+            true
+        } catch (e: LeaveHostException) {
+            rooms.delete(room)
+            false
+        }
     }
 
     override fun create(title: String, userId: UUID): Room {

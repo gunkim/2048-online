@@ -14,6 +14,14 @@ const createPlayer = (players) => {
   });
 }
 
+const leaveRoom = async () => {
+  const response = await axios.delete(`/rooms/${roomId}/leave`);
+
+  if(response.status === 200) {
+    window.location.href = '/';
+  }
+}
+
 const stompClient = (() => {
   const socket = new SockJS("/websocket");
   const stompClient = Stomp.over(socket);
