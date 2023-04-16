@@ -7,7 +7,7 @@ const createPlayer = (players) => {
                style="background-image: url(${player.profileImageUrl});"></div>
           <div>${player.host ? '&#9813;':''}${player.name}</div>
         </div>
-        ${player.host && player.ready ? '<div class="status ready">레디</div>' : '<div class="status">언레디</div>'}
+        ${player.ready ? '<div class="status ready">레디</div>' : '<div class="status">언레디</div>'}
         <div class="kick">강퇴</div>
       </li>
       `;
@@ -20,9 +20,10 @@ const stompClient = (() => {
 
   stompClient.connect({}, () => {
     stompClient.subscribe(`/topic/rooms/${roomId}/wait`, (response) => {
-      const rooms = JSON.parse(response.body);
+      const room = JSON.parse(response.body);
 
-      putHtml(createPlayer(rooms));
+      putHtml('player-list', createPlayer(room.players).join(''));
+      putHtml('room-title', room.title);
     });
   });
 
@@ -38,6 +39,6 @@ const putHtml = (id, html) => {
 (async () => {
   const response = await axios.get(`/rooms/${roomId}/wait`);
 
-  putHtml('player-list', createPlayer(response.data.players));
+  putHtml('player-list', createPlayer(response.data.players).join(''));
   putHtml('room-title', response.data.title);
 })();

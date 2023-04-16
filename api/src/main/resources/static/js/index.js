@@ -1,14 +1,21 @@
 const createRooms = (rooms) => {
   return rooms.map(room => {
     return `
-      <a href="/waitroom/${room.id}">
-        <div class="room-card">
-          <div class="room-name">${room.title}</div>
-          <span class="badge">1/4</span>
-        </div>
-      </a>
+      <div class="room-card" onclick="joinRoom('${room.id}');" style="cursor: pointer;">
+        <div class="room-name">${room.title}</div>
+        <span class="badge">1/4</span>
+      </div>
       `;
   });
+}
+
+const joinRoom = async (roomId) => {
+  const response = await axios.post(`/rooms/${roomId}/join`);
+  if(response.status !== 200) {
+    alert('방에 입장할 수 없습니다.');
+    return;
+  }
+  window.location.href = `/waitroom/${roomId}`;
 }
 
 const putHtml = (html) => {
