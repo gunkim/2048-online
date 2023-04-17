@@ -87,7 +87,7 @@ data class Room(
             throw IllegalArgumentException("게임에 참여하지 않은 플레이어 입니다.")
         }
 
-        if(gamers.size == 1) {
+        if (gamers.size == 1) {
             throw LeaveHostException()
         }
 
@@ -118,6 +118,18 @@ data class Room(
 
     override fun hashCode(): Int {
         return id.hashCode()
+    }
+
+    fun ready(user: User): Room {
+        if (isStart) {
+            throw IllegalStateException("이미 시작된 게임에는 준비할 수 없습니다.")
+        }
+
+        val gamers = gamers.map {
+            if (it.hasPlayer(user) || !it.isHost) it.ready()
+            else it
+        }
+        return Room(id, title, gamers, isStart)
     }
 
     companion object {

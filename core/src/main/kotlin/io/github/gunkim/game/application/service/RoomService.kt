@@ -4,6 +4,7 @@ import io.github.gunkim.game.application.usecase.room.CreateUseCase
 import io.github.gunkim.game.application.usecase.room.FindUseCase
 import io.github.gunkim.game.application.usecase.room.JoinUseCase
 import io.github.gunkim.game.application.usecase.room.LeaveUseCase
+import io.github.gunkim.game.application.usecase.room.ReadyUseCase
 import io.github.gunkim.game.application.usecase.room.StartUseCase
 import io.github.gunkim.game.domain.Board
 import io.github.gunkim.game.domain.Gamer
@@ -18,7 +19,7 @@ import java.util.UUID
 class RoomService(
     private val users: Users,
     private val rooms: Rooms,
-) : FindUseCase, JoinUseCase, LeaveUseCase, StartUseCase, CreateUseCase {
+) : FindUseCase, JoinUseCase, LeaveUseCase, StartUseCase, CreateUseCase, ReadyUseCase {
     override fun find() = rooms.find()
 
     override fun find(userId: UUID, roomId: UUID) = rooms.find(roomId)
@@ -65,6 +66,12 @@ class RoomService(
         val room = Room(title = title, gamers = listOf(hostGamer), isStart = false)
 
         return rooms.save(room)
+    }
+
+    override fun ready(userId: UUID, roomId: UUID) {
+        val (user, room) = load(userId, roomId)
+
+        rooms.save(room.ready(user))
     }
 
     private fun load(userId: UUID, roomId: UUID) = users.find(userId) to rooms.find(roomId)

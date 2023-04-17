@@ -8,6 +8,7 @@ data class Gamer(
     val user: User,
     val board: Board,
     val isHost: Boolean = false,
+    val isReady: Boolean = false,
 ) {
     val score: Int
         get() = board.score
@@ -20,6 +21,8 @@ data class Gamer(
     fun isSameUserId(userId: UUID) = user.isSameId(userId)
 
     fun host() = Gamer(id, user, board, true)
+
+    fun ready() = Gamer(id, user, board, isHost, !isReady)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

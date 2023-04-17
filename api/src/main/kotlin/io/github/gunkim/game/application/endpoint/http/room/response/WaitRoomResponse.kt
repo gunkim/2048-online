@@ -21,13 +21,13 @@ data class PlayerResponse(
     val name: String,
     val profileImageUrl: String?,
     val isReady: Boolean,
-    val isHost: Boolean
+    val isHost: Boolean,
 ) {
     constructor(gamer: Gamer) : this(
         gamer.user.id,
         gamer.user.name,
         gamer.user.profileImageUrl,
-        true,
+        gamer.isReady,
         gamer.isHost,
     )
 }

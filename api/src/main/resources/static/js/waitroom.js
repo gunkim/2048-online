@@ -7,7 +7,7 @@ const createPlayer = (players) => {
                style="background-image: url(${player.profileImageUrl});"></div>
           <div>${player.host ? '&#9813;':''}${player.name}</div>
         </div>
-        ${player.ready ? '<div class="status ready">레디</div>' : '<div class="status">언레디</div>'}
+        ${player.ready ? '<div class="status ready">레디</div>' : ''}
         <div class="kick">강퇴</div>
       </li>
       `;
@@ -20,6 +20,10 @@ const leaveRoom = async () => {
   if(response.status === 200) {
     window.location.href = '/';
   }
+}
+
+const ready = async () => {
+  await axios.put(`/rooms/${roomId}/ready`);
 }
 
 const stompClient = (() => {
