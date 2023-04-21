@@ -6,8 +6,3 @@ pluginManagement {
         kotlin("jvm") version kotlinVersion
     }
 }
-
-include("domain")
-include("core")
-include("infra")
-include("api")
