@@ -1,9 +1,9 @@
-package io.github.gunkim.game.application.endpoint.socket.room
+package io.github.gunkim.application.endpoint.socket.room
 
-import io.github.gunkim.game.application.common.id
-import io.github.gunkim.game.application.usecase.room.FindUseCase
-import io.github.gunkim.game.application.usecase.room.StartUseCase
-import io.github.gunkim.game.domain.Room
+import io.github.gunkim.application.common.id
+import io.github.gunkim.application.usecase.room.FindUseCase
+import io.github.gunkim.application.usecase.room.StartUseCase
+import io.github.gunkim.domain.Room
 import org.springframework.messaging.handler.annotation.DestinationVariable
 import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.handler.annotation.SendTo

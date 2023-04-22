@@ -1,8 +1,8 @@
-package io.github.gunkim.game.data
+package io.github.gunkim.data
 
-import io.github.gunkim.game.domain.Gamer
-import io.github.gunkim.game.domain.Gamers
-import io.github.gunkim.game.domain.Rooms
+import io.github.gunkim.domain.Gamer
+import io.github.gunkim.domain.Gamers
+import io.github.gunkim.domain.Rooms
 import org.springframework.stereotype.Repository
 import java.util.UUID
 

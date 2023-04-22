@@ -1,4 +1,4 @@
-package io.github.gunkim.game.domain.exception
+package io.github.gunkim.domain.exception
 
 abstract class CommonException(
     open val errorCode: ErrorCode,

@@ -1,8 +1,5 @@
 package io.github.gunkim.domain.vo
 
-import io.github.gunkim.game.domain.vo.Cell
-import io.github.gunkim.game.domain.vo.Row
-import io.github.gunkim.game.domain.vo.Rows
 import io.kotest.core.spec.DisplayName
 import io.kotest.core.spec.style.StringSpec
 import org.assertj.core.api.Assertions.assertThat

@@ -1,4 +1,4 @@
-package io.github.gunkim.game.application.usecase.room
+package io.github.gunkim.application.usecase.room
 
 import java.util.UUID
 

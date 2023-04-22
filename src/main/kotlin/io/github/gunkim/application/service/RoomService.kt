@@ -1,17 +1,17 @@
-package io.github.gunkim.game.application.service
+package io.github.gunkim.application.service
 
-import io.github.gunkim.game.application.usecase.room.CreateUseCase
-import io.github.gunkim.game.application.usecase.room.FindUseCase
-import io.github.gunkim.game.application.usecase.room.JoinUseCase
-import io.github.gunkim.game.application.usecase.room.LeaveUseCase
-import io.github.gunkim.game.application.usecase.room.ReadyUseCase
-import io.github.gunkim.game.application.usecase.room.StartUseCase
-import io.github.gunkim.game.domain.Board
-import io.github.gunkim.game.domain.Gamer
-import io.github.gunkim.game.domain.Room
-import io.github.gunkim.game.domain.Rooms
-import io.github.gunkim.game.domain.Users
-import io.github.gunkim.game.domain.exception.LeaveHostException
+import io.github.gunkim.application.usecase.room.CreateUseCase
+import io.github.gunkim.application.usecase.room.FindUseCase
+import io.github.gunkim.application.usecase.room.JoinUseCase
+import io.github.gunkim.application.usecase.room.LeaveUseCase
+import io.github.gunkim.application.usecase.room.ReadyUseCase
+import io.github.gunkim.application.usecase.room.StartUseCase
+import io.github.gunkim.domain.Board
+import io.github.gunkim.domain.Gamer
+import io.github.gunkim.domain.Room
+import io.github.gunkim.domain.Rooms
+import io.github.gunkim.domain.Users
+import io.github.gunkim.domain.exception.LeaveHostException
 import org.springframework.stereotype.Service
 import java.util.UUID
 

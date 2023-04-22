@@ -1,3 +1,3 @@
-package io.github.gunkim.game.domain.exception
+package io.github.gunkim.domain.exception
 
 class LeaveHostException: Exception()

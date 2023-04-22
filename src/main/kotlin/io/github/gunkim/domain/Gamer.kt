@@ -1,6 +1,6 @@
-package io.github.gunkim.game.domain
+package io.github.gunkim.domain
 
-import io.github.gunkim.game.domain.vo.MoveType
+import io.github.gunkim.domain.vo.MoveType
 import java.util.UUID
 
 data class Gamer(

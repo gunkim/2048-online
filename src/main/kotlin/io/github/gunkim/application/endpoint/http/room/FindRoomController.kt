@@ -1,10 +1,10 @@
-package io.github.gunkim.game.application.endpoint.http.room
+package io.github.gunkim.application.endpoint.http.room
 
-import io.github.gunkim.game.application.common.id
-import io.github.gunkim.game.application.endpoint.http.room.response.RoomResponse
-import io.github.gunkim.game.application.endpoint.http.room.response.WaitRoomResponse
-import io.github.gunkim.game.application.usecase.room.FindUseCase
-import io.github.gunkim.game.domain.Room
+import io.github.gunkim.application.common.id
+import io.github.gunkim.application.endpoint.http.room.response.RoomResponse
+import io.github.gunkim.application.endpoint.http.room.response.WaitRoomResponse
+import io.github.gunkim.application.usecase.room.FindUseCase
+import io.github.gunkim.domain.Room
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable

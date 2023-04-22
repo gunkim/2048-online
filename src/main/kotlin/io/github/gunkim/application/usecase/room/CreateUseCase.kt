@@ -1,6 +1,6 @@
-package io.github.gunkim.game.application.usecase.room
+package io.github.gunkim.application.usecase.room
 
-import io.github.gunkim.game.domain.Room
+import io.github.gunkim.domain.Room
 import java.util.UUID
 
 interface CreateUseCase {

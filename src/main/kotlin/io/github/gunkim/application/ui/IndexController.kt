@@ -1,4 +1,4 @@
-package io.github.gunkim.game.application.ui
+package io.github.gunkim.application.ui
 
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken
 import org.springframework.stereotype.Controller

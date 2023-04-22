@@ -1,5 +1,5 @@
-package io.github.gunkim.game.application.endpoint.socket.room.request
+package io.github.gunkim.application.endpoint.socket.room.request
 
-import io.github.gunkim.game.domain.vo.MoveType
+import io.github.gunkim.domain.vo.MoveType
 
 data class MoveBoardRequest(val direction: MoveType = MoveType.UNKNOWN)

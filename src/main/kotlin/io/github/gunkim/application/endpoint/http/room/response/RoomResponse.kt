@@ -1,6 +1,6 @@
-package io.github.gunkim.game.application.endpoint.http.room.response
+package io.github.gunkim.application.endpoint.http.room.response
 
-import io.github.gunkim.game.domain.Room
+import io.github.gunkim.domain.Room
 import java.util.UUID
 
 data class RoomResponse(

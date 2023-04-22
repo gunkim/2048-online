@@ -1,6 +1,6 @@
-package io.github.gunkim.game.application.usecase.board
+package io.github.gunkim.application.usecase.board
 
-import io.github.gunkim.game.domain.vo.MoveType
+import io.github.gunkim.domain.vo.MoveType
 import java.util.UUID
 
 interface MoveUseCase {

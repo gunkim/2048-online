@@ -1,9 +1,9 @@
-package io.github.gunkim.game.application.endpoint.http.room
+package io.github.gunkim.application.endpoint.http.room
 
-import io.github.gunkim.game.application.common.id
-import io.github.gunkim.game.application.endpoint.http.room.response.WaitRoomResponse
-import io.github.gunkim.game.application.usecase.room.FindUseCase
-import io.github.gunkim.game.application.usecase.room.JoinUseCase
+import io.github.gunkim.application.common.id
+import io.github.gunkim.application.endpoint.http.room.response.WaitRoomResponse
+import io.github.gunkim.application.usecase.room.FindUseCase
+import io.github.gunkim.application.usecase.room.JoinUseCase
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken
 import org.springframework.web.bind.annotation.PathVariable

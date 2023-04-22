@@ -1,10 +1,10 @@
-package io.github.gunkim.game.application.service
+package io.github.gunkim.application.service
 
-import io.github.gunkim.game.application.usecase.board.MoveUseCase
-import io.github.gunkim.game.domain.Gamers
-import io.github.gunkim.game.domain.Rooms
-import io.github.gunkim.game.domain.Users
-import io.github.gunkim.game.domain.vo.MoveType
+import io.github.gunkim.application.usecase.board.MoveUseCase
+import io.github.gunkim.domain.Gamers
+import io.github.gunkim.domain.Rooms
+import io.github.gunkim.domain.Users
+import io.github.gunkim.domain.vo.MoveType
 import org.springframework.stereotype.Service
 import java.util.UUID
 

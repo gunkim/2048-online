@@ -1,5 +1,6 @@
-package io.github.gunkim.game.domain
+package io.github.gunkim.domain
 
+import io.github.gunkim.domain.Room
 import java.util.UUID
 
 interface Rooms {

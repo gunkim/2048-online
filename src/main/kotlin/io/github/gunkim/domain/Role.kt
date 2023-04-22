@@ -1,4 +1,4 @@
-package io.github.gunkim.game.domain
+package io.github.gunkim.domain
 
 enum class Role {
     USER,
