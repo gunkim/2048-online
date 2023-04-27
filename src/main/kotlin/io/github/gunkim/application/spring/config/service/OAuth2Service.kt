@@ -12,38 +12,39 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User
 import org.springframework.security.oauth2.core.user.OAuth2User
 import org.springframework.stereotype.Service
 
+val OAuth2UserRequest.userNameAttributeName: String
+    get() = clientRegistration.providerDetails.userInfoEndpoint.userNameAttributeName
+
 @Service
 class OAuth2Service(
     private val users: Users,
+    private val delegate: DefaultOAuth2UserService
 ) : OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     override fun loadUser(userRequest: OAuth2UserRequest): OAuth2User {
-        val delegate = DefaultOAuth2UserService()
+        val (oAuth2User, userNameAttributeName) = loadOAuth2UserInfo(delegate, userRequest)
+        val attributes = OAuthAttributes(userNameAttributeName, oAuth2User)
 
-        val (oAuth2User, userNameAttributeName) = initData(delegate, userRequest)
-        val attributes = OAuthAttributes.ofGoogle(userNameAttributeName, oAuth2User)
-        val user = getUser(attributes)
-
-        return DefaultOAuth2User(
-            listOf(SimpleGrantedAuthority("ROLE_${user.role.name}")),
-            attributes.attributes + mapOf("id" to user.id),
-            attributes.nameAttributeKey,
-        )
+        return getUser(attributes).run {
+            DefaultOAuth2User(
+                listOf(SimpleGrantedAuthority("ROLE_$role.name")),
+                attributes.attributes + mapOf("id" to id),
+                attributes.nameAttributeKey,
+            )
+        }
     }
 
-    private fun getUser(attributes: OAuthAttributes): User {
-        val user = users.findByEmail(attributes.email)
+    private fun getUser(attributes: OAuthAttributes) = users.save(
+        users.findByEmail(attributes.email)
             ?.apply { update(attributes.name, attributes.picture) }
-            ?: attributes.toUser()
-        return users.save(user)
-    }
+            ?: attributes.toUser(),
+    )
 
-    private fun initData(
+    private fun loadOAuth2UserInfo(
         delegate: DefaultOAuth2UserService,
         userRequest: OAuth2UserRequest,
     ): Pair<Map<String, Any>, String> {
         val oAuth2User = delegate.loadUser(userRequest)
-        val userNameAttributeName =
-            userRequest.clientRegistration.providerDetails.userInfoEndpoint.userNameAttributeName
+        val userNameAttributeName = userRequest.userNameAttributeName
 
         return oAuth2User.attributes to userNameAttributeName
     }
@@ -56,28 +57,22 @@ class OAuthAttributes(
     val email: String,
     val picture: String,
 ) {
-    fun toUser(): User {
-        return User(
-            name = name,
-            email = email,
-            profileImageUrl = picture,
-            role = Role.USER,
-            social = Social.GOOGLE,
-        )
-    }
+    constructor(
+        userNameAttributeName: String,
+        attributes: Map<String, Any>,
+    ) : this(
+        attributes,
+        userNameAttributeName,
+        attributes["name"] as String,
+        attributes["email"] as String,
+        attributes["picture"] as String,
+    )
 
-    companion object {
-        fun ofGoogle(
-            userNameAttributeName: String,
-            attributes: Map<String, Any>,
-        ): OAuthAttributes {
-            return OAuthAttributes(
-                attributes,
-                userNameAttributeName,
-                attributes["name"] as String,
-                attributes["email"] as String,
-                attributes["picture"] as String,
-            )
-        }
-    }
+    fun toUser() = User(
+        name = name,
+        email = email,
+        profileImageUrl = picture,
+        role = Role.USER,
+        social = Social.GOOGLE,
+    )
 }

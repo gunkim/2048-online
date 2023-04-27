@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.security.ConditionalOnDefaultWebSe
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService
 import org.springframework.security.web.SecurityFilterChain
 
 @Configuration
@@ -34,9 +35,20 @@ class WebSecurityConfig(
                 "/img/**",
                 "/rooms",
             ).permitAll()
-            .requestMatchers("/rooms/*/details", "/rooms/*", "/waitroom/*", "/rooms/*/wait", "/rooms/*/join", "/rooms/*/leave", "/rooms/*/ready").hasRole(
-                Role.USER.name)
+            .requestMatchers(
+                "/rooms/*/details",
+                "/rooms/*",
+                "/waitroom/*",
+                "/rooms/*/wait",
+                "/rooms/*/join",
+                "/rooms/*/leave",
+                "/rooms/*/ready"
+            )
+            .hasRole(Role.USER.name)
             .anyRequest().denyAll().and()
             .oauth2Login().userInfoEndpoint().userService(oAuth2Service)
             .let { http.build() }
+
+    @Bean
+    fun oauth2UserService() = DefaultOAuth2UserService()
 }
