@@ -1,7 +1,7 @@
 package io.github.gunkim.data
 
-import io.github.gunkim.domain.User
-import io.github.gunkim.domain.Users
+import io.github.gunkim.domain.user.User
+import io.github.gunkim.domain.user.Users
 import org.springframework.stereotype.Repository
 import java.util.UUID
 

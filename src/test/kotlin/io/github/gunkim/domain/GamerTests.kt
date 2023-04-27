@@ -1,5 +1,8 @@
 package io.github.gunkim.domain
 
+import io.github.gunkim.domain.game.Board
+import io.github.gunkim.domain.game.Gamer
+import io.github.gunkim.domain.user.User
 import io.kotest.core.spec.DisplayName
 import io.kotest.core.spec.style.StringSpec
 import org.junit.jupiter.api.Assertions.assertFalse

@@ -1,4 +1,4 @@
-package io.github.gunkim.domain.vo
+package io.github.gunkim.domain.game
 
 enum class Cell(
     val value: Int,

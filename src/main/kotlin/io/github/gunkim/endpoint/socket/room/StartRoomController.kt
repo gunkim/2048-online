@@ -2,7 +2,7 @@ package io.github.gunkim.endpoint.socket.room
 
 import io.github.gunkim.application.FindRoom
 import io.github.gunkim.application.StartRoom
-import io.github.gunkim.domain.Room
+import io.github.gunkim.domain.room.Room
 import io.github.gunkim.endpoint.common.id
 import org.springframework.messaging.handler.annotation.DestinationVariable
 import org.springframework.messaging.handler.annotation.MessageMapping

@@ -1,6 +1,4 @@
-package io.github.gunkim.domain.vo
-
-import io.github.gunkim.domain.Board
+package io.github.gunkim.domain.game
 
 enum class MoveType(
     val move: (Board) -> Board,

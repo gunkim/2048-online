@@ -1,6 +1,6 @@
 package io.github.gunkim.application
 
-import io.github.gunkim.domain.vo.MoveType
+import io.github.gunkim.domain.game.MoveType
 import java.util.UUID
 
 interface MoveBoard {

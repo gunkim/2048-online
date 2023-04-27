@@ -1,6 +1,10 @@
 package io.github.gunkim.domain
 
-import io.github.gunkim.domain.vo.MoveType
+import io.github.gunkim.domain.game.Board
+import io.github.gunkim.domain.game.Gamer
+import io.github.gunkim.domain.game.MoveType
+import io.github.gunkim.domain.room.Room
+import io.github.gunkim.domain.user.User
 import io.kotest.core.spec.DisplayName
 import io.kotest.core.spec.style.StringSpec
 import org.assertj.core.api.Assertions.assertThat

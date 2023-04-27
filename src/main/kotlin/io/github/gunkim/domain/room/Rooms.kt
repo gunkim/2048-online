@@ -1,6 +1,6 @@
-package io.github.gunkim.domain
+package io.github.gunkim.domain.room
 
-import java.util.UUID
+import java.util.*
 
 interface Rooms {
     fun find(): List<Room>

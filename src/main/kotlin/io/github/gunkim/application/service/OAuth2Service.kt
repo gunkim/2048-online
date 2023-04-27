@@ -1,9 +1,9 @@
 package io.github.gunkim.application.service
 
-import io.github.gunkim.domain.Role
-import io.github.gunkim.domain.User
-import io.github.gunkim.domain.Users
-import io.github.gunkim.domain.vo.Social
+import io.github.gunkim.domain.user.Role
+import io.github.gunkim.domain.user.Social
+import io.github.gunkim.domain.user.User
+import io.github.gunkim.domain.user.Users
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest

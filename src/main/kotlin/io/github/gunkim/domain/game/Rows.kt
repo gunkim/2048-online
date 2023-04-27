@@ -1,4 +1,4 @@
-package io.github.gunkim.domain.vo
+package io.github.gunkim.domain.game
 
 private fun totalScore(rows: List<Row>) = rows.sumOf { it.score }
 private fun isGameWin(rows: List<Row>) = rows.any { it.isGameWin }

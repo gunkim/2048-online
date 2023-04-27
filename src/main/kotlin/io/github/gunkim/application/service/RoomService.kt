@@ -6,12 +6,12 @@ import io.github.gunkim.application.JoinRoom
 import io.github.gunkim.application.LeaveRoom
 import io.github.gunkim.application.ReadyRoom
 import io.github.gunkim.application.StartRoom
-import io.github.gunkim.domain.Board
-import io.github.gunkim.domain.Gamer
-import io.github.gunkim.domain.Room
-import io.github.gunkim.domain.Rooms
-import io.github.gunkim.domain.Users
 import io.github.gunkim.domain.exception.LeaveHostException
+import io.github.gunkim.domain.game.Board
+import io.github.gunkim.domain.game.Gamer
+import io.github.gunkim.domain.room.Room
+import io.github.gunkim.domain.room.Rooms
+import io.github.gunkim.domain.user.Users
 import org.springframework.stereotype.Service
 import java.util.UUID
 

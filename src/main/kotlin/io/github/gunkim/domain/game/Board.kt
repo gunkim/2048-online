@@ -1,7 +1,5 @@
-package io.github.gunkim.domain
+package io.github.gunkim.domain.game
 
-import io.github.gunkim.domain.vo.MoveType
-import io.github.gunkim.domain.vo.Rows
 import java.util.UUID
 
 data class Board(

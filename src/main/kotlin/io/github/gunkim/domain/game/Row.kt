@@ -1,4 +1,4 @@
-package io.github.gunkim.domain.vo
+package io.github.gunkim.domain.game
 
 private fun totalScore(cells: List<Cell>) = cells.sumOf(Cell::score)
 private fun isGameWin(cells: List<Cell>) = cells.any(Cell.Companion::isWin)

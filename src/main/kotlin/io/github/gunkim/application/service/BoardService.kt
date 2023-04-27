@@ -1,10 +1,10 @@
 package io.github.gunkim.application.service
 
 import io.github.gunkim.application.MoveBoard
-import io.github.gunkim.domain.Gamers
-import io.github.gunkim.domain.Rooms
-import io.github.gunkim.domain.Users
-import io.github.gunkim.domain.vo.MoveType
+import io.github.gunkim.domain.game.Gamers
+import io.github.gunkim.domain.game.MoveType
+import io.github.gunkim.domain.room.Rooms
+import io.github.gunkim.domain.user.Users
 import org.springframework.stereotype.Service
 import java.util.UUID
 

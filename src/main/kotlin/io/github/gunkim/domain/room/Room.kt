@@ -1,9 +1,12 @@
-package io.github.gunkim.domain
+package io.github.gunkim.domain.room
 
 import io.github.gunkim.domain.exception.JoinedPlayerException
 import io.github.gunkim.domain.exception.LeaveHostException
-import io.github.gunkim.domain.vo.MoveType
-import java.util.UUID
+import io.github.gunkim.domain.game.Board
+import io.github.gunkim.domain.game.Gamer
+import io.github.gunkim.domain.game.MoveType
+import io.github.gunkim.domain.user.User
+import java.util.*
 
 private fun List<Gamer>.move(user: User, moveType: MoveType) = this.map {
     if (it.hasPlayer(user)) {

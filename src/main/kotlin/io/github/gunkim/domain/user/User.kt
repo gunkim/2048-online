@@ -1,6 +1,5 @@
-package io.github.gunkim.domain
+package io.github.gunkim.domain.user
 
-import io.github.gunkim.domain.vo.Social
 import java.util.UUID
 
 data class User(

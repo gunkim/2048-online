@@ -1,4 +1,4 @@
-package io.github.gunkim.domain
+package io.github.gunkim.domain.game
 
 import java.util.UUID
 

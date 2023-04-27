@@ -1,7 +1,7 @@
 package io.github.gunkim.config
 
 import io.github.gunkim.application.service.OAuth2Service
-import io.github.gunkim.domain.Role
+import io.github.gunkim.domain.user.Role
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication
 import org.springframework.boot.autoconfigure.security.ConditionalOnDefaultWebSecurity
 import org.springframework.context.annotation.Bean

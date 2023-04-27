@@ -1,5 +1,6 @@
 package io.github.gunkim.domain
 
+import io.github.gunkim.domain.user.User
 import io.kotest.core.spec.DisplayName
 import io.kotest.core.spec.style.StringSpec
 import org.assertj.core.api.Assertions.assertThat
