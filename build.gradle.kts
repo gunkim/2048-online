@@ -1,6 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val applicationVersion: String by project
 val kotlinVersion: String by project
 val jdkVersion: String by project
 val junitVersion: String by project
@@ -10,21 +9,24 @@ plugins {
     java
     kotlin("jvm")
     id("org.jlleitschuh.gradle.ktlint-idea") version "11.0.0"
+    id("org.springframework.boot") version "3.0.1"
+    id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    id("org.jetbrains.kotlin.plugin.spring") version "1.5.21"
 }
 
 group = "io.github.gunkim"
-version = applicationVersion
+version = "1.0.0"
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-websocket:3.0.1")
-    implementation("org.springframework.boot:spring-boot-starter-security:3.0.1")
-    implementation("org.springframework.boot:spring-boot-starter-mustache:3.0.1")
-    testImplementation("org.springframework.boot:spring-boot-starter-test:3.0.1")
-    implementation("org.springframework.boot:spring-boot-starter-oauth2-client:3.0.1")
+    implementation("org.springframework.boot:spring-boot-starter-websocket")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-mustache")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
     implementation("io.jsonwebtoken:jjwt:0.9.1")
     implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
