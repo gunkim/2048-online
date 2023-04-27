@@ -1,3 +1,3 @@
 package io.github.gunkim.domain.exception
 
-class LeaveHostException: Exception()
+class LeaveHostException : Exception()

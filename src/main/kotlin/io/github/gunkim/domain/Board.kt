@@ -55,7 +55,7 @@ data class Board(
             rows = Rows
                 .empty()
                 .addLevel1CellWithRandomPosition()
-                .addLevel1CellWithRandomPosition()
+                .addLevel1CellWithRandomPosition(),
         )
     }
 }

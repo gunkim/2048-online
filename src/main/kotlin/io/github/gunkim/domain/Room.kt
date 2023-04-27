@@ -126,8 +126,11 @@ data class Room(
         }
 
         val gamers = gamers.map {
-            if (it.hasPlayer(user) || !it.isHost) it.ready()
-            else it
+            if (it.hasPlayer(user) || !it.isHost) {
+                it.ready()
+            } else {
+                it
+            }
         }
         return Room(id, title, gamers, isStart)
     }

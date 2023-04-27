@@ -31,7 +31,7 @@ data class Row(
         content
             .removeZero()
             .fold(emptyList(), ::move)
-            .let(::fill)
+            .let(::fill),
     )
 
     fun moveRight() = Row(
@@ -39,7 +39,7 @@ data class Row(
             .removeZero()
             .fold(emptyList(), ::move)
             .let(::fill)
-            .reversed()
+            .reversed(),
     )
 
     private fun fill(movedRow: List<Cell>): List<Cell> = if (movedRow.size < SIZE) {

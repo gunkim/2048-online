@@ -1,6 +1,5 @@
 package io.github.gunkim.domain
 
-import io.github.gunkim.domain.Gamer
 import java.util.UUID
 
 interface Gamers {
