@@ -25,9 +25,9 @@ data class Board(
     private fun move(rows: Rows): Board {
         val isMoved = this.rows != rows
         return if (isMoved) {
-            Board(id, rows.addLevel1CellWithRandomPosition())
+            copy(rows = rows.addLevel1CellWithRandomPosition())
         } else {
-            Board(id, rows)
+            copy(rows = rows)
         }
     }
 

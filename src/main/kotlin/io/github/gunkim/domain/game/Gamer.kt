@@ -1,7 +1,7 @@
 package io.github.gunkim.domain.game
 
 import io.github.gunkim.domain.user.User
-import java.util.UUID
+import java.util.*
 
 data class Gamer(
     val id: UUID = UUID.randomUUID(),
@@ -13,16 +13,16 @@ data class Gamer(
     val score: Int
         get() = board.score
 
-    fun start() = Gamer(id, user, Board.start(), isHost)
-    fun move(moveType: MoveType) = Gamer(id, user, moveType(board), isHost)
+    fun start() = copy(board = Board.start())
+    fun move(moveType: MoveType) = copy(board = moveType(board))
 
     fun hasPlayer(user: User) = this.user == user
 
     fun isSameUserId(userId: UUID) = user.isSameId(userId)
 
-    fun host() = Gamer(id, user, board, true)
+    fun host() = copy(isHost = true)
 
-    fun ready() = Gamer(id, user, board, isHost, !isReady)
+    fun ready() = copy(isReady = !isReady)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
