@@ -12,11 +12,11 @@ import org.springframework.security.web.SecurityFilterChain
 @Configuration
 @ConditionalOnDefaultWebSecurity
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-open class WebSecurityConfig(
+class WebSecurityConfig(
     private val oAuth2Service: OAuth2Service,
 ) {
     @Bean
-    open fun filterChain(http: HttpSecurity): SecurityFilterChain =
+    fun filterChain(http: HttpSecurity): SecurityFilterChain =
         http.csrf().disable()
             .cors().disable()
             .httpBasic().disable()
