@@ -1,7 +1,7 @@
 package io.github.gunkim.endpoint.socket.room
 
-import io.github.gunkim.application.FindRoom
-import io.github.gunkim.application.MoveBoard
+import io.github.gunkim.application.board.MoveBoard
+import io.github.gunkim.application.room.FindRoom
 import io.github.gunkim.endpoint.common.id
 import io.github.gunkim.endpoint.socket.room.request.MoveBoardRequest
 import org.springframework.messaging.handler.annotation.DestinationVariable

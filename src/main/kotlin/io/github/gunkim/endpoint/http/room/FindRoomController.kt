@@ -1,6 +1,6 @@
 package io.github.gunkim.endpoint.http.room
 
-import io.github.gunkim.application.FindRoom
+import io.github.gunkim.application.room.FindRoom
 import io.github.gunkim.domain.room.Room
 import io.github.gunkim.endpoint.common.id
 import io.github.gunkim.endpoint.http.room.response.RoomResponse

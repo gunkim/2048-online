@@ -1,11 +1,5 @@
-package io.github.gunkim.application.service
+package io.github.gunkim.application.room
 
-import io.github.gunkim.application.CreateRoom
-import io.github.gunkim.application.FindRoom
-import io.github.gunkim.application.JoinRoom
-import io.github.gunkim.application.LeaveRoom
-import io.github.gunkim.application.ReadyRoom
-import io.github.gunkim.application.StartRoom
 import io.github.gunkim.domain.exception.LeaveHostException
 import io.github.gunkim.domain.game.Board
 import io.github.gunkim.domain.game.Gamer
