@@ -50,6 +50,14 @@ data class Room(
             throw IllegalArgumentException("시작은 방장만 할 수 있습니다.")
         }
 
+        if (gamers.size < 2) {
+            throw IllegalArgumentException("게임에 참여할 수 있는 인원은 최소 2명 이상입니다.")
+        }
+
+        if (gamers.all(Gamer::isReady)) {
+            throw IllegalArgumentException("게임에 참여한 모든 플레이어가 준비되어야 합니다.")
+        }
+
         return Room(id, title, gamers.map(Gamer::start), true)
     }
 
