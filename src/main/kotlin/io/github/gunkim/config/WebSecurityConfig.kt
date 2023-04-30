@@ -7,21 +7,19 @@ import org.springframework.boot.autoconfigure.security.ConditionalOnDefaultWebSe
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService
 import org.springframework.security.web.SecurityFilterChain
+
 
 @Configuration
 @ConditionalOnDefaultWebSecurity
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-class WebSecurityConfig(
-    private val oAuth2Service: OAuth2Service,
-) {
+class WebSecurityConfig {
     @Bean
-    fun filterChain(http: HttpSecurity): SecurityFilterChain =
+    fun filterChain(http: HttpSecurity, oAuth2Service: OAuth2Service): SecurityFilterChain {
         http.csrf().disable()
             .cors().disable()
-            .httpBasic().disable()
-            .authorizeHttpRequests()
+
+        http.authorizeHttpRequests()
             .requestMatchers(
                 "/websocket",
                 "/",
@@ -43,12 +41,16 @@ class WebSecurityConfig(
                 "/rooms/*/join",
                 "/rooms/*/leave",
                 "/rooms/*/ready",
+                "/rooms/*/game",
+                "/rooms/*/games"
             )
             .hasRole(Role.USER.name)
-            .anyRequest().denyAll().and()
-            .oauth2Login().userInfoEndpoint().userService(oAuth2Service)
-            .let { http.build() }
+            .anyRequest().authenticated()
 
-    @Bean
-    fun oauth2UserService() = DefaultOAuth2UserService()
+        http.oauth2Login()
+            .userInfoEndpoint()
+            .userService(oAuth2Service)
+
+        return http.build()
+    }
 }

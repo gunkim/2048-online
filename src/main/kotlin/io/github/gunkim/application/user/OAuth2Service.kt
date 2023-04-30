@@ -26,7 +26,7 @@ class OAuth2Service(
 
         return getUser(attributes).run {
             DefaultOAuth2User(
-                listOf(SimpleGrantedAuthority("ROLE_$role.name")),
+                listOf(SimpleGrantedAuthority("ROLE_${role.name}")),
                 attributes.attributes + mapOf("id" to id),
                 attributes.nameAttributeKey,
             )
