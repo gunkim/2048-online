@@ -14,4 +14,7 @@ class IndexController {
 
     @GetMapping("/waitroom/{roomId}")
     fun wait() = "waitroom"
+
+    @GetMapping("/rooms/{roomId}/game")
+    fun game() = "game"
 }

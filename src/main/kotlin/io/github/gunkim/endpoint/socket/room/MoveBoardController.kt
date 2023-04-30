@@ -3,6 +3,7 @@ package io.github.gunkim.endpoint.socket.room
 import io.github.gunkim.application.board.MoveBoard
 import io.github.gunkim.application.room.FindRoom
 import io.github.gunkim.endpoint.common.id
+import io.github.gunkim.endpoint.http.room.response.GameResponse
 import io.github.gunkim.endpoint.socket.room.request.MoveBoardRequest
 import org.springframework.messaging.handler.annotation.DestinationVariable
 import org.springframework.messaging.handler.annotation.MessageMapping
@@ -10,7 +11,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
-import java.util.UUID
+import java.util.*
 
 @RestController
 class MoveBoardController(
@@ -27,8 +28,9 @@ class MoveBoardController(
         moveBoard.move(roomId, user.id, request.direction)
 
         messagingTemplate.convertAndSend(
-            "/topic/room/$roomId",
-            findRoom.find(user.id, roomId),
+            "/topic/rooms/$roomId/game",
+            findRoom.find(user.id, roomId).gamers
+                .map(::GameResponse),
         )
     }
 }
