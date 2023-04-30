@@ -1,37 +1,26 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>게임 방 목록</title>
-  <link rel="stylesheet" href="/css/index.css">
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <div class="logo">2048</div>
-      <div class="btn-group">
-        <button class="login-btn" onclick="location.href='/oauth2/authorization/google'">로그인</button>
-        <button class="create-room-btn">방 만들기</button>
-      </div>
-    </div>
-    <div id="room-list" class="room-list">
-    </div>
-  </div>
-  <div class="modal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <h2>방 만들기</h2>
-      <form>
-        <label for="room-name">방 이름</label>
-        <input type="text" id="room-name" name="room-name">
+{{#layout}}{{#title}}Home{{/title}}
+{{#content}}
+    <input id="room-title" type="text" class="text-box" placeholder="생성할 방 이름을 입력하세요.">
 
-        <button type="button" onclick="createRoom();">방 만들기</button>
-      </form>
+    <div class="btn-group">
+        <button class="btn secondary-btn" onclick="moveLogin();">로그인</button>
+        <button class="btn primary-btn" onclick="createRoomButton();">방 만들기</button>
     </div>
-  </div>
-</body>
-<script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-<script type="text/javascript" src="/js/index.js"></script>
-<script type="text/javascript" src="/js/new-index.js"></script>
-</html>
+    <div id="room-list" class="room-list"></div>
+{{/content}}
+{{#css}}
+    <link rel="stylesheet" href="/css/index.css">
+{{/css}}
+{{#js}}
+    <script type="text/javascript" src="/js/index.js"></script>
+    <script>
+        const createRoomButton = () => {
+            createRoom(document.getElementById('room-title').value);
+        }
+        const moveLogin = () => {
+            location.href = '/oauth2/authorization/google';
+        }
+    </script>
+{{/js}}
+{{/layout}}
+
