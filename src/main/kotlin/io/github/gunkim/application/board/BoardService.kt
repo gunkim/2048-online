@@ -5,7 +5,7 @@ import io.github.gunkim.domain.game.MoveType
 import io.github.gunkim.domain.room.Rooms
 import io.github.gunkim.domain.user.Users
 import org.springframework.stereotype.Service
-import java.util.UUID
+import java.util.*
 
 @Service
 class BoardService(
@@ -17,7 +17,7 @@ class BoardService(
         val room = rooms.find(roomId)
         val user = users.find(userId)
 
-        val gamer = room.move(user, type).findGamer(user)
+        val gamer = room.findGamer(user).move(type)
         gamers.save(gamer)
     }
 }
