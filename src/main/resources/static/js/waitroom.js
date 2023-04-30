@@ -14,7 +14,7 @@ const createPlayer = (players) => {
   });
 }
 
-const leaveRoom = async () => {
+const leaveRoom = async (roomId) => {
   const response = await axios.delete(`/rooms/${roomId}/leave`);
 
   if(response.status === 200) {
@@ -22,7 +22,7 @@ const leaveRoom = async () => {
   }
 }
 
-const ready = async () => {
+const ready = async (roomId) => {
   await axios.put(`/rooms/${roomId}/ready`);
 }
 
@@ -40,17 +40,4 @@ const stompClient = (() => {
   });
 
   return stompClient;
-})();
-
-const roomId = document.location.href.split('/')[4];
-
-const putHtml = (id, html) => {
-  document.getElementById(id).innerHTML = html;
-}
-
-(async () => {
-  const response = await axios.get(`/rooms/${roomId}/wait`);
-
-  putHtml('player-list', createPlayer(response.data.players).join(''));
-  putHtml('room-title', response.data.title);
 })();

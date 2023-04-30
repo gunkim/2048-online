@@ -95,3 +95,14 @@ const startRoom = () => {
     arrows[e.key]();
   });
 })();
+
+const arrows = {
+  "ArrowLeft": () => stompClient.send(`/app/rooms/${roomId}/move`, {},
+      JSON.stringify({direction: 'LEFT'})),
+  "ArrowRight": () => stompClient.send(`/app/rooms/${roomId}/move`, {},
+      JSON.stringify({direction: 'RIGHT'})),
+  "ArrowUp": () => stompClient.send(`/app/rooms/${roomId}/move`, {},
+      JSON.stringify({direction: 'TOP'})),
+  "ArrowDown": () => stompClient.send(`/app/rooms/${roomId}/move`, {},
+      JSON.stringify({direction: 'DOWN'}))
+}

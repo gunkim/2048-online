@@ -1,35 +1,28 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>게임 대기방 화면</title>
-  <link href="/css/waitroom.css" rel="stylesheet">
-</head>
-<body>
-<div class="container">
-  <div class="header">
-    <div class="logo">2048</div>
-  </div>
-  <div class="lobby">
+{{#layout}}{{#title}}게임 대기실{{/title}}
+{{#content}}
     <div class="room-title" id="room-title"></div>
     <ul class="player-list" id="player-list"></ul>
-    <div class="chat">
-      <div class="chat-display">
-        <div class="chat-message">Player 1: 안녕하세요!</div>
-        <div class="chat-message">Player 2: 안녕하세요~</div>
-        <div class="chat-message">Player 3: 다들 준비되셨나요?</div>
-      </div>
-      <input placeholder="채팅을 입력하세요..."/>
+    <button class="btn primary-btn full">시작하기</button>
+    <div class="btn-group">
+        <button class="btn third-btn" onclick="ready(roomId);">준비 | 준비 취소</button>
+        <button class="btn secondary-btn" onclick="leaveRoom(roomId);">방 나가기</button>
     </div>
-    <button class="start-button">시작하기</button>
-    <button class="start-button" onclick="ready();">준비 | 준비 취소</button>
-    <button class="leave-button" onclick="leaveRoom();">방 나가기</button>
-  </div>
-</div>
-</body>
-<script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-<script type="text/javascript" src="/js/waitroom.js"></script>
-</html>
+{{/content}}
+{{#css}}
+    <link href="/css/waitroom.css" rel="stylesheet">
+{{/css}}
+{{#js}}
+    <script type="text/javascript" src="/js/waitroom.js"></script>
+    <script>
+        const roomId = document.location.href.split('/')[4];
+
+        (async () => {
+            const response = await axios.get(`/rooms/${roomId}/wait`);
+
+            putHtml('player-list', createPlayer(response.data.players).join(''));
+            putHtml('room-title', response.data.title);
+        })();
+    </script>
+{{/js}}
+{{/layout}}
+
