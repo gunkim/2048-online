@@ -1,292 +1,47 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2048 게임</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #FAF8EF;
-            margin: 0;
-        }
-
-        .logo {
-            font-size: 50px;
-            font-weight: bold;
-            color: #776E65;
-            text-transform: uppercase;
-            background-image: linear-gradient(to right, #EEE4DA, #EDC22E, #F3B74E, #F2A44C, #F17C5F, #F2573D, #F23C5E, #EFC528);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .container {
-            text-align: center;
-            background-color: white;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            margin-bottom: 20px;
-        }
-
-        .timer-container {
-            margin-top: 20px;
-            margin-bottom: 20px;
-            font-size: 24px;
-            font-weight: bold;
-            color: #776e65;
-            padding: 20px;
-            border-radius: 5px;
-        }
-
-
-        #timer {
-            background-color: #eee4da;
-            color: #776e65;
-            padding: 10px 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-
-        .boards-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(2, 1fr);
-            gap: 20px;
-        }
-
-        .board {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .score-container {
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            flex-direction: row;
-        }
-
-        .score {
-            font-size: 28px;
-            font-weight: bold;
-            color: #776e65;
-            align-self: center;
-        }
-
-        .player-name {
-            font-size: 20px;
-            color: #776e65;
-            align-self: center;
-            margin-right: 20px;
-        }
-
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-template-rows: repeat(4, 1fr);
-            gap: 10px;
-            width: 400px;
-            height: 400px;
-            margin: 0 auto;
-            background-color: #bbada0;
-            border-radius: 10px;
-            padding: 10px;
-            box-sizing: border-box;
-        }
-
-        .grid-row {
-            display: contents;
-        }
-
-        .grid-cell {
-            background-color: #cdc1b4;
-            border-radius: 5px;
-            width: 100%;
-            height: 0;
-            padding-top: 100%;
-            position: relative;
-        }
-
-        .grid-cell::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 2em;
-            font-weight: bold;
-            color: #776e65;
-        }
-
-        .grid-cell[data-value='2']::before {
-            content: '2';
-            background-color: #eee4da;
-        }
-
-        .grid-cell[data-value='4']::before {
-            content: '4';
-            background-color: #ede0c8;
-        }
-
-        .grid-cell[data-value='8']::before {
-            content: '8';
-            background-color: #f2b179;
-        }
-
-        .grid-cell[data-value='16']::before {
-            content: '16';
-            background-color: #f59563;
-        }
-
-        .grid-cell[data-value='32']::before {
-            content: '32';
-            background-color: #f67c5f;
-        }
-
-        .grid-cell[data-value='64']::before {
-            content: '64';
-            background-color: #f65e3b;
-        }
-
-        .grid-cell[data-value='128']::before {
-            content: '128';
-            background-color: #edcf72;
-        }
-
-        .grid-cell[data-value='256']::before {
-            content: '256';
-            background-color: #edcc61;
-        }
-
-        .grid-cell[data-value='512']::before {
-            content: '512';
-            background-color: #edc850;
-        }
-
-        .grid-cell[data-value='1024']::before {
-            content: '1024';
-            background-color: #edc53f;
-        }
-
-        .grid-cell[data-value='2048']::before {
-            content: '2048';
-            background-color: #edc22e;
-        }
-
-        .grid-cell[data-value='8']::before,
-        .grid-cell[data-value='64']::before,
-        .grid-cell[data-value='512']::before,
-        .grid-cell[data-value='2048']::before {
-            color: #f9f6f2;
-        }
-
-        .grid-cell[data-value='128']::before,
-        .grid-cell[data-value='256']::before,
-        .grid-cell[data-value='512']::before {
-            font-size: 1.6em;
-        }
-
-        .grid-cell[data-value='1024']::before,
-        .grid-cell[data-value='2048']::before {
-            font-size: 1.4em;
-        }
-    </style>
-</head>
-<body>
-<div class="container">
-    <div class="logo">2048</div>
+{{#layout}}{{#title}}2048 Play{{/title}}
+{{#content}}
     <div class="timer-container">
         <span id="timer">00:00</span>
     </div>
-    <div class="boards-container" id="boards">
-    </div>
-</div>
-</body>
-<script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-<script>
-    const roomId = document.location.href.split('/')[4];
+    <div class="boards-container" id="boards"></div>
+{{/content}}
+{{#css}}
+    <link rel="stylesheet" href="/css/game.css">
+{{/css}}
+{{#js}}
+    <script>
+        const roomId = document.location.href.split('/')[4];
 
-    function printGamers(gamers) {
-        let html = ''
-        for (const game of gamers) {
-            html += `
-            <div class="board" data-value="${game.userId}">
-                <div class="score-container">
-                    <div class="player-name">${game.name}</div>
-                    <div class="score">${game.score}</div>
-                </div>
-                <div class="grid-container">
-                    ${
-                    game.board.map(row => {
-                        return `<div class="grid-row">
-                                ${
-                                row.map(cell => {
-                                    return `<div class="grid-cell" data-value="${cell}"></div>`
-                                }).join('')
-                        }
-                            </div>`
-                    }).join('')
-            }
-                </div>
-            </div>
-            `
-        }
-        document.getElementById('boards').innerHTML = html;
-    }
-
-    (async () => {
-        const response = await axios.get(`/rooms/${roomId}/games`);
-        printGamers(response.data);
-    })();
-
-    const stompClient = (() => {
-        const socket = new SockJS("/websocket");
-        const stompClient = Stomp.over(socket);
-
-        stompClient.connect({}, () => {
-            stompClient.subscribe(`/topic/rooms/${roomId}/game`, (response) => {
-                const gamers = JSON.parse(response.body);
-                printGamers(gamers);
+        const stompClient = createStompClient((stompClient) => {
+            stompClient.connect({}, () => {
+                stompClient.subscribe(`/topic/rooms/${roomId}/game`, (response) => {
+                    const gamers = JSON.parse(response.body);
+                    putHtml('boards', createGamers(gamers));
+                });
             });
         });
 
-        return stompClient;
-    })();
+        const arrows = {
+            "ArrowLeft": (stompClient) => stompClient.send(`/app/rooms/${roomId}/move`, {},
+                    JSON.stringify({direction: 'LEFT'})),
+            "ArrowRight": (stompClient) => stompClient.send(`/app/rooms/${roomId}/move`, {},
+                    JSON.stringify({direction: 'RIGHT'})),
+            "ArrowUp": (stompClient) => stompClient.send(`/app/rooms/${roomId}/move`, {},
+                    JSON.stringify({direction: 'TOP'})),
+            "ArrowDown": (stompClient) => stompClient.send(`/app/rooms/${roomId}/move`, {},
+                    JSON.stringify({direction: 'DOWN'}))
+        };
 
-    const arrows = {
-        "ArrowLeft": () => stompClient.send(`/app/rooms/${roomId}/move`, {},
-                JSON.stringify({direction: 'LEFT'})),
-        "ArrowRight": () => stompClient.send(`/app/rooms/${roomId}/move`, {},
-                JSON.stringify({direction: 'RIGHT'})),
-        "ArrowUp": () => stompClient.send(`/app/rooms/${roomId}/move`, {},
-                JSON.stringify({direction: 'TOP'})),
-        "ArrowDown": () => stompClient.send(`/app/rooms/${roomId}/move`, {},
-                JSON.stringify({direction: 'DOWN'}))
-    };
+        (async () => {
+            const response = await axios.get(`/rooms/${roomId}/games`);
+            putHtml('boards', createGamers(response.data));
 
-    (() => {
-        document.addEventListener("keydown", (e) => {
-            e.preventDefault()
-            arrows[e.key]();
-        });
-    })();
-</script>
-</html>
+            document.addEventListener("keydown", (e) => {
+                e.preventDefault()
+                arrows[e.key](stompClient);
+            });
+        })();
+    </script>
+{{/js}}
+{{/layout}}
+
