@@ -26,6 +26,10 @@ const ready = async (roomId) => {
   await axios.put(`/rooms/${roomId}/ready`);
 }
 
+const start = async (roomId) => {
+  await axios.put(`/rooms/${roomId}/start`);
+}
+
 const stompClient = (() => {
   const socket = new SockJS("/websocket");
   const stompClient = Stomp.over(socket);

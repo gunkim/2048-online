@@ -10,3 +10,23 @@ const createGamers = (gamers) => gamers.map(gamer => `
                             </div>`).join('')}
                 </div>
             </div>`);
+
+const stompClient = createStompClient((stompClient) => {
+    stompClient.connect({}, () => {
+        stompClient.subscribe(`/topic/rooms/${roomId}/game`, (response) => {
+            const gamers = JSON.parse(response.body);
+            putHtml('boards', createGamers(gamers));
+        });
+    });
+});
+
+const arrows = {
+    "ArrowLeft": (stompClient) => stompClient.send(`/app/rooms/${roomId}/move`, {},
+        JSON.stringify({direction: 'LEFT'})),
+    "ArrowRight": (stompClient) => stompClient.send(`/app/rooms/${roomId}/move`, {},
+        JSON.stringify({direction: 'RIGHT'})),
+    "ArrowUp": (stompClient) => stompClient.send(`/app/rooms/${roomId}/move`, {},
+        JSON.stringify({direction: 'TOP'})),
+    "ArrowDown": (stompClient) => stompClient.send(`/app/rooms/${roomId}/move`, {},
+        JSON.stringify({direction: 'DOWN'}))
+};

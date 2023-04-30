@@ -2,7 +2,7 @@
 {{#content}}
     <div class="room-title" id="room-title"></div>
     <ul class="player-list" id="player-list"></ul>
-    <button class="btn primary-btn full">시작하기</button>
+    <button class="btn primary-btn full" onclick="startGame(roomId);">시작하기</button>
     <div class="btn-group">
         <button class="btn third-btn" onclick="ready(roomId);">준비 | 준비 취소</button>
         <button class="btn secondary-btn" onclick="leaveRoom(roomId);">방 나가기</button>
@@ -15,6 +15,12 @@
     <script type="text/javascript" src="/js/waitroom.js"></script>
     <script>
         const roomId = document.location.href.split('/')[4];
+
+        const startGame = (roomId) => {
+            start(roomId);
+
+            location.href = `/rooms/${roomId}/game`;
+        }
 
         (async () => {
             const response = await axios.get(`/rooms/${roomId}/wait`);

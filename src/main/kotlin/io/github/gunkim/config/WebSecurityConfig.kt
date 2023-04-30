@@ -42,7 +42,8 @@ class WebSecurityConfig {
                 "/rooms/*/leave",
                 "/rooms/*/ready",
                 "/rooms/*/game",
-                "/rooms/*/games"
+                "/rooms/*/games",
+                "/rooms/*/start"
             )
             .hasRole(Role.USER.name)
             .anyRequest().authenticated()

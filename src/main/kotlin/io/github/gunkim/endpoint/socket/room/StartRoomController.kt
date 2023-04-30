@@ -1,29 +1,22 @@
 package io.github.gunkim.endpoint.socket.room
 
-import io.github.gunkim.application.room.FindRoom
 import io.github.gunkim.application.room.StartRoom
-import io.github.gunkim.domain.room.Room
 import io.github.gunkim.endpoint.common.id
-import org.springframework.messaging.handler.annotation.DestinationVariable
-import org.springframework.messaging.handler.annotation.MessageMapping
-import org.springframework.messaging.handler.annotation.SendTo
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RestController
-import java.util.UUID
+import java.util.*
 
 @RestController
 class StartRoomController(
     private val startRoom: StartRoom,
-    private val findRoom: FindRoom,
 ) {
-    @MessageMapping("/rooms/{roomId}/start")
-    @SendTo("/topic/room/{roomId}")
+    @PutMapping("/rooms/{roomId}/start")
     fun start(
         user: OAuth2AuthenticationToken,
-        @DestinationVariable roomId: UUID,
-    ): Room {
+        @PathVariable roomId: UUID,
+    ) {
         startRoom.start(roomId, user.id)
-
-        return findRoom.find(user.id, roomId)
     }
 }
