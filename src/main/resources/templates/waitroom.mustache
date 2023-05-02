@@ -16,10 +16,12 @@
     <script>
         const roomId = document.location.href.split('/')[4];
 
-        const startGame = (roomId) => {
-            start(roomId);
-
-            location.href = `/rooms/${roomId}/game`;
+        const startGame = async (roomId) => {
+            try {
+                await start(roomId);
+            } catch (e) {
+                alert("게임 시작에 실패했습니다.");
+            }
         }
 
         (async () => {
