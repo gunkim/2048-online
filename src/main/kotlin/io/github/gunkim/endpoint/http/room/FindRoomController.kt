@@ -4,6 +4,7 @@ import io.github.gunkim.application.room.FindRoom
 import io.github.gunkim.domain.room.Room
 import io.github.gunkim.endpoint.common.id
 import io.github.gunkim.endpoint.http.room.response.GameResponse
+import io.github.gunkim.endpoint.http.room.response.InitGameResponse
 import io.github.gunkim.endpoint.http.room.response.RoomResponse
 import io.github.gunkim.endpoint.http.room.response.WaitRoomResponse
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken
@@ -25,9 +26,13 @@ class FindRoomController(
     }
 
     @GetMapping("/rooms/{roomId}/games")
-    fun findGame(@PathVariable roomId: UUID) = findRoom.find(roomId)
-        .gamers
-        .map(::GameResponse)
+    fun findGame(@PathVariable roomId: UUID): InitGameResponse {
+        val room = findRoom.find(roomId)
+        val gameResponse = room.gamers
+            .map(::GameResponse)
+
+        return InitGameResponse(room.endedAt!!, gameResponse)
+    }
 
     @GetMapping("/rooms/{roomId}/wait")
     fun findWaitRoom(user: OAuth2AuthenticationToken, @PathVariable roomId: UUID) =

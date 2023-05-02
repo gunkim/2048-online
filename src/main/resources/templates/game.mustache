@@ -1,7 +1,7 @@
 {{#layout}}{{#title}}2048 Play{{/title}}
 {{#content}}
     <div class="timer-container">
-        <span id="timer">00:00</span>
+        <span id="timer">120</span>
     </div>
     <div class="boards-container" id="boards"></div>
 {{/content}}
@@ -15,7 +15,24 @@
 
         (async () => {
             const response = await axios.get(`/rooms/${roomId}/games`);
-            putHtml('boards', createGamers(response.data));
+            const {endTime, gamers} = response.data;
+
+            const end = new Date(endTime);
+            const timerId = setInterval(() => {
+                const now = new Date();
+
+                const diffTime = Math.abs(end - now);
+                const diffSeconds = Math.floor(diffTime / 1000);
+
+                putHtml('timer', diffSeconds);
+
+                if (now > end) {
+                    clearInterval(timerId);
+                    putHtml('timer', '<span style="color: #f75d5d;">게임 종료!</span>');
+                }
+            }, 1000);
+
+            putHtml('boards', createGamers(gamers));
 
             document.addEventListener("keydown", (e) => {
                 e.preventDefault()

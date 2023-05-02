@@ -6,6 +6,7 @@ import io.github.gunkim.domain.game.Board
 import io.github.gunkim.domain.game.Gamer
 import io.github.gunkim.domain.game.MoveType
 import io.github.gunkim.domain.user.User
+import java.time.LocalDateTime
 import java.util.*
 
 private fun List<Gamer>.move(user: User, moveType: MoveType) = this.map {
@@ -26,6 +27,7 @@ data class Room(
     val title: String,
     val gamers: List<Gamer>,
     val isStart: Boolean,
+    val endedAt: LocalDateTime? = null,
 ) {
     val hostName: String
         get() = gamers.find(Gamer::isHost)?.user?.name ?: throw IllegalStateException("방장이 없습니다.")
@@ -58,7 +60,7 @@ data class Room(
             throw IllegalArgumentException("게임에 참여한 모든 플레이어가 준비되어야 합니다.")
         }
 
-        return Room(id, title, gamers.map(Gamer::start), true)
+        return Room(id, title, gamers.map(Gamer::start), true, LocalDateTime.now().plusSeconds(30))
     }
 
     fun stop(user: User): Room {
@@ -70,6 +72,10 @@ data class Room(
             throw IllegalArgumentException("종료는 방장만 할 수 있습니다.")
         }
 
+        return Room(id, title, gamers, false)
+    }
+
+    fun stop(): Room {
         return Room(id, title, gamers, false)
     }
 
