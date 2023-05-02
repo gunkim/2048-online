@@ -17,6 +17,10 @@ class BoardService(
         val room = rooms.find(roomId)
         val user = users.find(userId)
 
+        if(!room.isStart) {
+            error("게임이 시작되지 않았습니다.")
+        }
+
         val gamer = room.findGamer(user).move(type)
         gamers.save(gamer)
     }
