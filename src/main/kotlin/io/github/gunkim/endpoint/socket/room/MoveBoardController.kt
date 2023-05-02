@@ -30,6 +30,7 @@ class MoveBoardController(
         messagingTemplate.convertAndSend(
             "/topic/rooms/$roomId/game",
             findRoom.find(user.id, roomId).gamers
+                .sortedBy { it.order }
                 .map(::GameResponse),
         )
     }

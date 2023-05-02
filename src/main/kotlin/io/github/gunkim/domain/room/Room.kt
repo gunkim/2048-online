@@ -60,7 +60,10 @@ data class Room(
             throw IllegalArgumentException("게임에 참여한 모든 플레이어가 준비되어야 합니다.")
         }
 
-        return Room(id, title, gamers.map(Gamer::start), true, LocalDateTime.now().plusSeconds(30))
+        val gamers = gamers.map(Gamer::start)
+        gamers.forEachIndexed { index, gamer -> gamer.order = index }
+
+        return Room(id, title, gamers, true, LocalDateTime.now().plusSeconds(30))
     }
 
     fun stop(user: User): Room {
