@@ -1,6 +1,6 @@
 package io.github.gunkim.domain.game
 
-private fun totalScore(cells: List<Cell>) = cells.sumOf(Cell::score)
+private fun totalScore(cells: List<Cell>) = cells.sumOf(Cell::value)
 private fun isGameWin(cells: List<Cell>) = cells.any(Cell.Companion::isWin)
 
 private fun List<Cell>.removeZero() = filterNot { it == Cell.ZERO }

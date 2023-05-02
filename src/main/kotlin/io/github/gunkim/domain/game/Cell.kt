@@ -4,21 +4,18 @@ enum class Cell(
     val value: Int,
 ) {
     ZERO(0),
-    ONE(1),
-    TWO(2),
-    THREE(4),
-    FOUR(8),
-    FIVE(16),
-    SIX(32),
-    SEVEN(64),
-    EIGHT(128),
-    NINE(256),
-    TEN(512),
-    ELEVEN(1024),
-    TWELVE(2048),
+    ONE(2),
+    TWO(4),
+    THREE(8),
+    FOUR(16),
+    FIVE(32),
+    SIX(64),
+    SEVEN(128),
+    EIGHT(256),
+    NINE(512),
+    TEN(1024),
+    ELEVEN(2048),
     ;
-
-    val score = 2 * value
 
     fun levelUp(): Cell = when (this) {
         ZERO -> ONE
@@ -32,11 +29,10 @@ enum class Cell(
         EIGHT -> NINE
         NINE -> TEN
         TEN -> ELEVEN
-        ELEVEN -> TWELVE
-        TWELVE -> error("이미 최고 레벨이므로 레벨업이 불가능합니다.")
+        ELEVEN -> error("이미 최고 레벨이므로 레벨업이 불가능합니다.")
     }
 
     companion object {
-        fun isWin(cell: Cell) = cell == TWELVE
+        fun isWin(cell: Cell) = cell == ELEVEN
     }
 }

@@ -95,75 +95,75 @@
     color: #776e65;
 }
 
-.grid-cell[data-value='2']::before {
+.grid-cell[data-value='ONE']::before {
     content: '2';
     background-color: #eee4da;
 }
 
-.grid-cell[data-value='4']::before {
+.grid-cell[data-value='TWO']::before {
     content: '4';
     background-color: #ede0c8;
 }
 
-.grid-cell[data-value='8']::before {
+.grid-cell[data-value='THREE']::before {
     content: '8';
     background-color: #f2b179;
 }
 
-.grid-cell[data-value='16']::before {
+.grid-cell[data-value='FOUR']::before {
     content: '16';
     background-color: #f59563;
 }
 
-.grid-cell[data-value='32']::before {
+.grid-cell[data-value='FIVE']::before {
     content: '32';
     background-color: #f67c5f;
 }
 
-.grid-cell[data-value='64']::before {
+.grid-cell[data-value='SIX']::before {
     content: '64';
     background-color: #f65e3b;
 }
 
-.grid-cell[data-value='128']::before {
+.grid-cell[data-value='SEVEN']::before {
     content: '128';
     background-color: #edcf72;
 }
 
-.grid-cell[data-value='256']::before {
+.grid-cell[data-value='EIGHT']::before {
     content: '256';
     background-color: #edcc61;
 }
 
-.grid-cell[data-value='512']::before {
+.grid-cell[data-value='NINE']::before {
     content: '512';
     background-color: #edc850;
 }
 
-.grid-cell[data-value='1024']::before {
+.grid-cell[data-value='TEN']::before {
     content: '1024';
     background-color: #edc53f;
 }
 
-.grid-cell[data-value='2048']::before {
+.grid-cell[data-value='ELEVEN']::before {
     content: '2048';
     background-color: #edc22e;
 }
 
-.grid-cell[data-value='8']::before,
-.grid-cell[data-value='64']::before,
-.grid-cell[data-value='512']::before,
-.grid-cell[data-value='2048']::before {
+.grid-cell[data-value='THREE']::before,
+.grid-cell[data-value='SIX']::before,
+.grid-cell[data-value='NINE']::before,
+.grid-cell[data-value='ELEVEN']::before {
     color: #f9f6f2;
 }
 
-.grid-cell[data-value='128']::before,
-.grid-cell[data-value='256']::before,
-.grid-cell[data-value='512']::before {
+.grid-cell[data-value='SEVEN']::before,
+.grid-cell[data-value='EIGHT']::before,
+.grid-cell[data-value='NINE']::before {
     font-size: 1.6em;
 }
 
-.grid-cell[data-value='1024']::before,
-.grid-cell[data-value='2048']::before {
+.grid-cell[data-value='TEN']::before,
+.grid-cell[data-value='ELEVEN']::before {
     font-size: 1.4em;
 }
