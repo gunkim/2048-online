@@ -56,7 +56,7 @@ data class Room(
             throw IllegalArgumentException("게임에 참여할 수 있는 인원은 최소 2명 이상입니다.")
         }
 
-        if (gamers.all(Gamer::isReady)) {
+        if (!gamers.all(Gamer::isReady)) {
             throw IllegalArgumentException("게임에 참여한 모든 플레이어가 준비되어야 합니다.")
         }
 
@@ -146,7 +146,7 @@ data class Room(
         }
 
         val gamers = gamers.map {
-            if (it.hasPlayer(user) || !it.isHost) {
+            if (it.hasPlayer(user)) {
                 it.ready()
             } else {
                 it
