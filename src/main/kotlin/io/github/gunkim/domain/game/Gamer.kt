@@ -4,12 +4,12 @@ import io.github.gunkim.domain.user.User
 import java.util.*
 
 data class Gamer(
-        val id: UUID = UUID.randomUUID(),
-        val user: User,
-        val board: Board,
-        val isHost: Boolean = false,
-        val isReady: Boolean = false,
-        var order: Int = -1
+    val id: UUID = UUID.randomUUID(),
+    val user: User,
+    val board: Board,
+    val isHost: Boolean = false,
+    val isReady: Boolean = false,
+    var order: Int = -1,
 ) {
     val score: Int
         get() = board.score

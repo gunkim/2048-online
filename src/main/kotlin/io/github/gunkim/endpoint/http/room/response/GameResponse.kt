@@ -9,7 +9,7 @@ data class GameResponse(
     val userId: UUID,
     val name: String,
     val score: Int,
-    val board: List<List<String>>
+    val board: List<List<String>>,
 ) {
     constructor(gamer: Gamer) : this(
         gamer.user.id,

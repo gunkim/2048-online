@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.web.SecurityFilterChain
 
-
 @Configuration
 @ConditionalOnDefaultWebSecurity
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
@@ -43,7 +42,7 @@ class WebSecurityConfig {
                 "/rooms/*/ready",
                 "/rooms/*/game",
                 "/rooms/*/games",
-                "/rooms/*/start"
+                "/rooms/*/start",
             )
             .hasRole(Role.USER.name)
             .anyRequest().authenticated()

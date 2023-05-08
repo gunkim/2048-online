@@ -18,7 +18,7 @@ private fun List<Gamer>.move(user: User, moveType: MoveType) = this.map {
 }
 
 private fun List<Gamer>.find(user: User) = this.find { it.hasPlayer(user) }
-        ?: throw IllegalArgumentException("게임에 참여하지 않은 플레이어 입니다.")
+    ?: throw IllegalArgumentException("게임에 참여하지 않은 플레이어 입니다.")
 
 private fun List<Gamer>.hasId(id: UUID) = this.any { it.isSameUserId(id) }
 
@@ -80,7 +80,7 @@ data class Room(
 
     fun stop() = copy(
         gamers = gamers.map(Gamer::unready),
-        isStart = false
+        isStart = false,
     )
 
     fun hasGamerId(gamerId: UUID) = gamers.hasId(gamerId)
@@ -113,14 +113,14 @@ data class Room(
         }
 
         val gamers = gamers
-                .filter { !it.hasPlayer(user) }
-                .mapIndexed { index, gamer ->
-                    if (index == 0) {
-                        gamer.host()
-                    } else {
-                        gamer
-                    }
+            .filter { !it.hasPlayer(user) }
+            .mapIndexed { index, gamer ->
+                if (index == 0) {
+                    gamer.host()
+                } else {
+                    gamer
                 }
+            }
         return Room(id, title, gamers, isStart)
     }
 
@@ -158,9 +158,9 @@ data class Room(
 
     companion object {
         fun start(title: String, gamers: List<Gamer>) =
-                Room(title = title, gamers = gamers, isStart = true)
+            Room(title = title, gamers = gamers, isStart = true)
 
         fun stop(title: String, gamers: List<Gamer>) =
-                Room(title = title, gamers = gamers, isStart = false)
+            Room(title = title, gamers = gamers, isStart = false)
     }
 }

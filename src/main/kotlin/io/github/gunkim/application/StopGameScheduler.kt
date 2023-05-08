@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit
 @EnableScheduling
 class StopGameScheduler(
     private val rooms: Rooms,
-    private val messagingTemplate: SimpMessagingTemplate
+    private val messagingTemplate: SimpMessagingTemplate,
 ) {
     @Scheduled(fixedRate = 1, timeUnit = TimeUnit.SECONDS)
     fun stopGame() {
@@ -31,7 +31,7 @@ class StopGameScheduler(
     }
 
     data class GameResultResponse(
-        val gamers: List<GamerResponse>
+        val gamers: List<GamerResponse>,
     ) {
         constructor(room: Room) : this(room.gamers.map(::GamerResponse))
     }

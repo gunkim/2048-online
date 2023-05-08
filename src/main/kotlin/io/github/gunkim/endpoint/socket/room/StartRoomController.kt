@@ -12,7 +12,7 @@ import java.util.*
 @RestController
 class StartRoomController(
     private val startRoom: StartRoom,
-    private val messagingTemplate: SimpMessagingTemplate
+    private val messagingTemplate: SimpMessagingTemplate,
 ) {
     @PutMapping("/rooms/{roomId}/start")
     fun start(
