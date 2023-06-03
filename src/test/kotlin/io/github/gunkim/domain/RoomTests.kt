@@ -93,8 +93,8 @@ class RoomTests : StringSpec({
         val user2 = User(name = "짱구", email = "gunkim.dev@gmail.com")
 
         val gamers = listOf(
-            Gamer(user = user1, board = Board.create(), isHost = true),
-            Gamer(user = user2, board = Board.create()),
+            Gamer(user = user1, board = Board.create(), isHost = true, isReady = true),
+            Gamer(user = user2, board = Board.create(), isReady = true),
         )
 
         val room = Room.stop("테스트 방", gamers)
