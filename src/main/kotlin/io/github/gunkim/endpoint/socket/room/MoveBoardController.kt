@@ -2,6 +2,7 @@ package io.github.gunkim.endpoint.socket.room
 
 import io.github.gunkim.application.board.MoveBoard
 import io.github.gunkim.application.room.FindRoom
+import io.github.gunkim.domain.game.Gamer
 import io.github.gunkim.endpoint.common.id
 import io.github.gunkim.endpoint.http.room.response.GameResponse
 import io.github.gunkim.endpoint.socket.room.request.MoveBoardRequest
@@ -30,7 +31,7 @@ class MoveBoardController(
         messagingTemplate.convertAndSend(
             "/topic/rooms/$roomId/game",
             findRoom.find(user.id, roomId).gamers
-                .sortedBy { it.order }
+                .sortedBy(Gamer::order)
                 .map(::GameResponse),
         )
     }
