@@ -2,7 +2,7 @@ package io.github.gunkim.endpoint.http.room.response
 
 import io.github.gunkim.domain.game.Gamer
 import io.github.gunkim.domain.room.Room
-import java.util.UUID
+import java.util.*
 
 data class WaitRoomResponse(
     val id: UUID,
@@ -12,7 +12,9 @@ data class WaitRoomResponse(
     constructor(room: Room) : this(
         room.id,
         room.title,
-        room.gamers.map(::PlayerResponse),
+        room.gamers
+            .sortedBy(Gamer::order)
+            .map(::PlayerResponse),
     )
 }
 
