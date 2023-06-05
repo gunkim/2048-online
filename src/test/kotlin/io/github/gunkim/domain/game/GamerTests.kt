@@ -1,4 +1,4 @@
-package io.github.gunkim.domain
+package io.github.gunkim.domain.game
 
 import io.github.gunkim.domain.game.Board
 import io.github.gunkim.domain.game.Gamer
