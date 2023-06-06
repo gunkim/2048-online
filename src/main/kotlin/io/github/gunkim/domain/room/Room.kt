@@ -9,19 +9,6 @@ import io.github.gunkim.domain.user.User
 import java.time.LocalDateTime
 import java.util.*
 
-private fun List<Gamer>.move(user: User, moveType: MoveType) = this.map {
-    if (it.hasPlayer(user)) {
-        it.move(moveType)
-    } else {
-        it
-    }
-}
-
-private fun List<Gamer>.find(user: User) = this.find { it.hasPlayer(user) }
-    ?: throw IllegalArgumentException("게임에 참여하지 않은 플레이어 입니다.")
-
-private fun List<Gamer>.hasId(id: UUID) = this.any { it.isSameUserId(id) }
-
 data class Room(
     val id: UUID = UUID.randomUUID(),
     val title: String,
@@ -164,3 +151,16 @@ data class Room(
             Room(title = title, gamers = gamers, isStart = false)
     }
 }
+
+private fun List<Gamer>.move(user: User, moveType: MoveType) = this.map {
+    if (it.hasPlayer(user)) {
+        it.move(moveType)
+    } else {
+        it
+    }
+}
+
+private fun List<Gamer>.find(user: User) = this.find { it.hasPlayer(user) }
+    ?: throw IllegalArgumentException("게임에 참여하지 않은 플레이어 입니다.")
+
+private fun List<Gamer>.hasId(id: UUID) = this.any { it.isSameUserId(id) }

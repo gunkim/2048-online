@@ -1,16 +1,5 @@
 package io.github.gunkim.domain.game
 
-private fun totalScore(cells: List<Cell>) = cells.sumOf(Cell::value)
-private fun isGameWin(cells: List<Cell>) = cells.any(Cell.Companion::isWin)
-
-private fun List<Cell>.removeZero() = filterNot { it == Cell.ZERO }
-private fun List<Cell>.addLevel1Cell(posX: Int): List<Cell> {
-    val content = this.toMutableList()
-    content[posX] = Cell.ONE
-
-    return content
-}
-
 data class Row(
     val content: List<Cell>,
 ) {
@@ -69,4 +58,15 @@ data class Row(
 
         fun empty() = Row(listOf(Cell.ZERO, Cell.ZERO, Cell.ZERO, Cell.ZERO))
     }
+}
+
+private fun totalScore(cells: List<Cell>) = cells.sumOf(Cell::value)
+private fun isGameWin(cells: List<Cell>) = cells.any(Cell.Companion::isWin)
+
+private fun List<Cell>.removeZero() = filterNot { it == Cell.ZERO }
+private fun List<Cell>.addLevel1Cell(posX: Int): List<Cell> {
+    val content = this.toMutableList()
+    content[posX] = Cell.ONE
+
+    return content
 }
