@@ -32,9 +32,7 @@ data class User(
 
         other as User
 
-        if (id != other.id) return false
-
-        return true
+        return id == other.id
     }
 
     override fun hashCode(): Int {

@@ -37,9 +37,7 @@ data class Board(
 
         other as Board
 
-        if (id != other.id) return false
-
-        return true
+        return id == other.id
     }
 
     override fun hashCode(): Int {
