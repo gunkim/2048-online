@@ -5,3 +5,6 @@ server:
   servlet:
     encoding:
       force: true
+jasypt:
+  encryptor:
+    password: # input jasypt password

@@ -4,8 +4,8 @@ spring:
       client:
         registration:
           google:
-            client-id: # your client id
-            client-secret: # your client secret
+            client-id: ENC(Aw6n17F2VLUonuS9uUHjFLMSuYldaLj/XISrqn9FFNDJinlhRt7YkYQZTXJZD1Jv7SW3zMT9yx/z6IYRBeLb1uz5QjFMpsBk/AHDSZ+/9+ZagQ4eD0oyoA==)
+            client-secret: ENC(FY/sB1X0fDrkkcJjTethVWMp6rC8+E0ylbN1isvWnmIOKhxWIe3xkUpYDwk9BXH5)
             scope:
               - profile
               - email
