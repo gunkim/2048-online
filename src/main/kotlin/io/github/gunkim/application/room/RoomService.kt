@@ -4,71 +4,71 @@ import io.github.gunkim.domain.exception.LeaveHostException
 import io.github.gunkim.domain.game.Board
 import io.github.gunkim.domain.game.Gamer
 import io.github.gunkim.domain.room.Room
-import io.github.gunkim.domain.room.Rooms
-import io.github.gunkim.domain.user.Users
+import io.github.gunkim.domain.room.RoomRepository
+import io.github.gunkim.domain.user.UserRepository
 import org.springframework.stereotype.Service
 import java.util.UUID
 
 @Service
 class RoomService(
-    private val users: Users,
-    private val rooms: Rooms,
+    private val userRepository: UserRepository,
+    private val roomRepository: RoomRepository,
 ) : FindRoom, JoinRoom, LeaveRoom, StartRoom, CreateRoom, ReadyRoom {
-    override fun find() = rooms.find()
+    override fun find() = roomRepository.find()
 
-    override fun find(userId: UUID, roomId: UUID) = rooms.find(roomId)
+    override fun find(userId: UUID, roomId: UUID) = roomRepository.find(roomId)
         .also { validate(it, userId, roomId) }
 
-    override fun find(roomId: UUID) = rooms.find(roomId)
+    override fun find(roomId: UUID) = roomRepository.find(roomId)
 
     override fun join(roomId: UUID, userId: UUID) {
         val (user, room) = load(userId, roomId)
 
-        if (rooms.existByUserId(user.id)) {
+        if (roomRepository.existByUserId(user.id)) {
             throw IllegalArgumentException("이미 방에 참여중입니다.")
         }
 
-        rooms.save(room.join(user))
+        roomRepository.save(room.join(user))
     }
 
     override fun start(roomId: UUID, userId: UUID) {
         val (user, room) = load(userId, roomId)
 
-        rooms.save(room.start(user))
+        roomRepository.save(room.start(user))
     }
 
     override fun leave(roomId: UUID, userId: UUID): Boolean {
         val (user, room) = load(userId, roomId)
 
         return try {
-            rooms.save(room.leave(user))
+            roomRepository.save(room.leave(user))
             true
         } catch (e: LeaveHostException) {
-            rooms.delete(room)
+            roomRepository.delete(room)
             false
         }
     }
 
     override fun create(title: String, userId: UUID): Room {
-        val user = users.find(userId)
+        val user = userRepository.find(userId)
 
-        if (rooms.existByUserId(user.id)) {
+        if (roomRepository.existByUserId(user.id)) {
             throw IllegalArgumentException("이미 방에 참여중입니다.")
         }
 
         val hostGamer = Gamer(user = user, board = Board.create(), isHost = true)
         val room = Room(title = title, gamers = listOf(hostGamer), isStart = false)
 
-        return rooms.save(room)
+        return roomRepository.save(room)
     }
 
     override fun ready(userId: UUID, roomId: UUID) {
         val (user, room) = load(userId, roomId)
 
-        rooms.save(room.ready(user))
+        roomRepository.save(room.ready(user))
     }
 
-    private fun load(userId: UUID, roomId: UUID) = users.find(userId) to rooms.find(roomId)
+    private fun load(userId: UUID, roomId: UUID) = userRepository.find(userId) to roomRepository.find(roomId)
 
     private fun validate(
         room: Room,

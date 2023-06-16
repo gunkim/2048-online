@@ -2,7 +2,7 @@ package io.github.gunkim.domain.room
 
 import java.util.*
 
-interface Rooms {
+interface RoomRepository {
     fun find(): List<Room>
     fun find(id: UUID): Room
     fun existByUserId(userId: UUID): Boolean

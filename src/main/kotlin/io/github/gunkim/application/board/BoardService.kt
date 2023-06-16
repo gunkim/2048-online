@@ -1,27 +1,27 @@
 package io.github.gunkim.application.board
 
-import io.github.gunkim.domain.game.Gamers
+import io.github.gunkim.domain.game.GamerRepository
 import io.github.gunkim.domain.game.MoveType
-import io.github.gunkim.domain.room.Rooms
-import io.github.gunkim.domain.user.Users
+import io.github.gunkim.domain.room.RoomRepository
+import io.github.gunkim.domain.user.UserRepository
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class BoardService(
-    private val rooms: Rooms,
-    private val users: Users,
-    private val gamers: Gamers,
+    private val roomRepository: RoomRepository,
+    private val userRepository: UserRepository,
+    private val gamerRepository: GamerRepository,
 ) : MoveBoard {
     override fun move(roomId: UUID, userId: UUID, type: MoveType) {
-        val room = rooms.find(roomId)
-        val user = users.find(userId)
+        val room = roomRepository.find(roomId)
+        val user = userRepository.find(userId)
 
         if (!room.isStart) {
             error("게임이 시작되지 않았습니다.")
         }
 
         val gamer = room.findGamer(user).move(type)
-        gamers.save(gamer)
+        gamerRepository.save(gamer)
     }
 }

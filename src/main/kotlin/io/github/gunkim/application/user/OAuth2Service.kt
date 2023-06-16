@@ -3,7 +3,7 @@ package io.github.gunkim.application.user
 import io.github.gunkim.domain.user.Role
 import io.github.gunkim.domain.user.Social
 import io.github.gunkim.domain.user.User
-import io.github.gunkim.domain.user.Users
+import io.github.gunkim.domain.user.UserRepository
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest
@@ -17,7 +17,7 @@ val OAuth2UserRequest.userNameAttributeName: String
 
 @Service
 class OAuth2Service(
-    private val users: Users,
+    private val userRepository: UserRepository,
     private val delegate: DefaultOAuth2UserService,
 ) : OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     override fun loadUser(userRequest: OAuth2UserRequest): OAuth2User {
@@ -33,8 +33,8 @@ class OAuth2Service(
         }
     }
 
-    private fun getUser(attributes: OAuthAttributes) = users.save(
-        users.findByEmail(attributes.email)
+    private fun getUser(attributes: OAuthAttributes) = userRepository.save(
+        userRepository.findByEmail(attributes.email)
             ?.apply { update(attributes.name, attributes.picture) }
             ?: attributes.toUser(),
     )

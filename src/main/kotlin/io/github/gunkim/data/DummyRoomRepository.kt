@@ -1,14 +1,14 @@
 package io.github.gunkim.data
 
 import io.github.gunkim.domain.room.Room
-import io.github.gunkim.domain.room.Rooms
+import io.github.gunkim.domain.room.RoomRepository
 import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-class DummyRooms(
+class DummyRoomRepository(
     val map: MutableMap<UUID, Room> = mutableMapOf(),
-) : Rooms {
+) : RoomRepository {
     override fun find() = map.values.toList()
 
     override fun find(id: UUID) = map[id] ?: throw IllegalArgumentException("존재하지 않는 방입니다.")

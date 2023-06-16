@@ -2,7 +2,7 @@ package io.github.gunkim.application
 
 import io.github.gunkim.domain.game.Gamer
 import io.github.gunkim.domain.room.Room
-import io.github.gunkim.domain.room.Rooms
+import io.github.gunkim.domain.room.RoomRepository
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.scheduling.annotation.Scheduled
@@ -14,17 +14,17 @@ import java.util.concurrent.TimeUnit
 @Component
 @EnableScheduling
 class StopGameScheduler(
-    private val rooms: Rooms,
+    private val roomRepository: RoomRepository,
     private val messagingTemplate: SimpMessagingTemplate,
 ) {
     @Scheduled(fixedRate = 1, timeUnit = TimeUnit.SECONDS)
     fun stopGame() {
-        val targetRooms = rooms.find()
+        val targetRooms = roomRepository.find()
             .filter(Room::isStart)
             .filter { it.endedAt!!.isBefore(LocalDateTime.now()) }
 
         targetRooms.forEach {
-            rooms.save(it.stop())
+            roomRepository.save(it.stop())
 
             messagingTemplate.convertAndSend("/topic/rooms/${it.id}/game-end", GameResultResponse(it))
         }

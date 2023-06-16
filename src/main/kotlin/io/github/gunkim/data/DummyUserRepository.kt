@@ -1,14 +1,14 @@
 package io.github.gunkim.data
 
 import io.github.gunkim.domain.user.User
-import io.github.gunkim.domain.user.Users
+import io.github.gunkim.domain.user.UserRepository
 import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-class DummyUsers(
+class DummyUserRepository(
     private val map: MutableMap<UUID, User> = mutableMapOf(),
-) : Users {
+) : UserRepository {
     override fun find() = map.values.toList()
 
     override fun find(id: UUID) = map[id] ?: throw IllegalArgumentException("존재하지 않는 유저입니다.")
