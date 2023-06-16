@@ -44,7 +44,7 @@ jobs:
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.DISTRIBUTION }}
-          cache: 'maven'
+          cache: 'gradle'
 
       - name: Build with Gradle
         run: gradle clean build
@@ -53,7 +53,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: java-app
-          path: '${{ github.workspace }}/build/libs/*.jar'
+          path: '${{ github.workspace }}/build/libs/2048-app-1.0.0.jar'
 
   deploy:
     permissions:
@@ -76,4 +76,4 @@ jobs:
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: '*.jar'
+          package: '2048-app-1.0.0.jar'
