@@ -16,6 +16,14 @@ data class Room(
     val isStart: Boolean,
     val endedAt: LocalDateTime? = null,
 ) {
+    init {
+        require(title.isNotBlank()) { "방 제목은 공백일 수 없습니다." }
+        require(title.length <= 20) { "방 제목은 20자 이하여야 합니다." }
+        require(gamers.size <= 4) { "게임에 참여할 수 있는 인원은 최대 4명 입니다." }
+        require(gamers.isNotEmpty()) { "게임에 참여할 수 있는 인원은 최소 1명 이상입니다." }
+        require(gamers.distinctBy { it.user.id }.size == gamers.size) { "중복된 유저가 있습니다." }
+    }
+
     val hostName: String
         get() = gamers.find(Gamer::isHost)?.user?.name ?: throw IllegalStateException("방장이 없습니다.")
 
