@@ -26,7 +26,13 @@ const ready = async (roomId) => {
     await axios.put(`/rooms/${roomId}/ready`);
 }
 
-const start = async (roomId) => await axios.put(`/rooms/${roomId}/start`);
+const start = async (roomId) => {
+    try {
+        await axios.put(`/rooms/${roomId}/start`);
+    } catch (e) {
+        alert(e.response.data.message);
+    }
+}
 
 const stompClient = createStompClient((stompClient) => {
     stompClient.connect({}, () => {
