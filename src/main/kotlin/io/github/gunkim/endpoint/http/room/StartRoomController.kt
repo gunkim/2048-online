@@ -1,4 +1,4 @@
-package io.github.gunkim.endpoint.socket.room
+package io.github.gunkim.endpoint.http.room
 
 import io.github.gunkim.application.room.StartRoom
 import io.github.gunkim.endpoint.common.id
