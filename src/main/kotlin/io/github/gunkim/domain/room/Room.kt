@@ -34,7 +34,7 @@ data class Room(
 
     fun move(user: User, moveType: MoveType): Room {
         if (!isStart) {
-            throw IllegalStateException("게임이 시작되지 않았습니다.")
+            throw InvalidDomainException("게임이 시작되지 않았습니다.")
         }
         return Room(id, title, gamers.move(user, moveType), isStart)
     }
