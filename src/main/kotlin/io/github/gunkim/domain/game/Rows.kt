@@ -66,7 +66,6 @@ data class Rows(
     }
 }
 
-
 private fun totalScore(rows: List<Row>) = rows.sumOf { it.score }
 private fun isGameWin(rows: List<Row>) = rows.any { it.isGameWin }
 private fun List<Row>.addLevel1Cell(posX: Int, posY: Int): List<Row> {

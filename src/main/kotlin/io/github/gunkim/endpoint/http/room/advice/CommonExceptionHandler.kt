@@ -12,8 +12,8 @@ class CommonExceptionHandler {
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     fun domainExceptionHandle(commonException: CommonException) = commonException.apply {
         CommonErrorResponse(
-                code = errorCode.name,
-                message = message
+            code = errorCode.name,
+            message = message,
         )
     }
 }

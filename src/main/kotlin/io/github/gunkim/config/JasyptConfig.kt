@@ -10,20 +10,22 @@ import java.util.*
 
 @Configuration
 class JasyptConfig(
-        @Value("\${jasypt.encryptor.password}")
-        private val jasyptPassword: String
+    @Value("\${jasypt.encryptor.password}")
+    private val jasyptPassword: String,
 ) {
     @Bean("jasyptStringEncryptor")
     fun stringEncryptor(): StringEncryptor = PooledPBEStringEncryptor().apply {
-        setConfig(SimpleStringPBEConfig().apply {
-            password = jasyptPassword;
-            algorithm = "PBEWithMD5AndDES";
-            setKeyObtentionIterations("1000");
-            setPoolSize("1");
-            providerName = "SunJCE";
-            setSaltGeneratorClassName("org.jasypt.salt.RandomSaltGenerator");
-            setIvGeneratorClassName("org.jasypt.iv.NoIvGenerator");
-            stringOutputType = "base64";
-        })
+        setConfig(
+            SimpleStringPBEConfig().apply {
+                password = jasyptPassword
+                algorithm = "PBEWithMD5AndDES"
+                setKeyObtentionIterations("1000")
+                setPoolSize("1")
+                providerName = "SunJCE"
+                setSaltGeneratorClassName("org.jasypt.salt.RandomSaltGenerator")
+                setIvGeneratorClassName("org.jasypt.iv.NoIvGenerator")
+                stringOutputType = "base64"
+            },
+        )
     }
 }
