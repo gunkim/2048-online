@@ -1,7 +1,7 @@
 package io.github.gunkim.endpoint.socket.room
 
-import io.github.gunkim.application.board.MoveBoard
-import io.github.gunkim.application.room.FindRoom
+import io.github.gunkim.application.BoardService
+import io.github.gunkim.application.RoomService
 import io.github.gunkim.domain.game.Gamer
 import io.github.gunkim.endpoint.common.id
 import io.github.gunkim.endpoint.http.room.response.GameResponse
@@ -16,8 +16,8 @@ import java.util.*
 
 @RestController
 class MoveBoardController(
-    private val moveBoard: MoveBoard,
-    private val findRoom: FindRoom,
+    private val boardService: BoardService,
+    private val roomService: RoomService,
     private val messagingTemplate: SimpMessagingTemplate,
 ) {
     @MessageMapping("/rooms/{roomId}/move")
@@ -26,11 +26,11 @@ class MoveBoardController(
         @DestinationVariable roomId: UUID,
         @RequestBody request: MoveBoardRequest,
     ) {
-        moveBoard.move(roomId, user.id, request.direction)
+        boardService.move(roomId, user.id, request.direction)
 
         messagingTemplate.convertAndSend(
             "/topic/rooms/$roomId/game",
-            findRoom.find(user.id, roomId).gamers
+            roomService.find(user.id, roomId).gamers
                 .sortedBy(Gamer::order)
                 .map(::GameResponse),
         )

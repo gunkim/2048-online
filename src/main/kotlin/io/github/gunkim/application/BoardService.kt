@@ -1,4 +1,4 @@
-package io.github.gunkim.application.board
+package io.github.gunkim.application
 
 import io.github.gunkim.domain.game.GamerRepository
 import io.github.gunkim.domain.game.MoveType
@@ -12,8 +12,8 @@ class BoardService(
     private val roomRepository: RoomRepository,
     private val userRepository: UserRepository,
     private val gamerRepository: GamerRepository,
-) : MoveBoard {
-    override fun move(roomId: UUID, userId: UUID, type: MoveType) {
+) {
+    fun move(roomId: UUID, userId: UUID, type: MoveType) {
         val room = roomRepository.find(roomId)
         val user = userRepository.find(userId)
 

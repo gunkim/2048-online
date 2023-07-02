@@ -1,4 +1,4 @@
-package io.github.gunkim.application.user
+package io.github.gunkim.application
 
 import io.github.gunkim.domain.user.Role
 import io.github.gunkim.domain.user.Social

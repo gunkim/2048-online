@@ -1,6 +1,6 @@
 package io.github.gunkim.endpoint.http.room
 
-import io.github.gunkim.application.room.FindRoom
+import io.github.gunkim.application.RoomService
 import io.github.gunkim.domain.room.Room
 import io.github.gunkim.endpoint.common.id
 import io.github.gunkim.endpoint.http.room.response.GameResponse
@@ -10,31 +10,33 @@ import io.github.gunkim.endpoint.http.room.response.WaitRoomResponse
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
 @RestController
-class FindRoomController(
-    private val findRoom: FindRoom,
+@RequestMapping("/rooms")
+class RoomFindController(
+    private val roomService: RoomService,
 ) {
-    @GetMapping("/rooms")
-    fun find() = findRoom.find().map(::RoomResponse)
+    @GetMapping
+    fun find() = roomService.find().map(::RoomResponse)
 
-    @GetMapping("/rooms/{roomId}")
+    @GetMapping("/{roomId}")
     fun findDetails(user: OAuth2AuthenticationToken, @PathVariable roomId: UUID): Room {
-        return findRoom.find(user.id, roomId)
+        return roomService.find(user.id, roomId)
     }
 
-    @GetMapping("/rooms/{roomId}/games")
+    @GetMapping("/{roomId}/games")
     fun findGame(@PathVariable roomId: UUID): InitGameResponse {
-        val room = findRoom.find(roomId)
+        val room = roomService.find(roomId)
         val gameResponse = room.gamers
             .map(::GameResponse)
 
         return InitGameResponse(room.endedAt!!, gameResponse)
     }
 
-    @GetMapping("/rooms/{roomId}/wait")
+    @GetMapping("/{roomId}/wait")
     fun findWaitRoom(user: OAuth2AuthenticationToken, @PathVariable roomId: UUID) =
-        WaitRoomResponse(findRoom.find(user.id, roomId))
+        WaitRoomResponse(roomService.find(user.id, roomId))
 }
