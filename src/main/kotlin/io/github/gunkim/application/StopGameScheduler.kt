@@ -23,25 +23,28 @@ class StopGameScheduler(
             .filter(Room::isStart)
             .filter { it.endedAt!!.isBefore(LocalDateTime.now()) }
 
-        targetRooms.forEach {
-            roomRepository.save(it.stop())
+        targetRooms.forEach { room ->
+            roomRepository.save(room.stop())
 
-            messagingTemplate.convertAndSend("/topic/rooms/${it.id}/game-end", GameResultResponse(it))
+            messagingTemplate.convertAndSend(
+                "/topic/rooms/${room.id}/game-end", room.gamers
+                    .map(StopGameScheduler::GamerResponse)
+                    .sortedByDescending(GamerResponse::score)
+            )
         }
-    }
-
-    data class GameResultResponse(
-        val gamers: List<GamerResponse>,
-    ) {
-        constructor(room: Room) : this(room.gamers.map(::GamerResponse))
     }
 
     data class GamerResponse(
         val id: UUID,
+        val profileImageUrl: String?,
         val name: String,
         val score: Int,
-        val isWinner: Boolean,
     ) {
-        constructor(gamer: Gamer) : this(gamer.user.id, gamer.user.name, gamer.score, false)
+        constructor(gamer: Gamer) : this(
+            gamer.user.id,
+            gamer.user.profileImageUrl,
+            gamer.user.name,
+            gamer.score
+        )
     }
 }
