@@ -41,14 +41,14 @@ data class Room(
         val gamers = gamers.map(Gamer::start)
         gamers.forEachIndexed { index, gamer -> gamer.order = index }
 
-        return Room(id, title, gamers, true, LocalDateTime.now().plusSeconds(30))
+        return copy(gamers = gamers, isStart = true, endedAt = LocalDateTime.now().plusSeconds(PLAY_TIME))
     }
 
     fun stop(user: User): Room {
         check(isStart) { "게임이 시작되지 않았습니다." }
         require(gamers.find(user).isHost) { "종료는 방장만 할 수 있습니다." }
 
-        return Room(id, title, gamers, false)
+        return copy(isStart = false)
     }
 
     fun stop() = copy(
@@ -62,8 +62,7 @@ data class Room(
         check(!isStart) { "이미 시작된 게임에는 참여할 수 없습니다." }
         require(!gamers.hasId(user.id)) { "이미 참여한 유저입니다." }
 
-        val gamers = gamers + Gamer(user = user, board = Board.create())
-        return Room(id, title, gamers, isStart)
+        return copy(gamers = gamers + Gamer(user = user, board = Board.create()))
     }
 
     fun leave(user: User): Room {
@@ -74,7 +73,7 @@ data class Room(
             throw LeaveHostException()
         }
 
-        val gamers = gamers
+        val filteredGamers = gamers
             .filter { !it.hasPlayer(user) }
             .mapIndexed { index, gamer ->
                 if (index == 0) {
@@ -83,7 +82,8 @@ data class Room(
                     gamer
                 }
             }
-        return Room(id, title, gamers, isStart)
+
+        return copy(gamers = filteredGamers)
     }
 
     fun findGamer(user: User): Gamer = gamers.find(user)
@@ -111,7 +111,7 @@ data class Room(
                 it
             }
         }
-        return Room(id, title, gamers, isStart)
+        return copy(gamers = gamers)
     }
 
     fun kick(user: User, gamerId: UUID): Room {
@@ -122,6 +122,8 @@ data class Room(
     }
 
     companion object {
+        const val PLAY_TIME = 30L
+
         fun start(title: String, gamers: List<Gamer>) =
             Room(title = title, gamers = gamers, isStart = true)
 
