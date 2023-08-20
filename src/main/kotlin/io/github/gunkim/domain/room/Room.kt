@@ -9,11 +9,11 @@ import java.time.LocalDateTime
 import java.util.*
 
 data class Room(
-        val id: UUID = UUID.randomUUID(),
-        val title: String,
-        val gamers: List<Gamer>,
-        val isStart: Boolean,
-        val endedAt: LocalDateTime? = null,
+    val id: UUID = UUID.randomUUID(),
+    val title: String,
+    val gamers: List<Gamer>,
+    val isStart: Boolean,
+    val endedAt: LocalDateTime? = null,
 ) {
     init {
         require(title.isNotBlank()) { "방 제목은 공백일 수 없습니다." }
@@ -73,8 +73,8 @@ data class Room(
     }
 
     fun stop() = copy(
-            gamers = gamers.map(Gamer::unready),
-            isStart = false,
+        gamers = gamers.map(Gamer::unready),
+        isStart = false,
     )
 
     fun hasGamerId(gamerId: UUID) = gamers.hasId(gamerId)
@@ -107,14 +107,14 @@ data class Room(
         }
 
         val gamers = gamers
-                .filter { !it.hasPlayer(user) }
-                .mapIndexed { index, gamer ->
-                    if (index == 0) {
-                        gamer.host()
-                    } else {
-                        gamer
-                    }
+            .filter { !it.hasPlayer(user) }
+            .mapIndexed { index, gamer ->
+                if (index == 0) {
+                    gamer.host()
+                } else {
+                    gamer
                 }
+            }
         return Room(id, title, gamers, isStart)
     }
 
@@ -148,12 +148,19 @@ data class Room(
         return Room(id, title, gamers, isStart)
     }
 
+    fun kick(user: User, gamerId: UUID): Room {
+        require(gamers.find(user).isHost) { "강퇴는 방장만 할 수 있습니다." }
+        check(!isStart) { "이미 시작된 게임에는 준비할 수 없습니다." }
+
+        return copy(gamers = gamers.filter { it.id != gamerId })
+    }
+
     companion object {
         fun start(title: String, gamers: List<Gamer>) =
-                Room(title = title, gamers = gamers, isStart = true)
+            Room(title = title, gamers = gamers, isStart = true)
 
         fun stop(title: String, gamers: List<Gamer>) =
-                Room(title = title, gamers = gamers, isStart = false)
+            Room(title = title, gamers = gamers, isStart = false)
     }
 }
 
@@ -166,6 +173,6 @@ private fun List<Gamer>.move(user: User, moveType: MoveType) = this.map {
 }
 
 private fun List<Gamer>.find(user: User) = this.find { it.hasPlayer(user) }
-        ?: throw IllegalArgumentException("게임에 참여하지 않은 플레이어 입니다.")
+    ?: throw IllegalArgumentException("게임에 참여하지 않은 플레이어 입니다.")
 
 private fun List<Gamer>.hasId(id: UUID) = this.any { it.isSameUserId(id) }

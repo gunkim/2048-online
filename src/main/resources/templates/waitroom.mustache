@@ -30,6 +30,18 @@
 
             putHtml('player-list', createPlayer(response.data.players).join(''));
             putHtml('room-title', response.data.title);
+
+            document.addEventListener("click", async (event) => {
+                if (event.target.classList.contains("kick")) {
+                    const gamerId = event.target.getAttribute("data-gamer-id");
+
+                    try {
+                        await axios.put(`/rooms/${roomId}/kick`, {'gamerId': gamerId});
+                    } catch (e) {
+                        alert(e.response.data.message);
+                    }
+                }
+            });
         })();
     </script>
 {{/js}}

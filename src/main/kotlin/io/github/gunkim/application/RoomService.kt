@@ -79,4 +79,10 @@ class RoomService(
             throw IllegalArgumentException("해당 플레이어는 방에 참여하지 않았습니다. (gamer_id : $userId, room_id : $roomId)")
         }
     }
+
+    fun kick(roomId: UUID, userId: UUID, gamerId: UUID) {
+        val (user, room) = load(userId, roomId)
+
+        roomRepository.save(room.kick(user, gamerId))
+    }
 }
