@@ -4,9 +4,18 @@
         <span id="timer">120</span>
     </div>
     <div class="boards-container" id="boards"></div>
+
+    <div id="resultModal" class="modal">
+        <div class="modal-content">
+            <h2>게임 결과</h2>
+            <ul id="result"></ul>
+            <span id="redirect-timer"></span>
+        </div>
+    </div>
 {{/content}}
 {{#css}}
     <link rel="stylesheet" href="/css/game.css">
+    <link rel="stylesheet" href="/css/modal.css">
 {{/css}}
 {{#js}}
     <script type="text/javascript" src="/js/game.js"></script>

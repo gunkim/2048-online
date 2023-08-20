@@ -1,3 +1,5 @@
+const REDIRECT_TIME = 5;
+
 const createGamers = (gamers) => gamers.map(gamer => `
                 <div class="board" data-value="${gamer.userId}">
                 <div class="score-container">
@@ -11,6 +13,13 @@ const createGamers = (gamers) => gamers.map(gamer => `
                 </div>
             </div>`).join('');
 
+const createResult = (gamers) => gamers.map(gamer =>
+    `<li>
+    <p class="player-avatar" style="background-image: url(${gamer.profileImageUrl});"></p>
+    <p class="player-info">${gamer.name} : ${gamer.score}</p>
+  </li>`
+).join('');
+
 const stompClient = createStompClient((stompClient) => {
     stompClient.connect({}, () => {
         stompClient.subscribe(`/topic/rooms/${roomId}/game`, (response) => {
@@ -19,14 +28,19 @@ const stompClient = createStompClient((stompClient) => {
         });
         stompClient.subscribe(`/topic/rooms/${roomId}/game-end`, (response) => {
             const gamers = JSON.parse(response.body);
-            console.log(gamers);
 
-            console.log('게임 종료! 5초 뒤 대기실로 이동합니다.');
+            putHtml('result', createResult(gamers));
+
+            const resultModal = document.getElementById('resultModal');
+            resultModal.style.display = 'block';
+            putHtml('redirect-timer', `${REDIRECT_TIME}초`);
+
             let count = 0;
             setInterval(() => {
-                console.log((5-count)+'초.');
+                const time = REDIRECT_TIME - count;
+                putHtml('redirect-timer', `${time}초`);
                 count++;
-                if(count === 5) {
+                if (count === 5) {
                     window.location.href = `/waitroom/${roomId}`
                 }
             }, 1000);

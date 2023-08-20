@@ -167,3 +167,32 @@
 .grid-cell[data-value='ELEVEN']::before {
     font-size: 1.4em;
 }
+
+#redirect-timer {
+    font-weight: bold;
+}
+
+#redirect-timer ul {
+    padding: 0;
+}
+
+#result {
+    list-style: none;
+    padding: 0;
+}
+
+.player-avatar {
+    display: inline-block;
+    vertical-align: middle;
+    width: 30px;
+    height: 30px;
+    background-size: cover;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.player-info {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 16px;
+}
