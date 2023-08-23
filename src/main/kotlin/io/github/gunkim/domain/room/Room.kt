@@ -21,9 +21,6 @@ data class Room(
         require(gamers.size <= 4) { "게임에 참여할 수 있는 인원은 최대 4명입니다." }
         require(gamers.isNotEmpty()) { "게임에 참여할 수 있는 인원은 최소 1명 이상입니다." }
         require(gamers.distinctBy { it.user.id }.size == gamers.size) { "중복된 유저가 있습니다." }
-    }
-
-    init {
         require(gamers.isNotEmpty()) { "게임에 참여할 수 있는 인원은 최소 1명 이상입니다." }
     }
 
