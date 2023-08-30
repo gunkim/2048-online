@@ -42,7 +42,7 @@ class RoomTests : StringSpec({
 
         val room = Room.start("테스트 방", gamers)
 
-        assertThrows<IllegalStateException> { room.start(user1) }
+        assertThrows<IllegalStateException> { room.start(user1.id) }
                 .apply { assertThat(message).isEqualTo("이미 게임이 시작되었습니다.") }
     }
     "게임이 시작되지 않았는데 종료할 경우 예외가 발생한다" {
@@ -56,7 +56,7 @@ class RoomTests : StringSpec({
 
         val room = Room.stop("테스트 방", gamers)
 
-        assertThrows<IllegalStateException> { room.stop(user1) }
+        assertThrows<IllegalStateException> { room.stop(user1.id) }
                 .apply { assertThat(message).isEqualTo("게임이 시작되지 않았습니다.") }
     }
     "방장이 아닌 플레이어가 시작을 할 경우 예외가 발생한다" {
@@ -70,7 +70,7 @@ class RoomTests : StringSpec({
 
         val room = Room.stop("테스트 방", gamers)
 
-        assertThrows<IllegalArgumentException> { room.start(user2) }
+        assertThrows<IllegalArgumentException> { room.start(user2.id) }
                 .apply { assertThat(message).isEqualTo("시작은 방장만 할 수 있습니다.") }
     }
     "방장이 아닌 플레이어가 종료를 할 경우 예외가 발생한다" {
@@ -84,7 +84,7 @@ class RoomTests : StringSpec({
 
         val room = Room.start("테스트 방", gamers)
 
-        assertThrows<IllegalArgumentException> { room.stop(user2) }
+        assertThrows<IllegalArgumentException> { room.stop(user2.id) }
                 .apply { assertThat(message).isEqualTo("종료는 방장만 할 수 있습니다.") }
     }
     "방장은 게임을 시작할 수 있다" {
@@ -98,7 +98,7 @@ class RoomTests : StringSpec({
 
         val room = Room.stop("테스트 방", gamers)
 
-        val result = room.start(user1)
+        val result = room.start(user1.id)
 
         assertTrue(result.isStart)
     }
@@ -113,7 +113,7 @@ class RoomTests : StringSpec({
 
         val room = Room.start("테스트 방", gamers)
 
-        val result = room.stop(user1)
+        val result = room.stop(user1.id)
 
         assertFalse(result.isStart)
     }
