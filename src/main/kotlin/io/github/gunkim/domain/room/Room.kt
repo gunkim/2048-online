@@ -6,7 +6,7 @@ import io.github.gunkim.domain.game.Gamer
 import io.github.gunkim.domain.game.MoveType
 import io.github.gunkim.domain.user.User
 import java.time.LocalDateTime
-import java.util.*
+import java.util.UUID
 
 data class Room(
     val id: UUID = UUID.randomUUID(),
@@ -29,9 +29,9 @@ data class Room(
         return Room(id, title, gamers.move(user, moveType), isStart)
     }
 
-    fun start(user: User): Room {
+    fun start(userId: UUID): Room {
         check(!isStart) { "이미 게임이 시작되었습니다." }
-        require(gamers.find(user).isHost) { "시작은 방장만 할 수 있습니다." }
+        require(gamers.find(userId).isHost) { "시작은 방장만 할 수 있습니다." }
         check(gamers.size >= 2) { "게임에 참여할 수 있는 인원은 최소 2명 이상입니다." }
         check(gamers.all(Gamer::isReady)) { "게임에 참여한 모든 플레이어가 준비되어야 합니다." }
 
@@ -41,9 +41,9 @@ data class Room(
         return copy(gamers = gamers, isStart = true, endedAt = LocalDateTime.now().plusSeconds(PLAY_TIME))
     }
 
-    fun stop(user: User): Room {
+    fun stop(userId: UUID): Room {
         check(isStart) { "게임이 시작되지 않았습니다." }
-        require(gamers.find(user).isHost) { "종료는 방장만 할 수 있습니다." }
+        require(gamers.find(userId).isHost) { "종료는 방장만 할 수 있습니다." }
 
         return copy(isStart = false)
     }
@@ -62,16 +62,16 @@ data class Room(
         return copy(gamers = gamers + Gamer(user = user, board = Board.create()))
     }
 
-    fun leave(user: User): Room {
+    fun leave(userId: UUID): Room {
         check(!isStart) { "이미 시작된 게임에는 나갈 수 없습니다." }
-        require(gamers.hasId(user.id)) { "게임에 참여하지 않은 플레이어 입니다." }
+        require(gamers.hasId(userId)) { "게임에 참여하지 않은 플레이어 입니다." }
 
         if (gamers.size == 1) {
             throw LeaveHostException()
         }
 
         val filteredGamers = gamers
-            .filter { !it.hasPlayer(user) }
+            .filter { !it.hasPlayer(userId) }
             .mapIndexed { index, gamer ->
                 if (index == 0) {
                     gamer.host()
@@ -83,7 +83,7 @@ data class Room(
         return copy(gamers = filteredGamers)
     }
 
-    fun findGamer(user: User): Gamer = gamers.find(user)
+    fun findGamer(userId: UUID): Gamer = gamers.find(userId)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -98,11 +98,11 @@ data class Room(
         return id.hashCode()
     }
 
-    fun ready(user: User): Room {
+    fun ready(userId: UUID): Room {
         check(!isStart) { "이미 시작된 게임에는 준비할 수 없습니다." }
 
         val gamers = gamers.map {
-            if (it.hasPlayer(user)) {
+            if (it.hasPlayer(userId)) {
                 it.reverseReady()
             } else {
                 it
@@ -111,8 +111,8 @@ data class Room(
         return copy(gamers = gamers)
     }
 
-    fun kick(user: User, gamerId: UUID): Room {
-        require(gamers.find(user).isHost) { "강퇴는 방장만 할 수 있습니다." }
+    fun kick(userId: UUID, gamerId: UUID): Room {
+        require(gamers.find(userId).isHost) { "강퇴는 방장만 할 수 있습니다." }
         check(!isStart) { "이미 시작된 게임에는 준비할 수 없습니다." }
 
         return copy(gamers = gamers.filter { it.id != gamerId })
@@ -130,14 +130,14 @@ data class Room(
 }
 
 private fun List<Gamer>.move(user: User, moveType: MoveType) = this.map {
-    if (it.hasPlayer(user)) {
+    if (it.hasPlayer(user.id)) {
         it.move(moveType)
     } else {
         it
     }
 }
 
-private fun List<Gamer>.find(user: User) = this.find { it.hasPlayer(user) }
+private fun List<Gamer>.find(userId: UUID) = this.find { it.hasPlayer(userId) }
     ?: throw IllegalArgumentException("게임에 참여하지 않은 플레이어 입니다.")
 
 private fun List<Gamer>.hasId(id: UUID) = this.any { it.isSameUserId(id) }

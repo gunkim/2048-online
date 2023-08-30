@@ -32,16 +32,16 @@ class RoomService(
     }
 
     fun start(roomId: UUID, userId: UUID) {
-        val (user, room) = load(userId, roomId)
+        val room = roomRepository.find(roomId)
 
-        roomRepository.save(room.start(user))
+        roomRepository.save(room.start(userId))
     }
 
     fun leave(roomId: UUID, userId: UUID): Boolean {
-        val (user, room) = load(userId, roomId)
+        val room = roomRepository.find(roomId)
 
         return try {
-            roomRepository.save(room.leave(user))
+            roomRepository.save(room.leave(userId))
             true
         } catch (e: LeaveHostException) {
             roomRepository.delete(room)
@@ -63,9 +63,9 @@ class RoomService(
     }
 
     fun ready(userId: UUID, roomId: UUID) {
-        val (user, room) = load(userId, roomId)
+        val room = roomRepository.find(roomId)
 
-        roomRepository.save(room.ready(user))
+        roomRepository.save(room.ready(userId))
     }
 
     private fun load(userId: UUID, roomId: UUID) = userRepository.find(userId) to roomRepository.find(roomId)
@@ -81,8 +81,8 @@ class RoomService(
     }
 
     fun kick(roomId: UUID, userId: UUID, gamerId: UUID) {
-        val (user, room) = load(userId, roomId)
+        val room = roomRepository.find(roomId)
 
-        roomRepository.save(room.kick(user, gamerId))
+        roomRepository.save(room.kick(userId, gamerId))
     }
 }
