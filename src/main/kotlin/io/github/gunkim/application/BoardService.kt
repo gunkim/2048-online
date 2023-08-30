@@ -14,9 +14,7 @@ class BoardService(
     fun move(roomId: UUID, userId: UUID, type: MoveType) {
         val room = roomRepository.find(roomId)
 
-        if (!room.isStart) {
-            error("게임이 시작되지 않았습니다.")
-        }
+        check(room.isStart) { "게임이 시작되지 않았습니다." }
 
         val gamer = room.findGamer(userId).move(type)
         gamerRepository.save(gamer)
