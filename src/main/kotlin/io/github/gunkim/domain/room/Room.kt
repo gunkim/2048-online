@@ -71,7 +71,7 @@ data class Room(
         }
 
         val filteredGamers = gamers
-            .filter { !it.hasPlayer(user) }
+            .filter { !it.hasPlayer(user.id) }
             .mapIndexed { index, gamer ->
                 if (index == 0) {
                     gamer.host()
@@ -83,7 +83,7 @@ data class Room(
         return copy(gamers = filteredGamers)
     }
 
-    fun findGamer(user: User): Gamer = gamers.find(user)
+    fun findGamer(userId: UUID): Gamer = gamers.find(userId)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -102,7 +102,7 @@ data class Room(
         check(!isStart) { "이미 시작된 게임에는 준비할 수 없습니다." }
 
         val gamers = gamers.map {
-            if (it.hasPlayer(user)) {
+            if (it.hasPlayer(user.id)) {
                 it.reverseReady()
             } else {
                 it
@@ -130,14 +130,17 @@ data class Room(
 }
 
 private fun List<Gamer>.move(user: User, moveType: MoveType) = this.map {
-    if (it.hasPlayer(user)) {
+    if (it.hasPlayer(user.id)) {
         it.move(moveType)
     } else {
         it
     }
 }
 
-private fun List<Gamer>.find(user: User) = this.find { it.hasPlayer(user) }
+private fun List<Gamer>.find(userId: UUID) = this.find { it.hasPlayer(userId) }
+    ?: throw IllegalArgumentException("게임에 참여하지 않은 플레이어 입니다.")
+
+private fun List<Gamer>.find(user: User) = this.find { it.hasPlayer(user.id) }
     ?: throw IllegalArgumentException("게임에 참여하지 않은 플레이어 입니다.")
 
 private fun List<Gamer>.hasId(id: UUID) = this.any { it.isSameUserId(id) }
