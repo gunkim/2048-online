@@ -23,7 +23,7 @@ import java.util.*
 @RequestMapping("/rooms")
 class RoomController(
     private val roomService: RoomService,
-    private val messagingTemplate: SimpMessagingTemplate
+    private val messagingTemplate: SimpMessagingTemplate,
 ) {
     @PostMapping
     fun create(

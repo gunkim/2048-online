@@ -10,6 +10,6 @@ class CommonExceptionHandler {
     @ExceptionHandler(value = [IllegalArgumentException::class, IllegalStateException::class])
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     fun illegalArgumentExceptionHandle(exception: RuntimeException) = CommonErrorResponse(
-            message = exception.message ?: "invalid request",
+        message = exception.message ?: "invalid request",
     )
 }

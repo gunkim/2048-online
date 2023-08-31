@@ -27,9 +27,10 @@ class StopGameScheduler(
             roomRepository.save(room.stop())
 
             messagingTemplate.convertAndSend(
-                "/topic/rooms/${room.id}/game-end", room.gamers
+                "/topic/rooms/${room.id}/game-end",
+                room.gamers
                     .map(StopGameScheduler::GamerResponse)
-                    .sortedByDescending(GamerResponse::score)
+                    .sortedByDescending(GamerResponse::score),
             )
         }
     }
@@ -44,7 +45,7 @@ class StopGameScheduler(
             gamer.user.id,
             gamer.user.profileImageUrl,
             gamer.user.name,
-            gamer.score
+            gamer.score,
         )
     }
 }
