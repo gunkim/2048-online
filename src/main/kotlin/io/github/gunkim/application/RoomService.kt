@@ -7,7 +7,7 @@ import io.github.gunkim.domain.room.Room
 import io.github.gunkim.domain.room.RoomRepository
 import io.github.gunkim.domain.user.UserRepository
 import org.springframework.stereotype.Service
-import java.util.*
+import java.util.UUID
 
 @Service
 class RoomService(
@@ -24,9 +24,7 @@ class RoomService(
     fun join(roomId: UUID, userId: UUID) {
         val (user, room) = load(userId, roomId)
 
-        if (roomRepository.existByUserId(user.id)) {
-            throw IllegalArgumentException("이미 방에 참여중입니다.")
-        }
+        require(!roomRepository.existByUserId(user.id)) { "이미 방에 참여중입니다." }
 
         roomRepository.save(room.join(user))
     }
@@ -52,9 +50,7 @@ class RoomService(
     fun create(title: String, userId: UUID): Room {
         val user = userRepository.find(userId)
 
-        if (roomRepository.existByUserId(user.id)) {
-            throw IllegalArgumentException("이미 방에 참여중입니다.")
-        }
+        require(!roomRepository.existByUserId(user.id)) { "이미 방에 참여중입니다." }
 
         val hostGamer = Gamer(user = user, board = Board.create(), isHost = true)
         val room = Room(title = title, gamers = listOf(hostGamer), isStart = false)
@@ -75,9 +71,7 @@ class RoomService(
         userId: UUID,
         roomId: UUID,
     ) {
-        if (!room.hasUserId(userId)) {
-            throw IllegalArgumentException("해당 플레이어는 방에 참여하지 않았습니다. (gamer_id : $userId, room_id : $roomId)")
-        }
+        require(room.hasUserId(userId)) { "해당 플레이어는 방에 참여하지 않았습니다. (gamer_id : $userId, room_id : $roomId)" }
     }
 
     fun kick(roomId: UUID, userId: UUID, gamerId: UUID) {
