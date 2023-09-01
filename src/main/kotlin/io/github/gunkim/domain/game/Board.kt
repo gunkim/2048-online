@@ -1,6 +1,6 @@
 package io.github.gunkim.domain.game
 
-import java.util.UUID
+import java.util.*
 
 data class Board(
     val id: UUID = UUID.randomUUID(),
@@ -22,15 +22,6 @@ data class Board(
 
     fun move(type: MoveType) = type.move(this)
 
-    private fun move(rows: Rows): Board {
-        val isMoved = this.rows != rows
-        return if (isMoved) {
-            copy(rows = rows.addLevel1CellWithRandomPosition())
-        } else {
-            copy(rows = rows)
-        }
-    }
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -42,6 +33,15 @@ data class Board(
 
     override fun hashCode(): Int {
         return id.hashCode()
+    }
+
+    private fun move(rows: Rows): Board {
+        val isMoved = this.rows != rows
+        return if (isMoved) {
+            copy(rows = rows.addLevel1CellWithRandomPosition())
+        } else {
+            copy(rows = rows)
+        }
     }
 
     companion object {

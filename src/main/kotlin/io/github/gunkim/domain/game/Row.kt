@@ -29,13 +29,9 @@ data class Row(
         .reversed()
         .let(::Row)
 
-    private fun fill(movedRow: List<Cell>): List<Cell> = if (movedRow.size < SIZE) {
-        movedRow + List(SIZE - movedRow.size) { Cell.ZERO }
-    } else {
-        movedRow
-    }
-
     operator fun get(index: Int): Cell = content[index]
+
+    fun addOneCell(x: Int) = Row(content.addLevel1Cell(x))
 
     private fun move(accumulator: List<Cell>, cell: Cell): List<Cell> {
         return if (accumulator.isNotEmpty()) {
@@ -51,7 +47,11 @@ data class Row(
         }
     }
 
-    fun addOneCell(x: Int) = Row(content.addLevel1Cell(x))
+    private fun fill(movedRow: List<Cell>): List<Cell> = if (movedRow.size < SIZE) {
+        movedRow + List(SIZE - movedRow.size) { Cell.ZERO }
+    } else {
+        movedRow
+    }
 
     companion object {
         private val SIZE = 4
