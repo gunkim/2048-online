@@ -26,7 +26,7 @@ data class PlayerResponse(
     val isHost: Boolean,
 ) {
     constructor(gamer: Gamer) : this(
-        gamer.id,
+        gamer.user.id,
         gamer.user.name,
         gamer.user.profileImageUrl,
         gamer.isReady,

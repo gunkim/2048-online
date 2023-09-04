@@ -74,9 +74,9 @@ class RoomService(
         require(room.hasUserId(userId)) { "해당 플레이어는 방에 참여하지 않았습니다. (gamer_id : $userId, room_id : $roomId)" }
     }
 
-    fun kick(roomId: UUID, userId: UUID, gamerId: UUID) {
+    fun kick(roomId: UUID, managerId: UUID, gamerId: UUID) {
         val room = roomRepository.find(roomId)
 
-        roomRepository.save(room.kick(userId, gamerId))
+        roomRepository.save(room.kick(managerId, gamerId))
     }
 }

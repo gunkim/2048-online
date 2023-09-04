@@ -1,10 +1,9 @@
 package io.github.gunkim.domain.game
 
 import io.github.gunkim.domain.user.User
-import java.util.*
+import java.util.UUID
 
 data class Gamer(
-    val id: UUID = UUID.randomUUID(),
     val user: User,
     val board: Board,
     val isHost: Boolean = false,
@@ -17,7 +16,7 @@ data class Gamer(
     fun start() = copy(board = Board.start())
     fun move(moveType: MoveType) = copy(board = moveType(board))
 
-    fun hasPlayer(userId: UUID) = user.isSameId(userId)
+    fun hasPlayerId(userId: UUID) = user.isSameId(userId)
 
     fun isSameUserId(userId: UUID) = user.isSameId(userId)
 
@@ -35,10 +34,12 @@ data class Gamer(
 
         other as Gamer
 
-        return id == other.id
+        return user == other.user
     }
 
     override fun hashCode(): Int {
-        return id.hashCode()
+        return user.hashCode()
     }
+
+
 }
