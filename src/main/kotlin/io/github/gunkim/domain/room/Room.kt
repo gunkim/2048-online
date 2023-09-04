@@ -111,11 +111,11 @@ data class Room(
         return copy(gamers = gamers)
     }
 
-    fun kick(userId: UUID, gamerId: UUID): Room {
-        require(gamers.find(userId).isHost) { "강퇴는 방장만 할 수 있습니다." }
+    fun kick(managerId: UUID, gamerId: UUID): Room {
+        require(gamers.find(managerId).isHost) { "강퇴는 방장만 할 수 있습니다." }
         check(!isStart) { "이미 시작된 게임에는 준비할 수 없습니다." }
 
-        return copy(gamers = gamers.filter { it.user.id != gamerId })
+        return copy(gamers = gamers.filter { !it.isPlayer(gamerId) })
     }
 
     companion object {
