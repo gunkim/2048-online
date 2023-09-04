@@ -1,16 +1,15 @@
 package io.github.gunkim.domain.game
 
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.DisplayName
 import io.kotest.core.spec.style.StringSpec
-import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.assertAll
-import org.junit.jupiter.api.assertThrows
+import io.kotest.matchers.shouldBe
 
 @DisplayName("행들은")
 class RowsTests : StringSpec({
     "사이즈가 4가 아닐 경우 예외가 발생한다" {
-        assertThrows<IllegalArgumentException> { Rows(listOf()) }
-            .apply { assertThat(message).isEqualTo("세로 폭은 4여야 합니다.") }
+        shouldThrow<IllegalArgumentException> { Rows(listOf()) }
+            .apply { message shouldBe "세로 폭은 4여야 합니다." }
     }
     "위로 이동한다" {
         val rows = Rows(
@@ -24,19 +23,13 @@ class RowsTests : StringSpec({
 
         val movedRows = rows.moveUp()
 
-        assertAll(
-            {
-                assertThat(movedRows).isEqualTo(
-                    Rows(
-                        listOf(
-                            Row(listOf(Cell.ZERO, Cell.TWO, Cell.TWO, Cell.FOUR)),
-                            Row(listOf(Cell.ZERO, Cell.TWO, Cell.TWO, Cell.FOUR)),
-                            Row(listOf(Cell.ZERO, Cell.ZERO, Cell.ZERO, Cell.ZERO)),
-                            Row(listOf(Cell.ZERO, Cell.ZERO, Cell.ZERO, Cell.ZERO)),
-                        ),
-                    ),
-                )
-            },
+        movedRows shouldBe Rows(
+            listOf(
+                Row(listOf(Cell.ZERO, Cell.TWO, Cell.TWO, Cell.FOUR)),
+                Row(listOf(Cell.ZERO, Cell.TWO, Cell.TWO, Cell.FOUR)),
+                Row(listOf(Cell.ZERO, Cell.ZERO, Cell.ZERO, Cell.ZERO)),
+                Row(listOf(Cell.ZERO, Cell.ZERO, Cell.ZERO, Cell.ZERO)),
+            ),
         )
     }
     "아래로 이동한다" {
@@ -51,19 +44,13 @@ class RowsTests : StringSpec({
 
         val movedRows = rows.moveDown()
 
-        assertAll(
-            {
-                assertThat(movedRows).isEqualTo(
-                    Rows(
-                        listOf(
-                            Row(listOf(Cell.ZERO, Cell.ZERO, Cell.ZERO, Cell.ZERO)),
-                            Row(listOf(Cell.ZERO, Cell.ZERO, Cell.ZERO, Cell.ZERO)),
-                            Row(listOf(Cell.ZERO, Cell.TWO, Cell.TWO, Cell.FOUR)),
-                            Row(listOf(Cell.ZERO, Cell.TWO, Cell.TWO, Cell.FOUR)),
-                        ),
-                    ),
-                )
-            },
+        movedRows shouldBe Rows(
+            listOf(
+                Row(listOf(Cell.ZERO, Cell.ZERO, Cell.ZERO, Cell.ZERO)),
+                Row(listOf(Cell.ZERO, Cell.ZERO, Cell.ZERO, Cell.ZERO)),
+                Row(listOf(Cell.ZERO, Cell.TWO, Cell.TWO, Cell.FOUR)),
+                Row(listOf(Cell.ZERO, Cell.TWO, Cell.TWO, Cell.FOUR)),
+            ),
         )
     }
 })
