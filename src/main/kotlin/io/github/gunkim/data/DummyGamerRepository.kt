@@ -12,7 +12,7 @@ class DummyGamerRepository(
 ) : GamerRepository {
     override fun find() = roomRepository.find().flatMap { it.gamers }
 
-    override fun find(id: UUID) = find().find { it.isPlayer(id) } ?: throw IllegalArgumentException("존재하지 않는 플레이어입니다.")
+    override fun find(id: UUID) = find().find { it.hasPlayerId(id) } ?: throw IllegalArgumentException("존재하지 않는 플레이어입니다.")
 
     override fun findByUserId(userId: UUID) = find().find { it.user.id == userId } ?: throw IllegalArgumentException("존재하지 않는 플레이어입니다.")
 

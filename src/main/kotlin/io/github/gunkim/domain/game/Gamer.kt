@@ -16,7 +16,7 @@ data class Gamer(
     fun start() = copy(board = Board.start())
     fun move(moveType: MoveType) = copy(board = moveType(board))
 
-    fun isPlayer(userId: UUID) = user.isSameId(userId)
+    fun hasPlayerId(userId: UUID) = user.isSameId(userId)
 
     fun isSameUserId(userId: UUID) = user.isSameId(userId)
 

@@ -71,7 +71,7 @@ data class Room(
         }
 
         val filteredGamers = gamers
-            .filter { !it.isPlayer(userId) }
+            .filter { !it.hasPlayerId(userId) }
             .mapIndexed { index, gamer ->
                 if (index == 0) {
                     gamer.host()
@@ -102,7 +102,7 @@ data class Room(
         check(!isStart) { "이미 시작된 게임에는 준비할 수 없습니다." }
 
         val gamers = gamers.map {
-            if (it.isPlayer(userId)) {
+            if (it.hasPlayerId(userId)) {
                 it.reverseReady()
             } else {
                 it
@@ -115,7 +115,7 @@ data class Room(
         require(gamers.find(managerId).isHost) { "강퇴는 방장만 할 수 있습니다." }
         check(!isStart) { "이미 시작된 게임에는 준비할 수 없습니다." }
 
-        return copy(gamers = gamers.filter { !it.isPlayer(gamerId) })
+        return copy(gamers = gamers.filter { !it.hasPlayerId(gamerId) })
     }
 
     companion object {
@@ -130,14 +130,14 @@ data class Room(
 }
 
 private fun List<Gamer>.move(user: User, moveType: MoveType) = this.map {
-    if (it.isPlayer(user.id)) {
+    if (it.hasPlayerId(user.id)) {
         it.move(moveType)
     } else {
         it
     }
 }
 
-private fun List<Gamer>.find(userId: UUID) = this.find { it.isPlayer(userId) }
+private fun List<Gamer>.find(userId: UUID) = this.find { it.hasPlayerId(userId) }
     ?: throw IllegalArgumentException("게임에 참여하지 않은 플레이어 입니다.")
 
 private fun List<Gamer>.hasId(id: UUID) = this.any { it.isSameUserId(id) }
