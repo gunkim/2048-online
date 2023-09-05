@@ -15,7 +15,7 @@ plugins {
 }
 
 group = "io.github.gunkim"
-version = "1.0.0"
+version = "2023.09.05"
 
 repositories {
     mavenCentral()
