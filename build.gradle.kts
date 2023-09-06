@@ -2,8 +2,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val kotlinVersion: String by project
 val jdkVersion: String by project
-val junitVersion: String by project
-val assertJVersion: String by project
 
 plugins {
     java
@@ -31,7 +29,6 @@ dependencies {
     implementation("io.jsonwebtoken:jjwt:0.9.1")
     implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
-    testImplementation("org.assertj:assertj-core:$assertJVersion")
     testImplementation("io.kotest:kotest-runner-junit5-jvm:4.6.3")
 }
 
