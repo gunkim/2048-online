@@ -9,9 +9,6 @@ data class Board(
     val score: Int
         get() = rows.score
 
-    val isGameWin: Boolean
-        get() = rows.isGameWin
-
     fun moveLeft(): Board = move(rows.moveLeft())
 
     fun moveRight(): Board = move(rows.moveRight())
