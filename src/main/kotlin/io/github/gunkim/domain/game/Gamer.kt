@@ -1,7 +1,7 @@
 package io.github.gunkim.domain.game
 
 import io.github.gunkim.domain.user.User
-import java.util.UUID
+import java.util.*
 
 data class Gamer(
     val user: User,
@@ -22,8 +22,6 @@ data class Gamer(
 
     fun host() = copy(isHost = true)
 
-    fun ready() = copy(isReady = true)
-
     fun unready() = copy(isReady = false)
 
     fun reverseReady() = copy(isReady = !isReady)
@@ -40,6 +38,4 @@ data class Gamer(
     override fun hashCode(): Int {
         return user.hashCode()
     }
-
-
 }
