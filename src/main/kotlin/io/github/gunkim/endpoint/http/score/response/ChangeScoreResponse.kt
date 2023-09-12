@@ -1,11 +1,13 @@
 package io.github.gunkim.endpoint.http.score.response
 
 import io.github.gunkim.domain.score.HighScore
+import io.github.gunkim.endpoint.http.score.response.ChangeScoreStatus.NOT_UPDATED
+import io.github.gunkim.endpoint.http.score.response.ChangeScoreStatus.UPDATED
 
 data class ChangeScoreResponse(
     val score: Long,
-    val message: String
+    val changeScoreStatus: ChangeScoreStatus,
 ) {
-    constructor(highScore: HighScore) : this(highScore.score, "기존 기록을 갱신 했습니다.")
-    constructor(score: Long) : this(score, "기존 기록을 갱신하지 못했습니다. 전 최고기록은 $score 입니다.")
+    constructor(highScore: HighScore) : this(highScore.score, UPDATED)
+    constructor(score: Long) : this(score, NOT_UPDATED)
 }
