@@ -5,7 +5,7 @@ import java.util.UUID
 data class HighScore(
     val id: UUID = UUID.randomUUID(),
     val userId: UUID,
-    val score: Long = 0
+    val score: Long = 0,
 ) {
     init {
         validScore(score)
@@ -31,6 +31,4 @@ data class HighScore(
     override fun hashCode(): Int {
         return userId.hashCode()
     }
-
-
 }
