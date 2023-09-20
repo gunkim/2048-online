@@ -1,20 +1,21 @@
 package io.github.gunkim.data
 
-import io.github.gunkim.domain.score.HighScore
+import io.github.gunkim.domain.score.ScoreHistory
 import io.github.gunkim.domain.score.ScoreRepository
 import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
 class DummyScoreRepository(
-    private val map: MutableMap<UUID, HighScore> = mutableMapOf(),
+    private val map: MutableMap<UUID, ScoreHistory> = mutableMapOf(),
 ) : ScoreRepository {
 
-    override fun save(score: HighScore) = score
+    override fun save(score: ScoreHistory) = score
         .also { map[score.id] = score }
         .let { score }
 
-    override fun findByUserId(userId: UUID): HighScore = map[userId] ?: error("존재하지 않는 사용자입니다.")
-
-    override fun findAll(): List<HighScore> = map.values.toList()
+    override fun findHighScore(userId: UUID): ScoreHistory = map.values
+        .filter { it.userId == userId }
+        .maxByOrNull { it.score }
+        ?: save(ScoreHistory(userId = userId))
 }
