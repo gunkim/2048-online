@@ -7,7 +7,7 @@ import java.util.UUID
 
 @Repository
 class DummyScoreRepository(
-    private val map: MutableMap<UUID, ScoreHistory> = mutableMapOf(),
+    private val map: MutableMap<UUID, ScoreHistory> = mutableMapOf()
 ) : ScoreRepository {
 
     override fun save(score: ScoreHistory) = score

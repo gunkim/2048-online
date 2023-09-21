@@ -18,13 +18,13 @@ import java.util.*
 class MoveBoardController(
     private val boardService: BoardService,
     private val roomService: RoomService,
-    private val messagingTemplate: SimpMessagingTemplate,
+    private val messagingTemplate: SimpMessagingTemplate
 ) {
     @MessageMapping("/rooms/{roomId}/move")
     fun move(
         user: OAuth2AuthenticationToken,
         @DestinationVariable roomId: UUID,
-        @RequestBody request: MoveBoardRequest,
+        @RequestBody request: MoveBoardRequest
     ) {
         boardService.move(roomId, user.id, request.direction)
 
@@ -32,7 +32,7 @@ class MoveBoardController(
             "/topic/rooms/$roomId/game",
             roomService.find(user.id, roomId).gamers
                 .sortedBy(Gamer::order)
-                .map(::GameResponse),
+                .map(::GameResponse)
         )
     }
 }

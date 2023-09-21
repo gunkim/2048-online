@@ -8,7 +8,7 @@ data class ScoreHistory(
     val id: UUID = UUID.randomUUID(),
     val userId: UUID,
     val score: Int = 0,
-    val createdAt: LocalDateTime = now(),
+    val createdAt: LocalDateTime = now()
 ) {
     init {
         require(score >= 0) { "점수는 0 미만이 될 수 없습니다." }

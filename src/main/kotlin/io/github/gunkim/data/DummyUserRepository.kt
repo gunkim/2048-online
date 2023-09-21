@@ -7,7 +7,7 @@ import java.util.UUID
 
 @Repository
 class DummyUserRepository(
-    private val map: MutableMap<UUID, User> = mutableMapOf(),
+    private val map: MutableMap<UUID, User> = mutableMapOf()
 ) : UserRepository {
     override fun find() = map.values.toList()
 

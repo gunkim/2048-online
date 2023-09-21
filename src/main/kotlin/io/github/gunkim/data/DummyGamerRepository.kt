@@ -8,7 +8,7 @@ import java.util.UUID
 
 @Repository
 class DummyGamerRepository(
-    private val roomRepository: RoomRepository,
+    private val roomRepository: RoomRepository
 ) : GamerRepository {
     override fun find() = roomRepository.find().flatMap { it.gamers }
 

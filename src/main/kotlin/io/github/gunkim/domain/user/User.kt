@@ -8,7 +8,7 @@ data class User(
     val email: String,
     val social: Social = Social.GOOGLE,
     val profileImageUrl: String? = null,
-    val role: Role = Role.USER,
+    val role: Role = Role.USER
 ) {
     init {
         require(name.isNotBlank()) { "이름이 비어있을 수 없습니다." }
@@ -21,7 +21,7 @@ data class User(
         email,
         social,
         profileImageUrl,
-        role,
+        role
     )
 
     fun isSameId(id: UUID) = this.id == id

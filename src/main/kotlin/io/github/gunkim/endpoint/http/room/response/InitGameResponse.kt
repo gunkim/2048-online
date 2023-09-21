@@ -4,5 +4,5 @@ import java.time.LocalDateTime
 
 data class InitGameResponse(
     val endTime: LocalDateTime,
-    val gamers: List<GameResponse>,
+    val gamers: List<GameResponse>
 )

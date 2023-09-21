@@ -17,8 +17,8 @@ class RowsTests : StringSpec({
                 Row(listOf(Cell.ZERO, Cell.ONE, Cell.ONE, Cell.THREE)),
                 Row(listOf(Cell.ZERO, Cell.ONE, Cell.ONE, Cell.THREE)),
                 Row(listOf(Cell.ZERO, Cell.ONE, Cell.ONE, Cell.THREE)),
-                Row(listOf(Cell.ZERO, Cell.ONE, Cell.ONE, Cell.THREE)),
-            ),
+                Row(listOf(Cell.ZERO, Cell.ONE, Cell.ONE, Cell.THREE))
+            )
         )
 
         val movedRows = rows.moveUp()
@@ -28,8 +28,8 @@ class RowsTests : StringSpec({
                 Row(listOf(Cell.ZERO, Cell.TWO, Cell.TWO, Cell.FOUR)),
                 Row(listOf(Cell.ZERO, Cell.TWO, Cell.TWO, Cell.FOUR)),
                 Row(listOf(Cell.ZERO, Cell.ZERO, Cell.ZERO, Cell.ZERO)),
-                Row(listOf(Cell.ZERO, Cell.ZERO, Cell.ZERO, Cell.ZERO)),
-            ),
+                Row(listOf(Cell.ZERO, Cell.ZERO, Cell.ZERO, Cell.ZERO))
+            )
         )
     }
     "아래로 이동한다" {
@@ -38,8 +38,8 @@ class RowsTests : StringSpec({
                 Row(listOf(Cell.ZERO, Cell.ONE, Cell.ONE, Cell.THREE)),
                 Row(listOf(Cell.ZERO, Cell.ONE, Cell.ONE, Cell.THREE)),
                 Row(listOf(Cell.ZERO, Cell.ONE, Cell.ONE, Cell.THREE)),
-                Row(listOf(Cell.ZERO, Cell.ONE, Cell.ONE, Cell.THREE)),
-            ),
+                Row(listOf(Cell.ZERO, Cell.ONE, Cell.ONE, Cell.THREE))
+            )
         )
 
         val movedRows = rows.moveDown()
@@ -49,8 +49,8 @@ class RowsTests : StringSpec({
                 Row(listOf(Cell.ZERO, Cell.ZERO, Cell.ZERO, Cell.ZERO)),
                 Row(listOf(Cell.ZERO, Cell.ZERO, Cell.ZERO, Cell.ZERO)),
                 Row(listOf(Cell.ZERO, Cell.TWO, Cell.TWO, Cell.FOUR)),
-                Row(listOf(Cell.ZERO, Cell.TWO, Cell.TWO, Cell.FOUR)),
-            ),
+                Row(listOf(Cell.ZERO, Cell.TWO, Cell.TWO, Cell.FOUR))
+            )
         )
     }
 })

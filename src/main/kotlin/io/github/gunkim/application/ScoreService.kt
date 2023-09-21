@@ -7,7 +7,7 @@ import java.util.UUID
 
 @Service
 class ScoreService(
-    private val scoreRepository: ScoreRepository,
+    private val scoreRepository: ScoreRepository
 ) {
     fun saveScore(score: Int, userId: UUID) =
         scoreRepository.save(ScoreHistory(score = score, userId = userId))

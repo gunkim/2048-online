@@ -12,7 +12,7 @@ import java.util.*
 @Service
 class RoomService(
     private val userRepository: UserRepository,
-    private val roomRepository: RoomRepository,
+    private val roomRepository: RoomRepository
 ) {
     fun find() = roomRepository.find()
 
@@ -75,7 +75,7 @@ class RoomService(
     private fun validate(
         room: Room,
         userId: UUID,
-        roomId: UUID,
+        roomId: UUID
     ) {
         require(room.hasUserId(userId)) { "해당 플레이어는 방에 참여하지 않았습니다. (gamer_id : $userId, room_id : $roomId)" }
     }

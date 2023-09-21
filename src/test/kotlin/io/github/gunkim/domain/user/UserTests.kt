@@ -16,7 +16,7 @@ class UserTests : StringSpec({
             "gun@com",
             "한글@한글",
             "gun@com@com",
-            "gunkim",
+            "gunkim"
         ).forEach {
             shouldThrow<IllegalArgumentException> { User(name = "거누", email = it) }
                 .apply { message shouldBe "이메일 형식이 올바르지 않습니다." }

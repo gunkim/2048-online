@@ -9,7 +9,7 @@ import java.util.UUID
 @Service
 class BoardService(
     private val roomRepository: RoomRepository,
-    private val gamerRepository: GamerRepository,
+    private val gamerRepository: GamerRepository
 ) {
     fun move(roomId: UUID, userId: UUID, type: MoveType) {
         val room = roomRepository.find(roomId)

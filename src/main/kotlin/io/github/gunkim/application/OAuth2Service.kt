@@ -18,7 +18,7 @@ val OAuth2UserRequest.userNameAttributeName: String
 @Service
 class OAuth2Service(
     private val userRepository: UserRepository,
-    private val delegate: DefaultOAuth2UserService,
+    private val delegate: DefaultOAuth2UserService
 ) : OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     override fun loadUser(userRequest: OAuth2UserRequest): OAuth2User {
         val (oAuth2User, userNameAttributeName) = loadOAuth2UserInfo(delegate, userRequest)
@@ -28,7 +28,7 @@ class OAuth2Service(
             DefaultOAuth2User(
                 listOf(SimpleGrantedAuthority("ROLE_${role.name}")),
                 attributes.attributes + mapOf("id" to id),
-                attributes.nameAttributeKey,
+                attributes.nameAttributeKey
             )
         }
     }
@@ -36,12 +36,12 @@ class OAuth2Service(
     private fun getUser(attributes: OAuthAttributes) = userRepository.save(
         userRepository.findByEmail(attributes.email)
             ?.apply { update(attributes.name, attributes.picture) }
-            ?: attributes.toUser(),
+            ?: attributes.toUser()
     )
 
     private fun loadOAuth2UserInfo(
         delegate: DefaultOAuth2UserService,
-        userRequest: OAuth2UserRequest,
+        userRequest: OAuth2UserRequest
     ): Pair<Map<String, Any>, String> {
         val oAuth2User = delegate.loadUser(userRequest)
         val userNameAttributeName = userRequest.userNameAttributeName
@@ -54,17 +54,17 @@ class OAuth2Service(
         val nameAttributeKey: String,
         val name: String,
         val email: String,
-        val picture: String,
+        val picture: String
     ) {
         constructor(
             userNameAttributeName: String,
-            attributes: Map<String, Any>,
+            attributes: Map<String, Any>
         ) : this(
             attributes,
             userNameAttributeName,
             attributes["name"] as String,
             attributes["email"] as String,
-            attributes["picture"] as String,
+            attributes["picture"] as String
         )
 
         fun toUser() = User(
@@ -72,7 +72,7 @@ class OAuth2Service(
             email = email,
             profileImageUrl = picture,
             role = Role.USER,
-            social = Social.GOOGLE,
+            social = Social.GOOGLE
         )
     }
 }

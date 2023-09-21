@@ -1,7 +1,7 @@
 package io.github.gunkim.domain.game
 
 data class Rows(
-    val content: List<Row>,
+    val content: List<Row>
 ) {
     init {
         require(content.size == SIZE) { "세로 폭은 ${SIZE}여야 합니다." }

@@ -8,7 +8,7 @@ import java.io.Writer
 
 @ControllerAdvice
 internal class LayoutAdvice(
-    private val compiler: Mustache.Compiler,
+    private val compiler: Mustache.Compiler
 ) {
     @ModelAttribute("layout")
     fun layout(model: Map<String, Any>): Mustache.Lambda {
@@ -49,7 +49,7 @@ internal class Layout(
     var title: String? = null,
     var content: String? = null,
     var css: String? = null,
-    var js: String? = null,
+    var js: String? = null
 ) : Mustache.Lambda {
     override fun execute(frag: Template.Fragment, out: Writer) {
         frag.execute()

@@ -8,7 +8,7 @@ data class Gamer(
     val board: Board,
     val isHost: Boolean = false,
     val isReady: Boolean = false,
-    var order: Int = -1,
+    var order: Int = -1
 ) {
     val score: Int
         get() = board.score

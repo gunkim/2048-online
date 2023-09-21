@@ -13,7 +13,7 @@ data class Room(
     val title: String,
     val gamers: List<Gamer>,
     val isStart: Boolean,
-    val endedAt: LocalDateTime? = null,
+    val endedAt: LocalDateTime? = null
 ) {
     init {
         require(title.isNotBlank()) { "방 제목은 공백일 수 없습니다." }
@@ -50,7 +50,7 @@ data class Room(
 
     fun stop() = copy(
         gamers = gamers.map(Gamer::unready),
-        isStart = false,
+        isStart = false
     )
 
     fun hasUserId(userId: UUID) = gamers.any { it.user.id == userId }

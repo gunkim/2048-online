@@ -1,7 +1,7 @@
 package io.github.gunkim.domain.game
 
 data class Row(
-    val content: List<Cell>,
+    val content: List<Cell>
 ) {
     val score: Int
         get() = totalScore(content)

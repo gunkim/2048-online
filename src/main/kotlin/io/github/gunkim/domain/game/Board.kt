@@ -4,7 +4,7 @@ import java.util.*
 
 data class Board(
     val id: UUID = UUID.randomUUID(),
-    val rows: Rows,
+    val rows: Rows
 ) {
     val score: Int
         get() = rows.score
@@ -48,7 +48,7 @@ data class Board(
             rows = Rows
                 .empty()
                 .addLevel1CellWithRandomPosition()
-                .addLevel1CellWithRandomPosition(),
+                .addLevel1CellWithRandomPosition()
         )
     }
 }

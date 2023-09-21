@@ -23,12 +23,12 @@ import java.util.*
 @RequestMapping("/rooms")
 class RoomController(
     private val roomService: RoomService,
-    private val messagingTemplate: SimpMessagingTemplate,
+    private val messagingTemplate: SimpMessagingTemplate
 ) {
     @PostMapping
     fun create(
         user: OAuth2AuthenticationToken,
-        @RequestBody request: CreateRoomRequest,
+        @RequestBody request: CreateRoomRequest
     ): ResponseEntity<URI> {
         val createdRoomId = roomService.create(request.title, user.id).id
         val response = roomService.find().map(::RoomResponse)
@@ -44,7 +44,7 @@ class RoomController(
 
         messagingTemplate.convertAndSend(
             "/topic/rooms/$roomId/wait",
-            WaitRoomResponse(roomService.find(user.id, roomId)),
+            WaitRoomResponse(roomService.find(user.id, roomId))
         )
     }
 
@@ -53,19 +53,19 @@ class RoomController(
         if (roomService.leave(roomId, user.id)) {
             messagingTemplate.convertAndSend(
                 "/topic/rooms/$roomId/wait",
-                WaitRoomResponse(roomService.find(roomId)),
+                WaitRoomResponse(roomService.find(roomId))
             )
         } else {
             messagingTemplate.convertAndSend(
                 "/topic/rooms",
-                roomService.find().map(::RoomResponse),
+                roomService.find().map(::RoomResponse)
             )
         }
 
     @PutMapping("/{roomId}/start")
     fun start(
         user: OAuth2AuthenticationToken,
-        @PathVariable roomId: UUID,
+        @PathVariable roomId: UUID
     ) {
         roomService.start(roomId, user.id)
 
@@ -78,7 +78,7 @@ class RoomController(
 
         messagingTemplate.convertAndSend(
             "/topic/rooms/$roomId/wait",
-            WaitRoomResponse(roomService.find(roomId)),
+            WaitRoomResponse(roomService.find(roomId))
         )
     }
 
@@ -86,13 +86,13 @@ class RoomController(
     fun kick(
         user: OAuth2AuthenticationToken,
         @PathVariable roomId: UUID,
-        @RequestBody request: KickGamerRequest,
+        @RequestBody request: KickGamerRequest
     ) {
         roomService.kick(roomId, user.id, request.gamerId)
 
         messagingTemplate.convertAndSend(
             "/topic/rooms/$roomId/wait",
-            WaitRoomResponse(roomService.find(roomId)),
+            WaitRoomResponse(roomService.find(roomId))
         )
         messagingTemplate.convertAndSend("/topic/rooms/$roomId/kick", "Kick!")
     }

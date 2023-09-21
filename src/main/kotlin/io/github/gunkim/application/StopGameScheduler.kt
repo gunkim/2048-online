@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit
 class StopGameScheduler(
     private val roomRepository: RoomRepository,
     private val scoreService: ScoreService,
-    private val messagingTemplate: SimpMessagingTemplate,
+    private val messagingTemplate: SimpMessagingTemplate
 ) {
     @Scheduled(fixedRate = 1, timeUnit = TimeUnit.SECONDS)
     fun stopGame() {
@@ -36,7 +36,7 @@ class StopGameScheduler(
                 "/topic/rooms/${room.id}/game-end",
                 room.gamers
                     .map { GamerResponse(it, highScores) }
-                    .sortedByDescending(GamerResponse::score),
+                    .sortedByDescending(GamerResponse::score)
             )
         }
     }
@@ -46,14 +46,14 @@ class StopGameScheduler(
         val profileImageUrl: String?,
         val name: String,
         val score: Int,
-        val highScore: Int,
+        val highScore: Int
     ) {
         constructor(gamer: Gamer, highScores: List<ScoreHistory>) : this(
             gamer.user.id,
             gamer.user.profileImageUrl,
             gamer.user.name,
             gamer.score,
-            highScores.first { it.userId == gamer.user.id }.score,
+            highScores.first { it.userId == gamer.user.id }.score
         )
     }
 }

@@ -30,7 +30,7 @@ class WebSecurityConfig {
                 "/js/**",
                 "/css/**",
                 "/img/**",
-                "/rooms",
+                "/rooms"
             ).permitAll()
             .requestMatchers(
                 "/rooms/*/details",
@@ -42,7 +42,7 @@ class WebSecurityConfig {
                 "/rooms/*/ready",
                 "/rooms/*/game",
                 "/rooms/*/games",
-                "/rooms/*/start",
+                "/rooms/*/start"
             )
             .hasRole(Role.USER.name)
             .anyRequest().authenticated()

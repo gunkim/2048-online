@@ -17,7 +17,7 @@ import java.util.*
 @RestController
 @RequestMapping("/rooms")
 class RoomFindController(
-    private val roomService: RoomService,
+    private val roomService: RoomService
 ) {
     @GetMapping
     fun find() = roomService.find().map(::RoomResponse)

@@ -11,7 +11,7 @@ import java.util.*
 @Configuration
 class JasyptConfig(
     @Value("\${jasypt.encryptor.password}")
-    private val jasyptPassword: String,
+    private val jasyptPassword: String
 ) {
     @Bean("jasyptStringEncryptor")
     fun stringEncryptor(): StringEncryptor = PooledPBEStringEncryptor().apply {
@@ -25,7 +25,7 @@ class JasyptConfig(
                 setSaltGeneratorClassName("org.jasypt.salt.RandomSaltGenerator")
                 setIvGeneratorClassName("org.jasypt.iv.NoIvGenerator")
                 stringOutputType = "base64"
-            },
+            }
         )
     }
 }
