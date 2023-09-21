@@ -17,28 +17,28 @@ internal class LayoutAdvice(
 
     @ModelAttribute("title")
     fun title(@ModelAttribute layout: Layout): Mustache.Lambda {
-        return Mustache.Lambda { frag, out ->
+        return Mustache.Lambda { frag, _ ->
             layout.title = frag.execute()
         }
     }
 
     @ModelAttribute("content")
     fun content(@ModelAttribute layout: Layout): Mustache.Lambda {
-        return Mustache.Lambda { frag, out ->
+        return Mustache.Lambda { frag, _ ->
             layout.content = frag.execute()
         }
     }
 
     @ModelAttribute("css")
     fun css(@ModelAttribute layout: Layout): Mustache.Lambda {
-        return Mustache.Lambda { frag, out ->
+        return Mustache.Lambda { frag, _ ->
             layout.css = frag.execute()
         }
     }
 
     @ModelAttribute("js")
     fun js(@ModelAttribute layout: Layout): Mustache.Lambda {
-        return Mustache.Lambda { frag, out ->
+        return Mustache.Lambda { frag, _ ->
             layout.js = frag.execute()
         }
     }
