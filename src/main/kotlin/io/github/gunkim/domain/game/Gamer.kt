@@ -1,7 +1,7 @@
 package io.github.gunkim.domain.game
 
 import io.github.gunkim.domain.user.User
-import java.util.*
+import java.util.UUID
 
 data class Gamer(
     val user: User,
@@ -12,6 +12,9 @@ data class Gamer(
 ) {
     val score: Int
         get() = board.score
+
+    val id: UUID
+        get() = user.id
 
     fun start() = copy(board = Board.start())
     fun move(moveType: MoveType) = copy(board = moveType(board))
