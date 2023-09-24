@@ -4,19 +4,20 @@ import io.github.gunkim.domain.game.Gamer
 import io.github.gunkim.domain.room.Room
 import io.github.gunkim.domain.room.RoomRepository
 import io.github.gunkim.domain.score.ScoreHistory
+import java.time.LocalDateTime
+import java.util.UUID
+import java.util.concurrent.TimeUnit
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
-import java.time.LocalDateTime
-import java.util.UUID
-import java.util.concurrent.TimeUnit
 
 @Component
 @EnableScheduling
 class StopGameScheduler(
     private val roomRepository: RoomRepository,
     private val scoreService: ScoreService,
+    private val gameHistoryService: GameHistoryService,
     private val messagingTemplate: SimpMessagingTemplate
 ) {
     @Scheduled(fixedRate = 1, timeUnit = TimeUnit.SECONDS)
@@ -31,6 +32,9 @@ class StopGameScheduler(
             val highScores = room.gamers
                 .map { scoreService.saveScore(it.score, it.id) }
                 .map { scoreService.getHighScore(it.userId) }
+
+            val gameHistories = gameHistoryService.save(room)
+
 
             messagingTemplate.convertAndSend(
                 "/topic/rooms/${room.id}/game-end",
