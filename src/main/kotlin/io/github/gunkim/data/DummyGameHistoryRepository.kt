@@ -2,8 +2,8 @@ package io.github.gunkim.data
 
 import io.github.gunkim.domain.history.GameHistory
 import io.github.gunkim.domain.history.GameHistoryRepository
-import java.util.UUID
 import org.springframework.stereotype.Repository
+import java.util.UUID
 
 @Repository
 class DummyGameHistoryRepository(
@@ -19,6 +19,4 @@ class DummyGameHistoryRepository(
         gameHistory
             .also { dummy[gameHistory.id] = gameHistory }
             .let { gameHistory }
-
-
 }

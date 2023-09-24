@@ -3,8 +3,8 @@ package io.github.gunkim.application
 import io.github.gunkim.domain.history.GameHistory
 import io.github.gunkim.domain.history.GameHistoryRepository
 import io.github.gunkim.domain.room.Room
-import java.util.UUID
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 @Service
 class GameHistoryService(
