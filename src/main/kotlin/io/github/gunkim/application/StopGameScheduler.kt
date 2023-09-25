@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit
 class StopGameScheduler(
     private val roomRepository: RoomRepository,
     private val scoreService: ScoreService,
+    private val gameHistoryService: GameHistoryService,
     private val messagingTemplate: SimpMessagingTemplate
 ) {
     @Scheduled(fixedRate = 1, timeUnit = TimeUnit.SECONDS)
@@ -31,6 +32,8 @@ class StopGameScheduler(
             val highScores = room.gamers
                 .map { scoreService.saveScore(it.score, it.id) }
                 .map { scoreService.getHighScore(it.userId) }
+
+            val gameHistories = gameHistoryService.save(room)
 
             messagingTemplate.convertAndSend(
                 "/topic/rooms/${room.id}/game-end",
