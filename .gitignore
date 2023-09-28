@@ -499,3 +499,5 @@ fabric.properties
 */build
 .gradle
 build
+
+*/.svelte-kit
