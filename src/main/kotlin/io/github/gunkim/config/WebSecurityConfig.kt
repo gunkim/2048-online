@@ -48,6 +48,7 @@ class WebSecurityConfig {
             .anyRequest().authenticated()
 
         http.oauth2Login()
+            .successHandler(CustomAuthSuccessHandler())
             .userInfoEndpoint()
             .userService(oAuth2Service)
 
