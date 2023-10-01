@@ -1,0 +1,88 @@
+body {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #FAF8EF;
+    margin: 0;
+}
+
+.logo {
+    font-size: 50px;
+    font-weight: bold;
+    color: #776E65;
+    text-transform: uppercase;
+    background-image: linear-gradient(to right, #EEE4DA, #EDC22E, #F3B74E, #F2A44C, #F17C5F, #F2573D, #F23C5E, #EFC528);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 20px;
+}
+
+.container {
+    text-align: center;
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    min-width: 700px;
+}
+
+.btn {
+    border: none;
+    color: #FFF;
+    font-size: 20px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.full {
+    width: 100%;
+}
+
+.btn-group {
+    display: flex;
+}
+
+.btn-group .btn {
+    width: 50%;
+    margin-right: 10px;
+}
+
+.btn-group .btn:last-child {
+    margin-right: 0;
+}
+
+.primary-btn {
+    background-color: #8F7A66;
+}
+
+.secondary-btn {
+    background-color: #ef8e8e;
+}
+
+.third-btn {
+    background-color: #f9d06e;
+}
+
+.text-box {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    font-family: inherit;
+    border-radius: 5px;
+    border: 1px solid #BBADA0;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+.player-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+    background-color: #ccc;
+    background-size: cover;
+}

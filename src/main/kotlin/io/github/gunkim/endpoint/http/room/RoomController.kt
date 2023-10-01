@@ -6,6 +6,7 @@ import io.github.gunkim.endpoint.http.room.request.CreateRoomRequest
 import io.github.gunkim.endpoint.http.room.request.KickGamerRequest
 import io.github.gunkim.endpoint.http.room.response.RoomResponse
 import io.github.gunkim.endpoint.http.room.response.WaitRoomResponse
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 import java.util.*
@@ -26,16 +28,17 @@ class RoomController(
     private val messagingTemplate: SimpMessagingTemplate
 ) {
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     fun create(
         user: OAuth2AuthenticationToken,
         @RequestBody request: CreateRoomRequest
-    ): ResponseEntity<URI> {
+    ): UUID {
         val createdRoomId = roomService.create(request.title, user.id).id
         val response = roomService.find().map(::RoomResponse)
 
         messagingTemplate.convertAndSend("/topic/rooms", response)
 
-        return ResponseEntity.created(URI.create("/waitroom/$createdRoomId")).build()
+        return createdRoomId
     }
 
     @PostMapping("/{roomId}/join")
