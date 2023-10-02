@@ -30,3 +30,30 @@ export const joinRoom = async (roomId: number): Promise<Response> => {
         }
     });
 }
+
+export const readyRoom = async (roomId: number): Promise<Response> => {
+    return fetch(`/api/rooms/${roomId}/ready`, {
+        method: 'PUT',
+        headers: {
+            "content-type": "application/json"
+        }
+    });
+}
+
+export const leaveRoom = async (roomId: number): Promise<Response> => {
+    return await fetch(`/api/rooms/${roomId}/leave`, {
+        method: 'DELETE',
+        headers: {
+            "content-type": "application/json"
+        }
+    });
+}
+
+export const startRoom = async (roomId: number): Promise<Response> => {
+    return await fetch(`/api/rooms/${roomId}/start`, {
+        method: 'PUT',
+        headers: {
+            "content-type": "application/json"
+        }
+    });
+}

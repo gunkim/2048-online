@@ -2,12 +2,23 @@
     import {onMount} from 'svelte';
     import Rooms from "./Rooms.svelte";
     import Alert from "./Alert.svelte";
-    import {createRoom, getRooms, joinRoom} from "../apis/rooms.ts";
+    import {createRoom, getRooms, joinRoom} from "$lib/apis/rooms.ts";
     import {goto} from "$app/navigation";
+    import {stompClient} from "$lib/stomp.ts";
 
     let rooms = [];
     let title = '';
     let alert = '';
+
+    onMount(() => {
+        const client = stompClient();
+
+        client.connect({}, () => {
+            client.subscribe('/topic/rooms', (response) => {
+                rooms = JSON.parse(response.body);
+            });
+        });
+    });
 
     const createRoomAction = async () => {
         const response = await createRoom(title);

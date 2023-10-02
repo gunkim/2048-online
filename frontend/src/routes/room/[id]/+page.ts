@@ -14,9 +14,9 @@ export const load = async ({params, fetch}: {
     const roomId = params.id;
 
     const response = await fetch(`/api/rooms/${roomId}/wait`);
-    if (response.ok) {
-        return await response.json();
+    if (!response.ok) {
+        throw error(404, 'Not found');
     }
 
-    throw error(404, 'Not found');
+    return await response.json();
 }
