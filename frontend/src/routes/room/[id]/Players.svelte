@@ -1,5 +1,13 @@
-<script>
-    export let players;
+<script lang="ts">
+    type Player = {
+        id: string;
+        name: string;
+        profileImageUrl: string;
+        host: boolean;
+        ready: boolean;
+    }
+
+    export let players: Player[];
 </script>
 
 <ul class="player-list" id="player-list">

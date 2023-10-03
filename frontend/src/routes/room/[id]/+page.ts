@@ -1,19 +1,26 @@
 import {error} from "@sveltejs/kit";
+import type {Player} from "$lib/types";
 
-export const prerender = true;
+export const prerender: boolean = true;
 
-type ParamType = {
+type Param = {
     id: string;
 }
-type FetchType = (info: RequestInfo, init?: RequestInit) => Promise<Response>;
+type Fetch = (info: RequestInfo, init?: RequestInit) => Promise<Response>;
+
+export type LoadResponse = {
+    id: string;
+    title: string;
+    players: Player[];
+}
 
 export const load = async ({params, fetch}: {
-    params: ParamType;
-    fetch: FetchType;
-}) => {
-    const roomId = params.id;
+    params: Param;
+    fetch: Fetch;
+}): Promise<LoadResponse> => {
+    const roomId: string = params.id;
 
-    const response = await fetch(`/api/rooms/${roomId}/wait`);
+    const response: Response = await fetch(`/api/rooms/${roomId}/wait`);
     if (!response.ok) {
         throw error(404, 'Not found');
     }

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import Players from "./Players.svelte";
     import Title from "./Title.svelte";
     import {goto} from "$app/navigation";
@@ -6,14 +6,16 @@
     import {onMount} from "svelte";
     import {stompClient} from "$lib/stomp.ts";
     import {leaveRoom, readyRoom, startRoom} from "$lib/apis/rooms.ts";
+    import {Client} from "stompjs";
+    import type {LoadResponse} from "./+page";
 
-    export let data;
+    export let data: LoadResponse;
 
     let {id, title, players} = data;
-    let alert;
+    let alert: string;
 
     onMount(() => {
-        const client = stompClient();
+        const client: Client = stompClient();
 
         client.connect({}, () => {
             client.subscribe(`/topic/rooms/${id}/wait`, (response) => {

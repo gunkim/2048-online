@@ -1,7 +1,8 @@
-<script>
+<script lang="ts">
     import Grid from "./Grid.svelte";
+    import type {Gamer} from "$lib/types";
 
-    export let gamer;
+    export let gamer: Gamer;
 </script>
 <div class="board" data-value="{gamer.userId}">
     <div class="score-container">
@@ -26,6 +27,7 @@
         justify-content: center;
         align-items: center;
     }
+
     .score {
         font-size: 28px;
         font-weight: bold;
@@ -53,6 +55,7 @@
         padding: 10px;
         box-sizing: border-box;
     }
+
     .grid-row {
         display: contents;
     }

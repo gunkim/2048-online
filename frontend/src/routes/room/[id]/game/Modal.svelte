@@ -1,6 +1,8 @@
-<script>
-    export let gamers = [];
-    export let timer;
+<script lang="ts">
+    import type {GamerProfile} from "$lib/types";
+
+    export let gamers: GamerProfile[] = [];
+    export let timer: number;
 </script>
 
 <div id="resultModal" class="modal">
@@ -60,15 +62,6 @@
         vertical-align: middle;
         font-size: 16px;
     }
-
-
-    .score-container {
-        margin-bottom: 20px;
-        display: flex;
-        justify-content: space-between;
-        flex-direction: row;
-    }
-
 
     #redirect-timer {
         font-weight: bold;

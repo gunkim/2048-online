@@ -1,5 +1,5 @@
-<script>
-    export let cell;
+<script lang="ts">
+    export let cell: string;
 </script>
 
 <div class="grid-cell" data-value="{cell}"></div>
