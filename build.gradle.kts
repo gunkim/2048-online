@@ -23,7 +23,6 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-websocket")
     implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("org.springframework.boot:spring-boot-starter-mustache")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
     implementation("com.github.ulisesbocchio:jasypt-spring-boot-starter:$springVersion")
     implementation("io.jsonwebtoken:jjwt:0.9.1")
