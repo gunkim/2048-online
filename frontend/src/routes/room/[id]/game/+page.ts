@@ -13,9 +13,6 @@ export const load = async ({params, fetch}: {
 }) => {
     const roomId = params.id;
 
-    console.log("====");
-    console.log(roomId);
-
     const response = await fetch(`/api/rooms/${roomId}/games`);
     if (!response.ok) {
         throw error(404, 'Not found');
