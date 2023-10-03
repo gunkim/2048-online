@@ -23,7 +23,7 @@
                 players = room.players;
             });
             client.subscribe(`/topic/rooms/${id}/start`, () => {
-                goto(`/rooms/${id}/game`);
+                goto(`/room/${id}/game`);
             });
         });
     });
@@ -44,9 +44,7 @@
         if (!response.ok) {
             const json = await response.json();
             alert = json.message;
-            return;
         }
-        await goto(`/rooms/${id}/game`);
     }
 </script>
 
