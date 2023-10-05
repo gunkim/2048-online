@@ -5,13 +5,14 @@
     import {goto} from "$app/navigation";
     import Modal from "./Modal.svelte";
     import type {Client} from "stompjs";
-    import type {GamerProfile} from "$lib/types";
+    import type {Gamer, GamerProfile} from "$lib/types";
+    import type {LoadResponse} from "./+page";
 
-    export let data;
+    export let data: LoadResponse;
     let {id, endTime, gamers}: {
         id: string,
-        endTime: string,
-        gamers: GamerProfile[]
+        endTime: Date,
+        gamers: Gamer[]
     } = data;
     let client: Client;
     let isEnd: boolean = false;
@@ -46,24 +47,25 @@
                 }, 1_000);
             });
         });
+        countGameTimer();
+    });
 
-        const end = new Date(endTime);
-        const timerId = setInterval(() => {
-            const now = new Date();
+    const countGameTimer = () => {
+        const end: Date = new Date(endTime);
+        const timerId: NodeJS.Timeout = setInterval(() => {
+            const now: Date = new Date();
 
-            const diffTime = Math.abs(end - now);
-            const diffSeconds = Math.floor(diffTime / 1000);
-
-            timer = diffSeconds;
+            const diffTime: number = Math.abs(end.getTime() - now.getTime());
+            timer = Math.floor(diffTime / 1000);
 
             if (now > end) {
                 clearInterval(timerId);
                 isEnd = true;
             }
         }, 1_000);
-    });
+    }
 
-    const onKeyDown = (e) => {
+    const onKeyDown = (e: KeyboardEvent) => {
         if (isEnd) return;
 
         const arrows: { [key: string]: string } = {
@@ -92,7 +94,7 @@
         </span>
     </div>
     <div class="boards-container" id="boards">
-        {#each gamers as gamer(gamer.id)}
+        {#each gamers as gamer(gamer.userId)}
             <Board {gamer}/>
         {/each}
     </div>

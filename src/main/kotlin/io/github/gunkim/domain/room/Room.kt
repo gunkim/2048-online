@@ -32,7 +32,7 @@ data class Room(
     fun start(userId: UUID): Room {
         check(!isStart) { "이미 게임이 시작되었습니다." }
         require(gamers.find(userId).isHost) { "시작은 방장만 할 수 있습니다." }
-//        check(gamers.size >= 2) { "게임에 참여할 수 있는 인원은 최소 2명 이상입니다." }
+        check(gamers.size >= 2) { "게임에 참여할 수 있는 인원은 최소 2명 이상입니다." }
         check(gamers.all(Gamer::isReady)) { "게임에 참여한 모든 플레이어가 준비되어야 합니다." }
 
         val gamers = gamers.map(Gamer::start)
