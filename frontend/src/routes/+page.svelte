@@ -1,17 +1,19 @@
-<script>
+<script lang="ts">
     import {onMount} from 'svelte';
     import Rooms from "./Rooms.svelte";
     import Alert from "./Alert.svelte";
     import {createRoom, getRooms, joinRoom} from "$lib/apis/rooms.ts";
     import {goto} from "$app/navigation";
     import {stompClient} from "$lib/stomp.ts";
+    import type {Client} from "stompjs";
+    import type {Room} from "$lib/types.ts";
 
-    let rooms = [];
-    let title = '';
-    let alert = '';
+    let rooms: Room[] = [];
+    let title: string = '';
+    let alert: string = '';
 
     onMount(() => {
-        const client = stompClient();
+        const client: Client = stompClient();
 
         client.connect({}, () => {
             client.subscribe('/topic/rooms', (response) => {
@@ -32,7 +34,7 @@
         await goto(`/room/${roomId}`);
     };
 
-    const joinRoomAction = async (roomId) => {
+    const joinRoomAction = async (roomId: string) => {
         const response = await joinRoom(roomId);
         if (response.status !== 200) {
             alert = '방에 입장할 수 없습니다.';

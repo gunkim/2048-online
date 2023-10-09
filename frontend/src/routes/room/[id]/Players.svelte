@@ -1,11 +1,5 @@
 <script lang="ts">
-    type Player = {
-        id: string;
-        name: string;
-        profileImageUrl: string;
-        host: boolean;
-        ready: boolean;
-    }
+    import type {Player} from "$lib/types.ts";
 
     export let players: Player[];
 </script>

@@ -22,7 +22,7 @@ export const createRoom = async (title: string): Promise<Response> => {
     });
 }
 
-export const joinRoom = async (roomId: number): Promise<Response> => {
+export const joinRoom = async (roomId: string): Promise<Response> => {
     return fetch(`/api/rooms/${roomId}/join`, {
         method: 'POST',
         headers: {

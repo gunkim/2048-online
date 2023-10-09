@@ -1,6 +1,8 @@
-<script>
-    export let rooms;
-    export let joinRoomAction;
+<script lang="ts">
+    import type {Room} from "$lib/types.ts";
+
+    export let rooms: Room[];
+    export let joinRoomAction: (roomId: string) => void;
 </script>
 
 <div id="room-list" class="room-list">

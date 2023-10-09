@@ -1,5 +1,5 @@
-<script>
-    export let alert;
+<script lang="ts">
+    export let alert: string;
 </script>
 
 {#if alert}
