@@ -2,11 +2,10 @@
     import {onMount} from 'svelte';
     import Rooms from "./Rooms.svelte";
     import Alert from "./Alert.svelte";
-    import {createRoom, getRooms, joinRoom} from "$lib/apis/rooms.ts";
+    import {createRoom, getRooms, joinRoom, Room} from "$lib/apis/rooms.ts";
     import {goto} from "$app/navigation";
     import {stompClient} from "$lib/stomp.ts";
     import type {Client} from "stompjs";
-    import type {Room} from "$lib/types.ts";
 
     let rooms: Room[] = [];
     let title: string = '';

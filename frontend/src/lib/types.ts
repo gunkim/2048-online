@@ -21,11 +21,4 @@ export type GamerProfile = {
     name: string;
     profileImageUrl: string;
     score: number;
-}
-
-export type Room = {
-    id: string;
-    title: string;
-    maxPlayer: number;
-    currentPlayer: number;
-}
+};

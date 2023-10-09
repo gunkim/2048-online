@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type {Room} from "$lib/types.ts";
+    import type {Room} from "$lib/apis/rooms.ts";
 
     export let rooms: Room[];
     export let joinRoomAction: (roomId: string) => void;
