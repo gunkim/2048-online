@@ -8,7 +8,7 @@ import java.util.*
 
 @Repository
 class DummyRoomRepository(
-    private val gameStopNotifier: ScheduledGameStopNotifier,
+    private val gameStopNotifier: ScheduledGameStopNotifier
 ) : RoomRepository {
     val map: MutableMap<UUID, Room> = mutableMapOf()
 

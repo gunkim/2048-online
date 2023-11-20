@@ -81,7 +81,8 @@ class RoomTests : StringSpec({
             playTime = 30L,
             gameStopNotifier = { _, _ ->
                 println("게임 종료 알림")
-            })
+            }
+        )
         val result = room.start(user1.id)
 
         result.isStart shouldBe true
