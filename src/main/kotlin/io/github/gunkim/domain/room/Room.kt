@@ -4,6 +4,8 @@ import io.github.gunkim.domain.exception.LeaveHostException
 import io.github.gunkim.domain.game.Board
 import io.github.gunkim.domain.game.Gamer
 import io.github.gunkim.domain.game.MoveType
+import io.github.gunkim.domain.game.event.GameStopEvent
+import io.github.gunkim.domain.game.event.ScheduledGameStopNotifier
 import io.github.gunkim.domain.user.User
 import java.time.LocalDateTime
 import java.util.*
@@ -13,6 +15,8 @@ data class Room(
     val title: String,
     val gamers: List<Gamer>,
     val isStart: Boolean,
+    val playTime: Long,
+    val gameStopNotifier: ScheduledGameStopNotifier? = null,
     val endedAt: LocalDateTime? = null
 ) {
     init {
@@ -26,7 +30,7 @@ data class Room(
 
     fun move(user: User, moveType: MoveType): Room {
         check(isStart) { "게임이 시작되지 않았습니다." }
-        return Room(id, title, gamers.move(user, moveType), isStart)
+        return Room(id, title, gamers.move(user, moveType), isStart, playTime, gameStopNotifier, endedAt)
     }
 
     fun start(userId: UUID): Room {
@@ -34,11 +38,16 @@ data class Room(
         require(gamers.find(userId).isHost) { "시작은 방장만 할 수 있습니다." }
         check(gamers.size >= 2) { "게임에 참여할 수 있는 인원은 최소 2명 이상입니다." }
         check(gamers.all(Gamer::isReady)) { "게임에 참여한 모든 플레이어가 준비되어야 합니다." }
+        check(gameStopNotifier != null) { "게임 종료 알림이 등록되어 있지 않습니다." }
 
         val gamers = gamers.map(Gamer::start)
         gamers.forEachIndexed { index, gamer -> gamer.order = index }
 
-        return copy(gamers = gamers, isStart = true, endedAt = LocalDateTime.now().plusSeconds(PLAY_TIME))
+        val gameEndTime = LocalDateTime.now().plusSeconds(playTime)
+
+        gameStopNotifier.notify(GameStopEvent(id), gameEndTime)
+
+        return copy(gamers = gamers, isStart = true, endedAt = gameEndTime)
     }
 
     fun stop(userId: UUID): Room {
@@ -122,10 +131,10 @@ data class Room(
         const val PLAY_TIME = 30L
 
         fun start(title: String, gamers: List<Gamer>) =
-            Room(title = title, gamers = gamers, isStart = true)
+            Room(title = title, gamers = gamers, isStart = true, playTime = 30L)
 
         fun stop(title: String, gamers: List<Gamer>) =
-            Room(title = title, gamers = gamers, isStart = false)
+            Room(title = title, gamers = gamers, isStart = false, playTime = 30L)
     }
 }
 
