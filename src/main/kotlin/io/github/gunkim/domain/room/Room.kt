@@ -3,7 +3,6 @@ package io.github.gunkim.domain.room
 import io.github.gunkim.domain.exception.LeaveHostException
 import io.github.gunkim.domain.game.Board
 import io.github.gunkim.domain.game.Gamer
-import io.github.gunkim.domain.game.MoveType
 import io.github.gunkim.domain.game.event.GameStopEvent
 import io.github.gunkim.domain.game.event.ScheduledGameStopNotifier
 import io.github.gunkim.domain.user.User
@@ -28,11 +27,6 @@ data class Room(
         require(gamers.isNotEmpty()) { "게임에 참여할 수 있는 인원은 최소 1명 이상입니다." }
     }
 
-    fun move(user: User, moveType: MoveType): Room {
-        check(isStart) { "게임이 시작되지 않았습니다." }
-        return Room(id, title, gamers.move(user, moveType), isStart, playTime, gameStopNotifier, endedAt)
-    }
-
     fun start(userId: UUID): Room {
         check(!isStart) { "이미 게임이 시작되었습니다." }
         require(gamers.find(userId).isHost) { "시작은 방장만 할 수 있습니다." }
@@ -50,17 +44,14 @@ data class Room(
         return copy(gamers = gamers, isStart = true, endedAt = gameEndTime)
     }
 
-    fun stop(userId: UUID): Room {
+    fun stop(): Room {
         check(isStart) { "게임이 시작되지 않았습니다." }
-        require(gamers.find(userId).isHost) { "종료는 방장만 할 수 있습니다." }
 
-        return copy(isStart = false)
+        return copy(
+            gamers = gamers.map(Gamer::unready),
+            isStart = false
+        )
     }
-
-    fun stop() = copy(
-        gamers = gamers.map(Gamer::unready),
-        isStart = false
-    )
 
     fun hasUserId(userId: UUID) = gamers.any { it.user.id == userId }
 
@@ -125,24 +116,6 @@ data class Room(
         check(!isStart) { "이미 시작된 게임에는 준비할 수 없습니다." }
 
         return copy(gamers = gamers.filter { !it.hasPlayerId(gamerId) })
-    }
-
-    companion object {
-        const val PLAY_TIME = 30L
-
-        fun start(title: String, gamers: List<Gamer>) =
-            Room(title = title, gamers = gamers, isStart = true, playTime = 30L)
-
-        fun stop(title: String, gamers: List<Gamer>) =
-            Room(title = title, gamers = gamers, isStart = false, playTime = 30L)
-    }
-}
-
-private fun List<Gamer>.move(user: User, moveType: MoveType) = this.map {
-    if (it.hasPlayerId(user.id)) {
-        it.move(moveType)
-    } else {
-        it
     }
 }
 
