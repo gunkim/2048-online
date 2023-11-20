@@ -3,10 +3,10 @@ package io.github.gunkim.application
 import io.github.gunkim.domain.game.Gamer
 import io.github.gunkim.domain.game.event.GameStopEvent
 import io.github.gunkim.domain.room.RoomRepository
-import java.util.UUID
 import org.springframework.context.event.EventListener
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 @Service
 class GameStopEventListener(

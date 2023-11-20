@@ -8,8 +8,8 @@ import io.github.gunkim.domain.game.event.ScheduledGameStopNotifier
 import io.github.gunkim.domain.room.Room
 import io.github.gunkim.domain.room.RoomRepository
 import io.github.gunkim.domain.user.UserRepository
-import java.util.UUID
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 @Service
 class RoomService(

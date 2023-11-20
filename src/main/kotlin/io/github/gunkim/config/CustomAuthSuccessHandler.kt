@@ -14,7 +14,7 @@ class CustomAuthSuccessHandler : AuthenticationSuccessHandler {
         authentication: Authentication
     ) {
         response.apply {
-            //TODO: 해당 redirect uri는 config로 관리될 필요가 있을 듯 함.
+            // TODO: 해당 redirect uri는 config로 관리될 필요가 있을 듯 함.
             setHeader(HttpHeaders.LOCATION, "http://localhost:5173")
             status = HttpStatus.FOUND.value()
         }
