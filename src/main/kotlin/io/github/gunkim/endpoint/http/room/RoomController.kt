@@ -31,7 +31,7 @@ class RoomController(
         user: OAuth2AuthenticationToken,
         @RequestBody request: CreateRoomRequest
     ): UUID {
-        val createdRoomId = roomService.create(request.title, user.id).id
+        val createdRoomId = roomService.create(request.title, user.id, request.playTime).id
         val response = roomService.find().map(::RoomResponse)
 
         messagingTemplate.convertAndSend("/topic/rooms", response)
