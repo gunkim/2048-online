@@ -89,11 +89,12 @@
 
 <Progressbar progress={progress} size="h-4"/>
 
-<div style="width:820px; margin: 0 auto;">
-    {#each gamers as gamer(gamer.userId)}
-        <Board {gamer}/>
-    {/each}
-</div>
+<div class="flex justify-center">
+    <div style="width:820px;" >
+        {#each gamers as gamer(gamer.userId)}
+            <Board {gamer}/>
+        {/each}
+    </div></div>
 
 <Modal bind:open={isEnd} size="md" autoclose={false} dismissable={false}>
     <div class="text-center">

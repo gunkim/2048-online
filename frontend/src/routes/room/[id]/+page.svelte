@@ -71,24 +71,27 @@
         {alert}
     </Alert>
 {/if}
-<center>
-    <ButtonGroup>
-        <Button outline color="red" on:click={startAction}>Start</Button>
-        <Button outline color="green" on:click={readyAction}>Ready</Button>
-        <Button outline color="yellow" on:click={leaveAction}>Exit</Button>
-    </ButtonGroup>
-    <Card padding="none" size="xl" class="grid md:grid-cols-2">
-        {#each players as player(player.id)}
-            <figure class={`${readyCss(player.ready)} ${hostCss(player.host)} flex flex-col justify-center items-center p-8 text-center bg-white rounded-t-lg border-b border-gray-200 md:rounded-t-none md:rounded-tl-lg md:border-r`}>
-                <figcaption class="flex justify-center items-center space-x-3">
-                    <img class="w-9 h-9 rounded-full"
-                         src={player.profileImageUrl}
-                         alt={player.name}/>
-                    <div class="space-y-0.5 font-medium dark:text-white text-left">
-                        <div>{player.name}</div>
-                    </div>
-                </figcaption>
-            </figure>
-        {/each}
-    </Card>
-</center>
+
+<div class="flex justify-center">
+    <div style="text-align: center;" class="grid grid-cols-16">
+        <ButtonGroup style="margin: 0 auto;">
+            <Button outline color="red" on:click={startAction}>Start</Button>
+            <Button outline color="green" on:click={readyAction}>Ready</Button>
+            <Button outline color="yellow" on:click={leaveAction}>Exit</Button>
+        </ButtonGroup>
+        <Card padding="none" size="xl" class="grid md:grid-cols-2">
+            {#each players as player(player.id)}
+                <figure class={`${readyCss(player.ready)} ${hostCss(player.host)} flex flex-col justify-center items-center p-8 text-center bg-white rounded-t-lg border-b md:rounded-t-none md:rounded-tl-lg md:border-r`}>
+                    <figcaption class="flex justify-center items-center space-x-3">
+                        <img class="w-9 h-9 rounded-full"
+                             src={player.profileImageUrl}
+                             alt={player.name}/>
+                        <div class="space-y-0.5 font-medium dark:text-white text-left">
+                            <div>{player.name}</div>
+                        </div>
+                    </figcaption>
+                </figure>
+            {/each}
+        </Card>
+    </div>
+</div>
