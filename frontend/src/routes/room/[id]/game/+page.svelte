@@ -3,10 +3,11 @@
     import {stompClient} from "$lib/stomp.ts";
     import Board from "./Board.svelte";
     import {goto} from "$app/navigation";
-    import Modal from "./Modal.svelte";
     import type {Client} from "stompjs";
     import type {Gamer, GamerProfile} from "$lib/types";
     import type {LoadResponse} from "./+page";
+    import {Modal, Progressbar} from "flowbite-svelte";
+    import {BellOutline} from 'flowbite-svelte-icons';
 
     export let data: LoadResponse;
     let {id, endTime, gamers}: {
@@ -30,6 +31,7 @@
             });
             client.subscribe(`/topic/rooms/${id}/game-end`, (response) => {
                 gameResults = JSON.parse(response.body);
+                isEnd = true;
 
                 const REDIRECT_TIMER = 5;
 
@@ -60,10 +62,10 @@
 
             if (now > end) {
                 clearInterval(timerId);
-                isEnd = true;
             }
         }, 1_000);
     }
+
 
     const onKeyDown = (e: KeyboardEvent) => {
         if (isEnd) return;
@@ -81,55 +83,35 @@
                 JSON.stringify({direction: arrow}))
         }
     }
+    let progress = 100;
+    $: progress = timer / 30 * 100;
 </script>
 
-<section>
-    <div class="timer-container">
-        <span id="timer">
-            {#if isEnd}
-                <span style="zcolor: #f75d5d;">게임 종료!</span>
-            {:else}
-                {timer}
-            {/if}
-        </span>
-    </div>
-    <div class="boards-container" id="boards">
+<Progressbar progress={progress} size="h-4"/>
+
+<div class="flex justify-center">
+    <div style="width:820px;" >
         {#each gamers as gamer(gamer.userId)}
             <Board {gamer}/>
         {/each}
+    </div></div>
+
+<Modal bind:open={isEnd} size="md" autoclose={false} dismissable={false}>
+    <div class="text-center">
+        <BellOutline class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200"/>
+        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">게임 결과</h3>
+        {#each gameResults as gamer}
+            <div class="flex items-center space-x-4">
+                <img class="w-9 h-9 rounded-full"
+                     src={gamer.profileImageUrl}
+                     alt={gamer.name}/>
+                <div class="space-y-1 font-medium dark:text-white">
+                    <div>{gamer.name}</div>
+                    <div class="text-sm text-gray-500 dark:text-gray-400">{gamer.score}점</div>
+                </div>
+            </div>
+        {/each}
     </div>
-</section>
+</Modal>
 
-{#if gameResults}
-    <Modal gamers={gameResults} timer={redirectTimer}/>
-{/if}
 <svelte:window on:keydown|preventDefault={onKeyDown}/>
-
-<style>
-    .timer-container {
-        margin-top: 20px;
-        margin-bottom: 20px;
-        font-size: 24px;
-        font-weight: bold;
-        color: #776e65;
-        padding: 20px;
-        border-radius: 5px;
-    }
-
-
-    #timer {
-        background-color: #eee4da;
-        color: #776e65;
-        padding: 10px 20px;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-
-    .boards-container {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(2, 1fr);
-        gap: 20px;
-    }
-</style>
