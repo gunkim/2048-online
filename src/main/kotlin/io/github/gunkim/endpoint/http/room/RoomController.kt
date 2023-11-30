@@ -31,7 +31,7 @@ class RoomController(
         user: OAuth2AuthenticationToken,
         @RequestBody request: CreateRoomRequest
     ): UUID {
-        val createdRoomId = roomService.create(request.title, user.id, request.playTime).id
+        val createdRoomId = roomService.create(request.title, user.id, request.timer).id
         val response = roomService.find().map(::RoomResponse)
 
         messagingTemplate.convertAndSend("/topic/rooms", response)
@@ -68,9 +68,9 @@ class RoomController(
         user: OAuth2AuthenticationToken,
         @PathVariable roomId: UUID
     ) {
-        roomService.start(roomId, user.id)
+        val room = roomService.start(roomId, user.id)
 
-        messagingTemplate.convertAndSend("/topic/rooms/$roomId/start", Unit)
+        messagingTemplate.convertAndSend("/topic/rooms/$roomId/start", room.playTime)
     }
 
     @PutMapping("/{roomId}/ready")
