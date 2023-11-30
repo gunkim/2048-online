@@ -7,6 +7,8 @@
     import type {LoadResponse} from "./+page";
     import {Alert, Button, ButtonGroup, Card} from "flowbite-svelte";
     import {InfoCircleSolid} from 'flowbite-svelte-icons'
+    import {writable} from "svelte/store";
+    import {roomTimer} from "./store.ts";
 
     export let data: LoadResponse;
 
@@ -23,7 +25,8 @@
                 title = room.title;
                 players = room.players;
             });
-            client.subscribe(`/topic/rooms/${id}/start`, () => {
+            client.subscribe(`/topic/rooms/${id}/start`, (res) => {
+                roomTimer.set(res.body);
                 goto(`/room/${id}/game`);
             });
         });

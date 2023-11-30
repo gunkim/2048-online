@@ -3,19 +3,16 @@ package io.github.gunkim.application
 import io.github.gunkim.domain.exception.LeaveHostException
 import io.github.gunkim.domain.game.Board
 import io.github.gunkim.domain.game.Gamer
-import io.github.gunkim.domain.game.event.GameStopEvent
-import io.github.gunkim.domain.game.event.ScheduledGameStopNotifier
 import io.github.gunkim.domain.room.Room
 import io.github.gunkim.domain.room.RoomRepository
 import io.github.gunkim.domain.user.UserRepository
 import org.springframework.stereotype.Service
-import java.util.UUID
+import java.util.*
 
 @Service
 class RoomService(
     private val userRepository: UserRepository,
-    private val roomRepository: RoomRepository,
-    private val scheduledGameStopNotifier: ScheduledGameStopNotifier
+    private val roomRepository: RoomRepository
 ) {
     fun find() = roomRepository.find()
 
@@ -32,12 +29,9 @@ class RoomService(
         roomRepository.save(room.join(user))
     }
 
-    fun start(roomId: UUID, userId: UUID) {
-        val room = roomRepository.find(roomId)
-
-        roomRepository.save(room.start(userId))
-        scheduledGameStopNotifier.notify(GameStopEvent(room.id))
-    }
+    fun start(roomId: UUID, userId: UUID) = roomRepository
+        .find(roomId)
+        .let { roomRepository.save(it.start(userId)) }
 
     fun leave(roomId: UUID, userId: UUID): Boolean {
         val room = roomRepository.find(roomId)
@@ -51,13 +45,13 @@ class RoomService(
         }
     }
 
-    fun create(title: String, userId: UUID): Room {
+    fun create(title: String, userId: UUID, playTime: Long): Room {
         val user = userRepository.find(userId)
 
         require(!roomRepository.existByUserId(user.id)) { "이미 방에 참여중입니다." }
 
         val hostGamer = Gamer(user = user, board = Board.create(), isHost = true)
-        val room = Room(title = title, gamers = listOf(hostGamer), isStart = false)
+        val room = Room(title = title, gamers = listOf(hostGamer), isStart = false, playTime = playTime)
 
         return roomRepository.save(room)
     }

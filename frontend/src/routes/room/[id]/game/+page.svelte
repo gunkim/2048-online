@@ -8,6 +8,7 @@
     import type {LoadResponse} from "./+page";
     import {Modal, Progressbar} from "flowbite-svelte";
     import {BellOutline} from 'flowbite-svelte-icons';
+    import {roomTimer} from "../store.ts";
 
     export let data: LoadResponse;
     let {id, endTime, gamers}: {
@@ -17,12 +18,17 @@
     } = data;
     let client: Client;
     let isEnd: boolean = false;
-    let timer: number = 30;
+    let timer: number = 0;
+    let roomTime: number = 0;
     let redirectTimer: number = 5;
 
     let gameResults: GamerProfile[];
 
     onMount(() => {
+        roomTimer.subscribe(value => {
+            timer = value;
+            roomTime = value;
+        });
         client = stompClient();
 
         client.connect({}, () => {
@@ -84,7 +90,7 @@
         }
     }
     let progress = 100;
-    $: progress = timer / 30 * 100;
+    $: progress = timer / roomTime * 100;
 </script>
 
 <Progressbar progress={progress} size="h-4"/>

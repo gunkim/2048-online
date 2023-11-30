@@ -3,7 +3,8 @@ package io.github.gunkim.domain.room
 import io.github.gunkim.domain.exception.LeaveHostException
 import io.github.gunkim.domain.game.Board
 import io.github.gunkim.domain.game.Gamer
-import io.github.gunkim.domain.game.MoveType
+import io.github.gunkim.domain.game.event.GameStopEvent
+import io.github.gunkim.domain.game.event.ScheduledGameStopNotifier
 import io.github.gunkim.domain.user.User
 import java.time.LocalDateTime
 import java.util.*
@@ -13,6 +14,8 @@ data class Room(
     val title: String,
     val gamers: List<Gamer>,
     val isStart: Boolean,
+    val playTime: Long,
+    val gameStopNotifier: ScheduledGameStopNotifier? = null,
     val endedAt: LocalDateTime? = null
 ) {
     init {
@@ -24,34 +27,31 @@ data class Room(
         require(gamers.isNotEmpty()) { "게임에 참여할 수 있는 인원은 최소 1명 이상입니다." }
     }
 
-    fun move(user: User, moveType: MoveType): Room {
-        check(isStart) { "게임이 시작되지 않았습니다." }
-        return Room(id, title, gamers.move(user, moveType), isStart)
-    }
-
     fun start(userId: UUID): Room {
         check(!isStart) { "이미 게임이 시작되었습니다." }
         require(gamers.find(userId).isHost) { "시작은 방장만 할 수 있습니다." }
         check(gamers.size >= 2) { "게임에 참여할 수 있는 인원은 최소 2명 이상입니다." }
         check(gamers.all(Gamer::isReady)) { "게임에 참여한 모든 플레이어가 준비되어야 합니다." }
+        check(gameStopNotifier != null) { "게임 종료 알림이 등록되어 있지 않습니다." }
 
         val gamers = gamers.map(Gamer::start)
         gamers.forEachIndexed { index, gamer -> gamer.order = index }
 
-        return copy(gamers = gamers, isStart = true, endedAt = LocalDateTime.now().plusSeconds(PLAY_TIME))
+        val gameEndTime = LocalDateTime.now().plusSeconds(playTime)
+
+        gameStopNotifier.notify(GameStopEvent(id), gameEndTime)
+
+        return copy(gamers = gamers, isStart = true, endedAt = gameEndTime)
     }
 
-    fun stop(userId: UUID): Room {
+    fun stop(): Room {
         check(isStart) { "게임이 시작되지 않았습니다." }
-        require(gamers.find(userId).isHost) { "종료는 방장만 할 수 있습니다." }
 
-        return copy(isStart = false)
+        return copy(
+            gamers = gamers.map(Gamer::unready),
+            isStart = false
+        )
     }
-
-    fun stop() = copy(
-        gamers = gamers.map(Gamer::unready),
-        isStart = false
-    )
 
     fun hasUserId(userId: UUID) = gamers.any { it.user.id == userId }
 
@@ -116,24 +116,6 @@ data class Room(
         check(!isStart) { "이미 시작된 게임에는 준비할 수 없습니다." }
 
         return copy(gamers = gamers.filter { !it.hasPlayerId(gamerId) })
-    }
-
-    companion object {
-        const val PLAY_TIME = 30L
-
-        fun start(title: String, gamers: List<Gamer>) =
-            Room(title = title, gamers = gamers, isStart = true)
-
-        fun stop(title: String, gamers: List<Gamer>) =
-            Room(title = title, gamers = gamers, isStart = false)
-    }
-}
-
-private fun List<Gamer>.move(user: User, moveType: MoveType) = this.map {
-    if (it.hasPlayerId(user.id)) {
-        it.move(moveType)
-    } else {
-        it
     }
 }
 

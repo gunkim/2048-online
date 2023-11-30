@@ -30,7 +30,8 @@ class WebSecurityConfig {
                 "/js/**",
                 "/css/**",
                 "/img/**",
-                "/rooms"
+                "/rooms",
+                "/game/**"
             ).permitAll()
             .requestMatchers(
                 "/rooms/*/details",

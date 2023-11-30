@@ -5,19 +5,24 @@ export type Room = {
     currentPlayer: number;
 }
 
+export type Timer = {
+    time: number;
+}
+
 export const getRooms = async (): Promise<Room[]> => {
     const response = await fetch('/api/rooms');
     return await response.json();
 }
 
-export const createRoom = async (title: string): Promise<Response> => {
+export const createRoom = async (title: string, timer: number): Promise<Response> => {
     return fetch("/api/rooms", {
         method: 'POST',
         headers: {
             "content-type": "application/json"
         },
         body: JSON.stringify({
-            title: title
+            title: title,
+            timer: timer
         })
     });
 }
@@ -57,3 +62,10 @@ export const startRoom = async (roomId: number): Promise<Response> => {
         }
     });
 }
+
+export const getTimer = async (): Promise<Response> => await fetch('/api/game/timer', {
+    method: 'GET',
+    headers: {
+        "content-type": "application/json"
+    }
+})
