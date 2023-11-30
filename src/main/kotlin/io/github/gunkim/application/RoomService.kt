@@ -29,11 +29,9 @@ class RoomService(
         roomRepository.save(room.join(user))
     }
 
-    fun start(roomId: UUID, userId: UUID) {
-        val room = roomRepository.find(roomId)
-
-        roomRepository.save(room.start(userId))
-    }
+    fun start(roomId: UUID, userId: UUID) = roomRepository
+        .find(roomId)
+        .let { roomRepository.save(it.start(userId)) }
 
     fun leave(roomId: UUID, userId: UUID): Boolean {
         val room = roomRepository.find(roomId)
