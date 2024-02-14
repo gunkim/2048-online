@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-class DummyUserRepository(
+class InMemoryUserRepository(
     private val map: MutableMap<UUID, User> = mutableMapOf()
 ) : UserRepository {
     override fun find() = map.values.toList()

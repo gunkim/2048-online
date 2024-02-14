@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-class DummyGamerRepository(
+class InMemoryGamerRepository(
     private val roomRepository: RoomRepository
 ) : GamerRepository {
     override fun find() = roomRepository.find().flatMap { it.gamers }

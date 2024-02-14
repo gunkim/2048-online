@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-class DummyScoreRepository(
+class InMemoryScoreRepository(
     private val map: MutableMap<UUID, ScoreHistory> = mutableMapOf()
 ) : ScoreRepository {
 

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-class DummyRoomRepository(
+class InMemoryRoomRepository(
     private val gameStopNotifier: ScheduledGameStopNotifier
 ) : RoomRepository {
     val map: MutableMap<UUID, Room> = mutableMapOf()
