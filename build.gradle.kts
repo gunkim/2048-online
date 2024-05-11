@@ -24,7 +24,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-websocket")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
-    implementation("com.github.ulisesbocchio:jasypt-spring-boot-starter:$springVersion")
+    implementation("com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5")
     implementation("io.jsonwebtoken:jjwt:0.9.1")
     implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
